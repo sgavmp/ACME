@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Grupo15.ACME">
+	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>model.user.User</class>
+		<class>model.user.Company</class>
+		<class>model.user.Customer</class>
+		<class>model.user.Reviewer</class>
+		<class>model.user.Role</class>
+		<class>model.examination.AnswerExam</class>
+		<class>model.exam.Option</class>
+		<class>model.examination.OpenAnswerExam</class>
+		<class>model.certification.FamilyProfessional</class>
+		<class>model.certification.Requirement</class>
+		<class>model.IntervalDate</class>
+		<class>model.geography.State</class>
+		<class>model.Office</class>
+		<class>model.examination.PreRegister</class>
+		<class>model.certification.RequirementCalification</class>
+		<class>model.geography.City</class>
+		<class>model.MethodPay</class>
+		<class>model.geography.Country</class>
+		<class>model.examination.Register</class>
+		<class>model.certification.Certification</class>
+		<class>model.geography.Language</class>
+		<class>model.Pay</class>
+		<class>model.examination.TestAnswerExam</class>
+		<class>model.exam.TestQuestion</class>
+		<class>model.exam.Question</class>
+		<class>model.examination.Examination</class>
+		<class>model.exam.Exam</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/acme" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="root" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<!-- Auto-detect entity classes -->
+			<property name="hibernate.archive.autodetection" value="class, hbm" />
+		</properties>
+	</persistence-unit>
+</persistence>
