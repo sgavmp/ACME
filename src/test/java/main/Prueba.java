@@ -79,8 +79,6 @@ public class Prueba {
 	
 	@Test
 	public void testRepositorioAuxiliar(){
-		//Al final del test se hace un rollback para que el restos de pruebas transcurran correctamente con todos los datos
-		
 		//Probamos metodos de consultas
 		List<Country> paises = auxrep.getAllCountry();
 		Assert.assertEquals("Comprobamos que se han guardado 3 paises",3, paises.size());

@@ -117,17 +117,17 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 		getEntityManager().persist(p);
 	}
 
-	@Override
+	@Transactional
 	public void updateCertification(Certification c) {
 		getEntityManager().merge(c);
 	}
 
-	@Override
+	@Transactional
 	public void updateFProfessional(FamilyProfessional fp) {
 		getEntityManager().merge(fp);
 	}
 
-	@Override
+	@Transactional
 	public void updatePreRegister(PreRegister p) {
 		getEntityManager().merge(p);
 	}
