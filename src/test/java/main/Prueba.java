@@ -21,45 +21,45 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.acme.model.IntervalDate;
+import com.acme.model.MethodPay;
+import com.acme.model.Office;
+import com.acme.model.Pay;
+import com.acme.model.certification.Certification;
+import com.acme.model.certification.FamilyProfessional;
+import com.acme.model.certification.Requirement;
+import com.acme.model.certification.RequirementCalification;
+import com.acme.model.exam.Exam;
+import com.acme.model.exam.ExamType;
+import com.acme.model.exam.Option;
+import com.acme.model.exam.Question;
+import com.acme.model.exam.TestQuestion;
+import com.acme.model.examination.AnswerExam;
+import com.acme.model.examination.Examination;
+import com.acme.model.examination.PreRegister;
+import com.acme.model.examination.Register;
+import com.acme.model.examination.TestAnswerExam;
+import com.acme.model.geography.City;
+import com.acme.model.geography.Country;
+import com.acme.model.geography.Language;
+import com.acme.model.geography.State;
+import com.acme.model.user.Company;
+import com.acme.model.user.Customer;
+import com.acme.model.user.Reviewer;
+import com.acme.model.user.Role;
+import com.acme.model.user.User;
+import com.acme.model.user.UserType;
+import com.acme.repository.AuxiliarRepository;
+import com.acme.repository.CertificationRepository;
+import com.acme.repository.ExaminationRepository;
+import com.acme.repository.UserRepository;
 import com.google.common.collect.Lists;
 
-import repository.AuxiliarRepository;
-import repository.CertificationRepository;
-import repository.ExaminationRepository;
-import repository.UserRepository;
 
-import model.IntervalDate;
-import model.MethodPay;
-import model.Office;
-import model.Pay;
-import model.certification.Certification;
-import model.certification.FamilyProfessional;
-import model.certification.Requirement;
-import model.certification.RequirementCalification;
-import model.exam.Exam;
-import model.exam.ExamType;
-import model.exam.Option;
-import model.exam.Question;
-import model.exam.TestQuestion;
-import model.examination.AnswerExam;
-import model.examination.Examination;
-import model.examination.PreRegister;
-import model.examination.Register;
-import model.examination.TestAnswerExam;
-import model.geography.City;
-import model.geography.Country;
-import model.geography.Language;
-import model.geography.State;
-import model.user.Company;
-import model.user.Customer;
-import model.user.Reviewer;
-import model.user.Role;
-import model.user.User;
-import model.user.UserType;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:acme-servlet.xml"})
 public class Prueba {
 	
 	@Resource(name = "repositoryaux")

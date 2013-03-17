@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body>
+<header th:include="common :: header" id="menu">
+<!-- Aquí se incluye el menu superior del archivo common.html-->
+</header>
+<section class="container">
+<header class="jumbotron subhead" id="submenu">
+ <div class="subnav subnav-fixed">
+    <ul class="nav nav-pills">
+      <li class="active"><a th:text="#{menu.certificado.listar}" href="/acme/certification" th:href="@{/acme/certification}">Listar Certificados</a></li>
+      <li><a th:text="#{menu.certificado.crear}" href="/acme/certification?id=4" th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+    </ul>
+  </div>
+  <h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
+</header>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th th:text="#{certificado.tabla.id}">ID</th>
+      <th th:text="#{certificado.tabla.nombre}">Nombre</th>
+      <th th:text="#{certificado.tabla.company}">Empresa</th>
+      <th th:text="#{certificado.tabla.familia}">Familia Profesional</th>
+      <th th:text="#{certificado.tabla.acciones}">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:unless="${#lists.isEmpty(allCertifications)}" th:each="cert,rowStat  : ${allCertifications}">
+      <td th:text="${cert.id}">1</td>
+      <td th:text="${cert.name}">Ingles B1</td>
+      <td>Cambridge</td>
+      <td th:text="${cert.familyProfessional.name}">Idiomas</td>
+      <td><a th:text="#{certificado.tabla.editar}" href="/acme/certification/edit/id/4" th:href="@{'/acme/certification/edit/id/' + ${cert.id}}">Edit</a>/
+      <a th:text="#{certificado.tabla.borrar}" href="/acme/certification/delete/id/4" th:href="@{'/acme/certification/delete/id/' + ${cert.id}}">Delete</a></td>
+    </tr>
+    <tr th:unless="${!#lists.isEmpty(allCertifications)}">
+      <td th:text="#{certificado.tabla.vacia}" colspan="5"><h2>No hay certificados en el sistema</h2></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+<footer th:include="common :: footer">
+<!-- Aquí se incluye el footer del archivo common.html-->
+</footer>
+</body>
+</html>

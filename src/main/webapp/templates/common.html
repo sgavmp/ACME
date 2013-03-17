@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="UTF-8"></meta>
+<title>ACME</title>
+<link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+<script src="../js/dojo/dojo.js" th:href="@{/js/dojo/dojo.js}" type="text/javascript"></script>
+</head>
+<body>
+<header id="menu" th:fragment="header">
+	<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="./index.html">ACME</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li th:class="((${activeMenu}=='index')?'active')">
+                <a th:text="#{menu.principal.indice}" href="/index.html" th:href="@{/acme/index}">Inicio</a>
+              </li>
+              <li th:class="((${activeMenu}=='certification')?'active')">
+                <a th:text="#{menu.principal.certificados}" th:href="@{/acme/certification}">Certificados</a>
+              </li>
+              <li th:class="((${activeMenu}=='convocatorias')?'active')">
+                <a th:text="#{menu.principal.convocatorias}" href="">Convocatorias</a>
+              </li>
+              <li th:class="((${activeMenu}=='users')?'active')">
+                <a th:text="#{menu.principal.usuarios}" href="">Usuarios</a>
+              </li>
+              <li th:class="((${activeMenu}=='registers')?'active')">
+                <a th:text="#{menu.principal.registros}" href="">Registros</a>
+              </li>
+              <li class="divider-vertical">
+              </li>
+              <li th:class="((${activeMenu}=='profile')?'active')">
+                <a th:text="#{menu.principal.perfil}" href="">Perfil</a>
+              </li>
+              <li>
+                <a th:text="#{menu.principal.salir}" href="">Salir</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</header>
+<section class="container">
+	<article class="well"><h1>ACME</h1>
+	<h2 th:text="#{main.title}">Sistema web de Gesti&oacute;n</h2>
+	<p th:utext="#{main.text}">Bienvenido,
+	<br></br>
+	 en esta web podras gestionar todo lo referente al sistema de gestion de la empresa ACME. Actualmente no esta completado al 100% pero poco a poco iras disponiendo de todas las opciones y herramientas necesarias para su administracion.
+		<br></br>
+		Un saludo.</p></article>
+</section>
+<footer th:fragment="footer">
+	<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME Diseñado por: Rafael Sanchez Vasquez | Sergio Garcia Alonso</div>
+	<div class="footer">
+		
+	</div>
+</footer>
+</body>
+</html>
