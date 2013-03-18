@@ -35,7 +35,7 @@ import com.acme.repository.UserRepository;
 import com.google.common.collect.Lists;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class CertificationTest {
 
 	@Resource(name = "repositoryaux")

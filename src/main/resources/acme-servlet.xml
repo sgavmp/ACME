@@ -11,52 +11,6 @@
 
 	<context:annotation-config />
 	<context:spring-configured />
-	<!-- **************************************************************** -->
-	<!-- RESOURCE FOLDERS CONFIGURATION -->
-	<!-- Dispatcher configuration for serving static resources -->
-	<!-- **************************************************************** -->
-	<mvc:resources location="/img/" mapping="/img/**" />
-	<mvc:resources location="/css/" mapping="/css/**" />
-	<mvc:resources location="/js/" mapping="/js/**" />
-
-
-	<!-- **************************************************************** -->
-	<!-- SPRING ANNOTATION PROCESSING -->
-	<!-- **************************************************************** -->
-	<mvc:annotation-driven />
-	<context:component-scan base-package="com.acme" />
-
-
-	<!-- **************************************************************** -->
-	<!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
-	<!-- Standard Spring MessageSource implementation -->
-	<!-- **************************************************************** -->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"> 
-		<property name="basename" value="Messages" /> </bean>
-
-	<!-- **************************************************************** -->
-	<!-- THYMELEAF-SPECIFIC ARTIFACTS -->
-	<!-- TemplateResolver <- TemplateEngine <- ViewResolver -->
-	<!-- **************************************************************** -->
-
-	<bean id="templateResolver"
-		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-		<property name="prefix" value="/templates/" />
-		<property name="suffix" value=".html" />
-		<property name="templateMode" value="HTML5" />
-		<!-- Template cache is true by default. Set to false if you want -->
-		<!-- templates to be automatically updated when modified. -->
-		<property name="cacheable" value="true" />
-	</bean>
-
-	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
-		<property name="templateResolver" ref="templateResolver" />
-	</bean>
-
-	<bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
-		<property name="templateEngine" ref="templateEngine" />
-	</bean>
-
 	<!--========== Spring Data Source ========== -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -104,6 +58,53 @@
 	<!--========== /TransactionManager Service ========== -->
 	<bean id="servicecertification" name="servicecertification" 
 	class="com.acme.services.CertificationServiceImpl" />
+	
+	<!-- **************************************************************** -->
+	<!-- RESOURCE FOLDERS CONFIGURATION -->
+	<!-- Dispatcher configuration for serving static resources -->
+	<!-- **************************************************************** -->
+	<mvc:resources location="/img/" mapping="/img/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+
+
+	<!-- **************************************************************** -->
+	<!-- SPRING ANNOTATION PROCESSING -->
+	<!-- **************************************************************** -->
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.acme" />
+
+
+	<!-- **************************************************************** -->
+	<!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
+	<!-- Standard Spring MessageSource implementation -->
+	<!-- **************************************************************** -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"> 
+		<property name="basename" value="Messages" /> </bean>
+
+	<!-- **************************************************************** -->
+	<!-- THYMELEAF-SPECIFIC ARTIFACTS -->
+	<!-- TemplateResolver <- TemplateEngine <- ViewResolver -->
+	<!-- **************************************************************** -->
+
+	<bean id="templateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="/templates/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified. -->
+		<property name="cacheable" value="true" />
+	</bean>
+
+	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+	</bean>
+
+	<bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+	</bean>
+	
 </beans>
 
 
