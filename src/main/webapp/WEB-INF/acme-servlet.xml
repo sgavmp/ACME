@@ -58,6 +58,8 @@
 	<!--========== /TransactionManager Service ========== -->
 	<bean id="servicecertification" name="servicecertification" 
 	class="com.acme.services.CertificationServiceImpl" />
+	<bean id="serviceuser" name="serviceceruser" 
+	class="com.acme.services.UserServiceImpl" />
 	
 	<!-- **************************************************************** -->
 	<!-- RESOURCE FOLDERS CONFIGURATION -->

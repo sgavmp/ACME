@@ -27,8 +27,6 @@ import com.acme.model.Office;
 import com.acme.model.Pay;
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
-import com.acme.model.certification.Requirement;
-import com.acme.model.certification.RequirementCalification;
 import com.acme.model.exam.Exam;
 import com.acme.model.exam.ExamType;
 import com.acme.model.exam.Option;
@@ -222,7 +220,7 @@ public class Prueba {
 			Country spain = new Country();
 			Country france = new Country();
 			Country italy = new Country();
-			spain.setName("España");
+			spain.setName("EspaÃ±a");
 			france.setName("Francia");
 			italy.setName("Italia");
 			// Generamos provincia de prueba
@@ -249,7 +247,7 @@ public class Prueba {
 					"954987654", romeCity));
 			
 			//Creamos varios idiomas y los guardamos en la base de datos
-			auxrep.persistLanguage(new Language("Español"));
+			auxrep.persistLanguage(new Language("EspaÃ±ol"));
 			auxrep.persistLanguage(new Language("Ingles"));
 			auxrep.persistLanguage(new Language("Frances"));
 			
@@ -260,18 +258,13 @@ public class Prueba {
 			auxrep.persistMethodPay(new MethodPay("Transferencia"));
 			
 			// Creamos un certificado
-			 Requirement req1 = new Requirement("Aprobar cada apartado",
-			 "El aspirante debera de superar cada apartado del examen");
-			 RequirementCalification req2 = new RequirementCalification(
-			 (Double) 5.0, "Nota minima de 5",
-			 "El aspirante debe de tener una nota minima de 5 en el examen para aprobar");
 			 FamilyProfessional fam1 = new FamilyProfessional("Idiomas");
-			 List<Requirement> requisitos = Lists.newArrayList(req1);
+			 List<String> requisitos = Lists.newArrayList("El aspirante debera de superar cada apartado del examen");
 			 Certification c1 = new Certification(
 			 "Ingles B1",
 			 "Certificado de nivel B1 de idiomas para Inlges expedido por el Instituto de Idiomas de la Universidad de Sevilla",
 			 (Double) 15.0, (Double) 30.0, "No caduca",null , fam1,
-			 requisitos, req2);
+			 requisitos, 5.0);
 			// Creamos un examen
 			 Exam exam1 = c1.addExamToCertification(ExamType.MULTITEST, null);
 			 TestQuestion q = exam1.createTestQuestion("I....studying", (Double) 10.0);

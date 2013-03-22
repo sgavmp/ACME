@@ -28,28 +28,28 @@
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.nombre}" class="control-label">Name</label>
 		<div class="controls">
-			<input th:value="${cert.name}" type="text" id="name"></input>
+			<input th:field="*{name}" th:value="${cert.name}" type="text" id="name"></input>
 		</div>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.coste}" class="control-label">Cost</label>
 		<div class="controls">
 			<div class="input-append">
-				<input th:value="${cert.cost}" type="text" id="cost" size="16" class="span2"></input><span class="add-on">&euro;</span>	
+				<input th:field="*{cost}" th:value="${cert.cost}" type="text" id="cost" size="16" class="span2"></input><span class="add-on">&euro;</span>	
 			</div>
 		</div>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.descripcion}" class="control-label">Description</label>
 		<div class="controls">
-			<input th:value="${cert.description}" type="text" id="description"></input>
+			<input th:field="*{description}" th:value="${cert.description}" type="text" id="description"></input>
 		</div>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.familia}" class="control-label">FamilyProfessional</label>
 		<div class="controls">
-			<select id="familyprofessional">
-				<option th:each="fam : ${allFamilyProfessional}" th:value="${fam.id}" th:text="${fam.name}">Idiomas</option>
+			<select th:field="*{familyProfessional}" id="familyprofessional">
+				<option th:each="fam : ${allFamilyProfessional}" th:value="${fam.name}" th:text="${fam.name}">Idiomas</option>
 			</select>
 		</div>
 	</div>
@@ -57,42 +57,51 @@
 		<label th:text="#{certificado.formulario.precio}" class="control-label">Price Public</label>
 		<div class="controls">
 			<div class="input-append">
-				<input th:value="${cert.pricePublic}" type="text" id="pricepublic" size="16" class="span2"></input><span class="add-on">&euro;</span>
+				<input th:field="*{pricePublic}" th:value="${cert.pricePublic}" type="text" id="pricepublic" size="16" class="span2"></input><span class="add-on">&euro;</span>
 			</div>
 		</div>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.validez}" class="control-label">Validate</label>
 		<div class="controls">
-			<input th:value="${cert.validez}" type="text" id="validate"></input>
+			<input th:field="*{validez}" th:value="${cert.validez}" type="text" id="validate"></input>
 		</div>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.calificacion}" class="control-label">Requirement Califitacion</label>
 		<div class="controls">
-			<input type="text" id="requirementcalification"></input>
+			<input th:field="*{requirementCalification}" type="text" id="requirementCalification"></input>
 		</div>
 	</div>
 	<div class="control-group">
-		<label th:text="#{certificado.formulario.requisitos}" class="control-label">Requirements</label>
-		<div class="controls">
-			<div class="input-append">
-				<input type="text" id="addRequirement"></input><button th:text="#{certificado.formulario.add}" class="btn" type="button">A&ntilde;adir</button>
-			</div>
-		</div>
-		<div class="controls">
-			<div class="input-append">
-				<select id="requirements" multiple="multiple">
-					<option>Mayor de 18 años.</option>
-				</select>
-				<button class="btn" th:text="#{certificado.formulario.delete}" type="button">Borrar</button>
-			</div>
-		</div>
+		<table>
+              <thead>
+                <tr>
+                  <th>Requisitos</th>
+                  <th>
+                    <button type="submit" name="addRow" >Añadir Requisito</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="row,rowStat : *{requirements}">
+                  <td th:text="${rowStat.count}">1</td>
+                  <td>
+                    <input type="text" th:field="*{requirements[__${rowStat.index}__]}"/>
+                  </td>
+                  <td>
+                    <button type="submit" name="removeRow" th:value="${rowStat.index}" >Remove row</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 	</div>
 	<div class="control-group">
 		<label th:text="#{certificado.formulario.company}" class="control-label">Company</label>
 		<div class="controls">
-			<input type="text" id="company"></input>
+			<select th:field="*{company}" id="company">
+				<option th:each="user : ${allCompany}" th:value="${user.id}" th:text="${user.name}">IBM</option>
+			</select>
 		</div>
 	</div>
 	<div class="form-actions">

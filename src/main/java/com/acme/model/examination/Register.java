@@ -183,7 +183,7 @@ public class Register implements Serializable{
 			points += ta.correctTestAnswer();
 		}
 		this.setCalification(points);
-		if (this.getExamination().getCertification().getRequirementCalification().getCalificationNum()<=this.getCalification()){
+		if (this.getExamination().getCertification().getRequirementCalification()<=this.getCalification()){
 			this.setPassed(true);
 		}
 		else

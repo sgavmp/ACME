@@ -66,16 +66,15 @@ public class Certification {
 	private FamilyProfessional familyProfessional;
 	
 	@NotNull
-	private RequirementCalification requirementCalification;
+	private Double requirementCalification;
 	
-	@NotNull
-	private List<Requirement> requirements;
+	private List<String> requirements;
 	
 	private Set<Examination> examinations;
 	
 	private Set<PreRegister> preRegisters;
 	
-	private List<Exam> exams;
+	private Set<Exam> exams;
 	
 	// -------------------------------------------------------------
 	// Constructors
@@ -85,14 +84,14 @@ public class Certification {
 		this.requirements = Lists.newArrayList();
 		this.examinations = Sets.newHashSet();
 		this.preRegisters = Sets.newHashSet();
-		this.exams = Lists.newArrayList();
+		this.exams = Sets.newHashSet();
 	}
 
 	public Certification(String name, String description, Double cost,
 			Double pricePublic, String validez, Company company,
 			FamilyProfessional familyProfessional,
-			List<Requirement> requirements,
-			RequirementCalification requirementCalification) {
+			List<String> requirements,
+			Double requirementCalification) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -102,7 +101,7 @@ public class Certification {
 		this.company = company;
 		this.familyProfessional = familyProfessional;
 		this.requirements = requirements;
-		this.exams = Lists.newArrayList();
+		this.exams = Sets.newHashSet();;
 		this.preRegisters = Sets.newHashSet();
 		this.examinations = Sets.newHashSet();
 		this.requirementCalification = requirementCalification;
@@ -152,13 +151,13 @@ public class Certification {
 		this.familyProfessional = familyProfessional;
 	}
 
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="requirement")
-	public List<Requirement> getRequirements() {
+	public List<String> getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(List<Requirement> requirements) {
+	public void setRequirements(List<String> requirements) {
 		this.requirements = requirements;
 	}
 
@@ -189,12 +188,11 @@ public class Certification {
 		this.company = company;
 	}
 
-	@Embedded
-	public RequirementCalification getRequirementCalification() {
+	public Double getRequirementCalification() {
 		return requirementCalification;
 	}
 
-	public void setRequirementCalification(RequirementCalification requirementCalification) {
+	public void setRequirementCalification(Double requirementCalification) {
 		this.requirementCalification = requirementCalification;
 	}
 
@@ -223,20 +221,24 @@ public class Certification {
 	}
 
 	@OneToMany(mappedBy="certification",cascade=CascadeType.ALL,orphanRemoval=true,targetEntity=Exam.class,fetch=FetchType.EAGER)
-	public List<Exam> getExams() {
+	public Set<Exam> getExams() {
 		return exams;
 	}
 
-	public void setExams(List<Exam> exams) {
+	public void setExams(Set<Exam> exams) {
 		this.exams = exams;
 	}
 
-	public void addRequiremnt(Requirement r) {
+	public void addRequiremnt(String r) {
 		this.requirements.add(r);
 	}
 
-	public void removeRequirement(Requirement r) {
+	public void removeRequirement(String r) {
 		this.requirements.remove(r);
+	}
+	
+	public void removeRequirement(Integer r) {
+		this.requirements.remove(this.requirements.get(r));
 	}
 
 	public void addExamination(Examination e) {
@@ -260,7 +262,7 @@ public class Certification {
 
 	public void addExam(Exam e) {
 		if (this.exams == null) {
-			this.exams = Lists.newArrayList();
+			this.exams = Sets.newHashSet();;
 		}
 		this.exams.add(e);
 	}
@@ -273,20 +275,6 @@ public class Certification {
 		Exam temp = new Exam(typeExam, language);
 		this.addExam(temp);
 		temp.setCertification(this);
-		return temp;
-	}
-
-	public Requirement createRequirement(String name, String description) {
-		Requirement temp = new Requirement(name, description);
-		this.addRequiremnt(temp);
-		return temp;
-	}
-
-	public Requirement createRequirementOfCalification(String name,
-			String description, Double calification) {
-		Requirement temp = new RequirementCalification(calification, name,
-				description);
-		this.addRequiremnt(temp);
 		return temp;
 	}
 

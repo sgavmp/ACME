@@ -13,12 +13,10 @@
 		<class>com.acme.model.exam.Option</class>
 		<class>com.acme.model.examination.OpenAnswerExam</class>
 		<class>com.acme.model.certification.FamilyProfessional</class>
-		<class>com.acme.model.certification.Requirement</class>
 		<class>com.acme.model.IntervalDate</class>
 		<class>com.acme.model.geography.State</class>
 		<class>com.acme.model.Office</class>
 		<class>com.acme.model.examination.PreRegister</class>
-		<class>com.acme.model.certification.RequirementCalification</class>
 		<class>com.acme.model.geography.City</class>
 		<class>com.acme.model.MethodPay</class>
 		<class>com.acme.model.geography.Country</class>

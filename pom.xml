@@ -163,11 +163,19 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.0.0.CR1</version>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 	<properties>
 		<thymeleaf.version>2.0.16</thymeleaf.version>
 		<springframework.version>3.2.0.RELEASE</springframework.version>
 		<hibernate.version>4.1.9.Final</hibernate.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 </project>
