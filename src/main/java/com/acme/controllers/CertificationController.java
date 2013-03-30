@@ -23,6 +23,7 @@ import org.thymeleaf.util.Validate;
 
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
+import com.acme.model.user.Company;
 import com.acme.model.user.User;
 import com.acme.services.CertificationService;
 import com.acme.services.UserService;
@@ -136,6 +137,11 @@ public class CertificationController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createCertificate(Model model,
 			@ModelAttribute("cert") Certification cert, BindingResult result) {
+		//obtenemos los objetos relacionados con Certification a partir de los datos proporcionados por el formulario
+		//TODO debe haber alguna forma de que Spring saque automáticamente el objeto del modelo ¿DomainClassConverter?
+		FamilyProfessional fp = servicecertification.getFamilyProfessionalByName(cert.getFamilyProfessional().getName());
+		cert.setFamilyProfessional(fp);
+		
 		servicecertification.createCertification(cert);
 		model.addAttribute("cert", cert);
 		model.addAttribute("isNew", false);

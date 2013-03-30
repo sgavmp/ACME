@@ -41,5 +41,10 @@ public class CertificationServiceImpl implements CertificationService {
 	public List<FamilyProfessional> getAllFamilyProfessional() {
 		return repositorycert.getAllFamilyProfessional();
 	}
+	
+	public FamilyProfessional getFamilyProfessionalByName(String name) {
+		return repositorycert.getFamilyProfessionalByName(name);
+	}
+	
 
 }

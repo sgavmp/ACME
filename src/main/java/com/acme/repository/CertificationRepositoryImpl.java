@@ -67,6 +67,15 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 	}
 
 	@Transactional
+	public FamilyProfessional getFamilyProfessionalByName(String name) {
+		List<FamilyProfessional> searchResults = getEntityManager()
+				.createQuery("SELECT f FROM FamilyProfessional f WHERE f.name = :nombre", FamilyProfessional.class)
+				.setParameter("nombre", name)
+				.getResultList();
+		return searchResults.get(0);
+	}
+
+	@Transactional
 	public void removeCertification(Certification c) {
 		getEntityManager().remove(getEntityManager().merge(c));
 
