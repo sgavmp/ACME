@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.xml.ws.http.HTTPException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.transaction.annotation.Propagation;
 import org.thymeleaf.util.Validate;
@@ -109,8 +114,14 @@ public class CertificationController {
 
 	//Devuelve el certificado con id indicado en la URL
 	@RequestMapping(value = "/edit/id/{idcert}", method = RequestMethod.GET)
-	public String editCertificate(@PathVariable Integer idcert, Model model) {
+	public String editCertificate(@PathVariable Integer idcert, Model model,RedirectAttributes redirectAttrs,HttpServletRequest response) {
 		Certification cert = servicecertification.getCertificationById(idcert);
+		if (cert==null)
+		{
+			redirectAttrs.addFlashAttribute("error", "certification.noexist");
+			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.NOT_FOUND);
+			return "redirect:/acme/certification/create";
+		}
 		model.addAttribute("cert", cert);
 		model.addAttribute("isNew", false);
 		model.addAttribute("activeMenu", "certification");
@@ -140,7 +151,14 @@ public class CertificationController {
 
 	//Borra el certificado indicado en la URL por id
 	@RequestMapping(value = "/delete/id/{idcert}", method = RequestMethod.GET)
-	public String deleteCertificate(@PathVariable Integer idcert, Model model, RedirectAttributes redirectAttrs) {
+	public String deleteCertificate(@PathVariable Integer idcert, Model model, RedirectAttributes redirectAttrs,HttpServletRequest response) {
+		Certification cert = servicecertification.getCertificationById(idcert);
+		if (cert==null)
+		{
+			redirectAttrs.addFlashAttribute("error", "certification.noexist");
+			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.NOT_FOUND);
+			return "redirect:/acme/certification";
+		}
 		servicecertification.removeCertificationById(idcert);
 		redirectAttrs.addFlashAttribute("info", "certification.delete");
 		return "redirect:/acme/certification/";

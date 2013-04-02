@@ -38,6 +38,10 @@
 				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
 				<p th:text="${#messages.msg('__${info}__')}">Accion realizada con exito</p>
 			</div>
+			<div th:if="${!#strings.isEmpty(error)}" id="alerta-div" class="alert alert-error">
+				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
+				<p th:text="${#messages.msg('__${error}__')}">Error</p>
+			</div>
 			<script>
 				require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ],
 						function(on, dom, domConstruct) {
