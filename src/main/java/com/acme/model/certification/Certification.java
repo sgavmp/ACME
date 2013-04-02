@@ -18,8 +18,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
 
 import com.acme.model.IntervalDate;
 import com.acme.model.Office;
@@ -31,6 +38,7 @@ import com.acme.model.geography.Language;
 import com.acme.model.user.Company;
 import com.acme.model.user.Customer;
 import com.acme.model.user.Reviewer;
+import com.acme.model.user.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -42,30 +50,37 @@ public class Certification {
 	// -------------------------------------------------------------
 	private Integer id;
 	
-	@NotNull
+	@NotNull(message="certification.name.null")
+	@NotBlank(message="certification.name.null")
 	private String name;
 	
-	@NotNull
+	@NotNull(message="certification.description.null")
+	@NotBlank(message="certification.description.null")
 	private String description;
 	
-	@NotNull
-	@DecimalMin("0.0")
+	@NotNull(message="certification.cost.null")
+	@Digits(integer=4,fraction=2,message="certification.cost.number")
+	@Min(value = 0,message="certification.cost.negative")
 	private Double cost;
 	
-	@NotNull
-	@DecimalMin("0.0")
+	@NotNull(message="certification.pricepublic.null")
+	@Digits(integer=4,fraction=2,message="certification.pricepublic.number")
+	@Min(value = 0,message="certification.pricepublic.negative")
 	private Double pricePublic;
 	
-	@NotNull
+	@NotNull(message="certification.validez.null")
+	@NotBlank(message="certification.validez.null")
 	private String validez;
 	
-	@NotNull
-	private Company company;
+	@NotNull(message="certification.company.null")
+	private User company;
 	
-	@NotNull
+	@NotNull(message="certification.family.null")
 	private FamilyProfessional familyProfessional;
 	
-	@NotNull
+	@NotNull(message="certification.calification.null")
+	@Digits(integer=2,fraction=1,message="certification.calification.number")
+	@Min(value = 0,message="certification.calification.negative")
 	private Double requirementCalification;
 	
 	private List<String> requirements;
@@ -88,7 +103,7 @@ public class Certification {
 	}
 
 	public Certification(String name, String description, Double cost,
-			Double pricePublic, String validez, Company company,
+			Double pricePublic, String validez, User company,
 			FamilyProfessional familyProfessional,
 			List<String> requirements,
 			Double requirementCalification) {
@@ -180,11 +195,11 @@ public class Certification {
 	}
 
 	@OneToOne
-	public Company getCompany() {
+	public User getCompany() {
 		return company;
 	}
 
-	public void setCompany(Company company) {
+	public void setCompany(User company) {
 		this.company = company;
 	}
 

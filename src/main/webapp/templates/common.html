@@ -3,9 +3,11 @@
 <head th:fragment="head">
 <meta charset="UTF-8"></meta>
 <title>ACME</title>
-<link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
-<link href="../css/style.css" th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
-<script src="../js/dojo/dojo.js" th:href="@{/js/dojo/dojo.js}" type="text/javascript"></script>
+<link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+<link href="../css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+<script>dojoConfig = {parseOnLoad: true}</script>
+<script src="../js/dojo/dojo.js" th:src="@{/js/dojo/dojo.js}"></script>
+<script>require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);</script>
 </head>
 <body>
 <header id="menu" th:fragment="header">

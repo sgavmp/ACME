@@ -25,4 +25,9 @@ public class UserServiceImpl implements UserService {
 		return repositoryuser.getAllRole(UserType.COMPANY);
 	}
 
+	@Override
+	public User getUserById(Integer id) {
+		return repositoryuser.getUserById(id);
+	}
+
 }

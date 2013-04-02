@@ -47,7 +47,7 @@ public class CertificationTest {
 
 	private Validator validator;
 
-	private Company mCompany;
+	private User mCompany;
 
 	@Test
 	public void test() {
@@ -115,15 +115,15 @@ public class CertificationTest {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 		// Creamos un usuario con rol de company
-		mCompany = new Company();
-		User usuario3 = new User();
-		usuario3.setUsername("Microsfot");
-		usuario3.setEmail("pepe@msn.es");
-		usuario3.setMobilephone("66666666");
-		usuario3.setName("Bill");
-		usuario3.setPassword("asdf87sd8f7asd");
-		usuario3.addRoleToUser(mCompany, UserType.COMPANY);
-		userrep.persistUser(usuario3);
+		Company comp = new Company();
+		mCompany = new User();
+		mCompany.setUsername("Microsfot");
+		mCompany.setEmail("pepe@msn.es");
+		mCompany.setMobilephone("66666666");
+		mCompany.setName("Bill");
+		mCompany.setPassword("asdf87sd8f7asd");
+		mCompany.addRoleToUser(comp, UserType.COMPANY);
+		userrep.persistUser(mCompany);
 	}
 
 }

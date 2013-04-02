@@ -18,6 +18,7 @@ public interface CertificationRepository {
 	public List<Certification> searchCertificationFromFamilyProfessional(FamilyProfessional f);
 	public List<FamilyProfessional> getAllFamilyProfessional();
 	public FamilyProfessional getFamilyProfessionalByName(String name);
+	public FamilyProfessional getFamilyProfessionalById(Integer id);
 	public void removeCertification(Certification c);
 	public void removeExam(Exam e);
 	public void removeFProfessional(FamilyProfessional fp);

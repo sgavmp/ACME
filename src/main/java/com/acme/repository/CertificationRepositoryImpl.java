@@ -78,7 +78,6 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 	@Transactional
 	public void removeCertification(Certification c) {
 		getEntityManager().remove(getEntityManager().merge(c));
-
 	}
 
 	@Transactional
@@ -140,6 +139,11 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 	@Transactional
 	public void updatePreRegister(PreRegister p) {
 		getEntityManager().merge(p);
+	}
+
+	@Transactional
+	public FamilyProfessional getFamilyProfessionalById(Integer id) {
+		return getEntityManager().find(FamilyProfessional.class, id);
 	}
 
 
