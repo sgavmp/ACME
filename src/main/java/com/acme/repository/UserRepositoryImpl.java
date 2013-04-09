@@ -74,9 +74,8 @@ public class UserRepositoryImpl implements UserRepository {
 		return getEntityManager().createQuery("SELECT u FROM User u",User.class).getResultList();
 	}
 
-
 	@Transactional
-	public User getUserById(Integer id) {
+	public User getUserById(Long id) {
 		return getEntityManager().find(User.class, id);
 	}
 

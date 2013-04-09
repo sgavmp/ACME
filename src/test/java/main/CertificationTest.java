@@ -63,7 +63,7 @@ public class CertificationTest {
 		}
 
 		Set<ConstraintViolation<Certification>> constraintViolations2 = validator.validate(cert);
-		assertEquals("Haz 8 campos que fallan la validación por tener valores nulos", 8, constraintViolations2.size());
+		assertEquals("Hay 11 errores de validacion", 11, constraintViolations2.size());
 	}
 
 	@Test
@@ -108,13 +108,13 @@ public class CertificationTest {
 		certrep.persistCertification(cert);
 
 		// Comprobamos la modificación
-		Certification certMod = certrep.getCertificationById(1);
+		Certification certMod = certrep.getCertificationById(cert.getId());
 		assertNotNull("Se ha encotnrado el certificado buscado", certMod);
 		assertEquals("El nombre antes de la modificación es \"Ingles B1\"", "Inglés B1", certMod.getName());
 		certMod.setName("Francés B1");
 		certrep.updateCertification(certMod);
 
-		certMod = certrep.getCertificationById(1);
+		certMod = certrep.getCertificationById(cert.getId());
 		assertEquals("El nombre después de la modificación es \"Frandés B1\"", "Francés B1", certMod.getName());
 	}
 
@@ -131,7 +131,7 @@ public class CertificationTest {
 
 		// Comprobamos la eliminación
 		certrep.removeCertification(cert);
-		assertEquals("El numero de certificados en la base de datos es 1", 1, certrep.getAllCertifications().size());
+		assertEquals("El numero de certificados en la base de datos es 0", 0, certrep.getAllCertifications().size());
 	}
 
 	@Before

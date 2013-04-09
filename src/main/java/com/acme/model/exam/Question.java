@@ -14,19 +14,22 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="QUESTION_TYPE")
 @DiscriminatorValue("O")
-public class Question implements Serializable{
+public class Question extends AbstractPersistable<Long> implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3925147493424849292L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
+	@ManyToOne
+	@JoinColumn(name="EXAM_ID")
 	private Exam exam;
 	private String questionText;
 	private Double valor;
@@ -55,16 +58,6 @@ public class Question implements Serializable{
 		return valor;
 	}
 
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public void setQuestionText(String questionText) {
 		this.questionText = questionText;
 	}
@@ -72,9 +65,7 @@ public class Question implements Serializable{
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	
-	@ManyToOne
-	@JoinColumn(name="EXAM_ID")
+
 	public Exam getExam() {
 		return exam;
 	}
@@ -86,35 +77,4 @@ public class Question implements Serializable{
 	// -------------------------------------------------------------
 	// Methods
 	// -------------------------------------------------------------
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((questionText == null) ? 0 : questionText.hashCode());
-		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Question other = (Question) obj;
-		if (questionText == null) {
-			if (other.questionText != null)
-				return false;
-		} else if (!questionText.equals(other.questionText))
-			return false;
-		if (valor == null) {
-			if (other.valor != null)
-				return false;
-		} else if (!valor.equals(other.valor))
-			return false;
-		return true;
-	}
 }

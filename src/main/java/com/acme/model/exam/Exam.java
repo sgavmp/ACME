@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.acme.model.certification.Certification;
 import com.acme.model.geography.Language;
@@ -23,14 +24,22 @@ import com.google.common.collect.Lists;
 
 
 @Entity
-public class Exam {
+public class Exam extends AbstractPersistable<Long> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8243512739923130848L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
 	private ExamType typeExam;
+	@OneToMany(mappedBy="exam",targetEntity=Question.class,orphanRemoval=true,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@IndexColumn(name="id")
 	private List<Question> questions= Lists.newArrayList();
+	@ManyToOne
 	private Language language;
+	@ManyToOne
 	private Certification certification;
 
 	// -------------------------------------------------------------
@@ -53,13 +62,12 @@ public class Exam {
 		return typeExam;
 	}
 
-	@OneToMany(mappedBy="exam",targetEntity=Question.class,orphanRemoval=true,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	@IndexColumn(name="id")
+	
 	public List<Question> getQuestions() {
 		return questions;
 	}
 
-	@ManyToOne
+
 	public Language getLanguage() {
 		return language;
 	}
@@ -68,23 +76,13 @@ public class Exam {
 	// Methods
 	// -------------------------------------------------------------
 
-	@ManyToOne
+
 	public Certification getCertification() {
 		return certification;
 	}
 
 	public void setCertification(Certification certification) {
 		this.certification = certification;
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public void setTypeExam(ExamType typeExam) {
@@ -140,43 +138,6 @@ public class Exam {
 			text += "\n\n";
 		}
 		return text;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((language == null) ? 0 : language.hashCode());
-		result = prime * result
-				+ ((questions == null) ? 0 : questions.hashCode());
-		result = prime * result
-				+ ((typeExam == null) ? 0 : typeExam.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Exam other = (Exam) obj;
-		if (language == null) {
-			if (other.language != null)
-				return false;
-		} else if (!language.equals(other.language))
-			return false;
-		if (questions == null) {
-			if (other.questions != null)
-				return false;
-		} else if (!questions.equals(other.questions))
-			return false;
-		if (typeExam != other.typeExam)
-			return false;
-		return true;
 	}
 
 }

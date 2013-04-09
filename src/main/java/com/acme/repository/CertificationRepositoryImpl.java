@@ -99,7 +99,7 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 	}
 
 	@Transactional
-	public Certification getCertificationById(Integer id) {
+	public Certification getCertificationById(Long id) {
 		return getEntityManager().find(Certification.class, id);
 	}
 
@@ -142,7 +142,7 @@ public class CertificationRepositoryImpl implements CertificationRepository {
 	}
 
 	@Transactional
-	public FamilyProfessional getFamilyProfessionalById(Integer id) {
+	public FamilyProfessional getFamilyProfessionalById(Long id) {
 		return getEntityManager().find(FamilyProfessional.class, id);
 	}
 

@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.acme.model.Pay;
 import com.acme.model.exam.ExamType;
@@ -26,21 +27,24 @@ import com.acme.model.user.Role;
 
 
 @Entity
-public class Register implements Serializable{
+public class Register extends AbstractPersistable<Long>{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2670012436864334124L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
 	private Pay pay;
+	@Type(type="yes_no")
 	private boolean passed;
 	private String comment;
 	private Double calification;
+	@OneToMany(mappedBy="register",targetEntity=AnswerExam.class,cascade=CascadeType.ALL)
 	private List<AnswerExam> answerExam;
+	@ManyToOne(targetEntity=Examination.class)
 	private Examination examination;
+	@ManyToOne(targetEntity=Role.class,fetch=FetchType.EAGER)
 	private Role customer;
 
 	// -------------------------------------------------------------
@@ -73,7 +77,7 @@ public class Register implements Serializable{
 	// Getters & Setters
 	// -------------------------------------------------------------
 
-	@ManyToOne(targetEntity=Examination.class)
+	
 	public Examination getExamination() {
 		return examination;
 	}
@@ -82,7 +86,7 @@ public class Register implements Serializable{
 		this.examination = examination;
 	}
 
-	@ManyToOne(targetEntity=Role.class,fetch=FetchType.EAGER)
+
 	public Role getCustomer() {
 		return customer;
 	}
@@ -90,12 +94,7 @@ public class Register implements Serializable{
 	public void setCustomer(Role customer) {
 		this.customer = customer;
 	}
-	
-	@Id
-	@GeneratedValue
-	public Integer getId(){
-		return this.id;
-	}
+
 	
 	
 	public Pay getPay() {
@@ -106,11 +105,8 @@ public class Register implements Serializable{
 		this.pay = pay;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
-	@Type(type="yes_no")
+	
 	public boolean isPassed() {
 		return passed;
 	}
@@ -135,7 +131,7 @@ public class Register implements Serializable{
 		this.calification = calification;
 	}
 
-	@OneToMany(mappedBy="register",targetEntity=AnswerExam.class,cascade=CascadeType.ALL)
+	
 	public List<AnswerExam> getAnswerExam() {
 		return answerExam;
 	}
@@ -220,32 +216,5 @@ public class Register implements Serializable{
 		}
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Register other = (Register) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	
-	
 	
 }

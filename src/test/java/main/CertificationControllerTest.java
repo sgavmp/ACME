@@ -109,7 +109,7 @@ public class CertificationControllerTest {
 	public void noCertification() throws Exception {
 		this.mockMvc
 				.perform(
-						get("/certification/edit/id/45")).andExpect(status().is(500));
+						get("/certification/edit/id/45")).andExpect(status().isMovedTemporarily());
 
 	}
 }

@@ -57,7 +57,7 @@ import com.google.common.collect.Lists;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:acme-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class Prueba {
 	
 	@Resource(name = "repositoryaux")
@@ -116,10 +116,10 @@ public class Prueba {
 		Assert.assertEquals("Comprobamos que solo quedan 3 metodos de pago",3, metodosPago.size());
 		
 		//Probamos la recuperacion por id y la modificacion
-		Language l = auxrep.getLanguageById(2);
-		Country c = auxrep.getCountryById(2);
-		Office o = auxrep.getOfficeById(2);
-		MethodPay m = auxrep.getMethodPayById(2);
+		Language l = auxrep.getLanguageById((long) 2);
+		Country c = auxrep.getCountryById((long) 2);
+		Office o = auxrep.getOfficeById((long) 2);
+		MethodPay m = auxrep.getMethodPayById((long) 2);
 		
 		l.setName("Modificado");
 		c.setName("Modificado");
@@ -132,10 +132,10 @@ public class Prueba {
 		auxrep.updateMethodPay(m);
 		
 		//Comprobamos que se han guardado correctamente
-		Assert.assertEquals("El language almacenado en la base de datos es el mismo al que tenemos en local", l, auxrep.getLanguageById(2));
-		Assert.assertEquals("El pais almacenado en la base de datos es el mismo al que tenemos en local", c, auxrep.getCountryById(2));
-		Assert.assertEquals("La oficina almacenado en la base de datos es el mismo al que tenemos en local", o, auxrep.getOfficeById(2));
-		Assert.assertEquals("El metodo de pago almacenado en la base de datos es el mismo al que tenemos en local", m, auxrep.getMethodPayById(2));
+		Assert.assertEquals("El language almacenado en la base de datos es el mismo al que tenemos en local", l, auxrep.getLanguageById((long) 2));
+		Assert.assertEquals("El pais almacenado en la base de datos es el mismo al que tenemos en local", c, auxrep.getCountryById((long) 2));
+		Assert.assertEquals("La oficina almacenado en la base de datos es el mismo al que tenemos en local", o, auxrep.getOfficeById((long) 2));
+		Assert.assertEquals("El metodo de pago almacenado en la base de datos es el mismo al que tenemos en local", m, auxrep.getMethodPayById((long) 2));
 	}
 	
 	@Test
@@ -147,10 +147,10 @@ public class Prueba {
 		Assert.assertEquals("Hay 1 usuario de tipo Company", 1, userrep.getAllRole(UserType.COMPANY).size());
 		
 		//Comprobamos que se modifican los usuarios
-		User u = userrep.getUserById(3);
+		User u = userrep.getUserById((long) 3);
 		u.setUsername("Modificado");
 		userrep.updateUser(u);
-		Assert.assertEquals("El usuario almacenado en la base de datos es el mismo al que tenemos en local", u, userrep.getUserById(3));
+		Assert.assertEquals("El usuario almacenado en la base de datos es el mismo al que tenemos en local", u, userrep.getUserById((long) 3));
 		
 		//Probamos a borrar un usuario
 		userrep.removeUser(u);
@@ -163,14 +163,14 @@ public class Prueba {
 	@Test
 	public void testCertificationRepository(){
 		//Conseguimos un certificado guardado en la base de datos
-		Certification cert = certrep.getCertificationById(1);
+		Certification cert = certrep.getCertificationById((long) 1);
 		Assert.assertNotNull("Se ha encotnrado el certificado buscado",cert);
 		//El numero de certificados en la base de datos es de 1
 		Assert.assertEquals("Hay un certificado guardado en la base de datos",1,certrep.getAllCertifications().size());
 		//Modificamos el certificado y lo guardamos
 		cert.setName("Modificado");
 		certrep.updateCertification(cert);
-		Assert.assertEquals("El certificado en la base de datos es igual que en local", cert,certrep.getCertificationById(1));
+		Assert.assertEquals("El certificado en la base de datos es igual que en local", cert,certrep.getCertificationById((long) 1));
 		//Creamos un nuevo certificado
 		Certification cert2 = new Certification();
 		certrep.persistCertification(cert2);
@@ -183,15 +183,15 @@ public class Prueba {
 	@Test
 	public void testExaminationRepository(){
 		 //Conseguimos el certificado de la base de datos
-		 Certification cert = certrep.getCertificationById(1);
+		 Certification cert = certrep.getCertificationById((long) 1);
 		 //Conseguimos el usuario de la base de datos para Customer
-		 User usuario = userrep.getUserById(1);
+		 User usuario = userrep.getUserById((long) 1);
 		 Customer cust=(Customer) usuario.getRole(UserType.CUSTOMER);
 		 //Conseguimos el usuario de la base de datos para Reviewer
-		 User usuario2 = userrep.getUserById(2);
+		 User usuario2 = userrep.getUserById((long) 2);
 		 Reviewer rev=(Reviewer) usuario2.getRole(UserType.REVIEWER);
 		 //Conseguimos la oficina para la realizacion de la prueba
-		 Office oficina = auxrep.getOfficeById(1);
+		 Office oficina = auxrep.getOfficeById((long) 1);
 		 //Creamos un preregistro del usuario al certificado
 		 PreRegister pre=cert.createPreRegisterCustomer(new IntervalDate(new Date(2013,2,05,10,0),new Date(2013,2,07,15,0)), cust);
 		 certrep.persistPreRegister(pre);

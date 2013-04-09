@@ -30,8 +30,8 @@ public interface AuxiliarRepository {
 	public void removeLanguage(Language l);
 	public void removeOffice(Office o);
 	public void removeMethodPay(MethodPay mp);
-	public Office getOfficeById(Integer id);
-	public Language getLanguageById(Integer id);
-	public Country getCountryById(Integer id);
-	public MethodPay getMethodPayById(Integer id);
+	public Office getOfficeById(Long id);
+	public Language getLanguageById(Long id);
+	public Country getCountryById(Long id);
+	public MethodPay getMethodPayById(Long id);
 }

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 
 import org.hibernate.annotations.Parent;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.acme.model.IntervalDate;
 import com.acme.model.certification.Certification;
@@ -21,7 +22,7 @@ import com.acme.model.user.Customer;
 
 
 @Entity
-public class PreRegister implements Serializable{
+public class PreRegister extends AbstractPersistable<Long>{
 	/**
 	 * 
 	 */
@@ -29,9 +30,10 @@ public class PreRegister implements Serializable{
 	// -------------------------------------------------------------
 	// Attributes
 	// ------------------------------------------------------------- 
-	private Integer id;
 	private IntervalDate intervaloDeseado;
+	@ManyToOne
 	private Certification certification;
+	@ManyToOne
 	private Customer customer;
 
 	// -------------------------------------------------------------
@@ -47,16 +49,6 @@ public class PreRegister implements Serializable{
 		this.customer = customer;
 		this.certification=certification;
 	}
-	
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	// -------------------------------------------------------------
 	// Getters & Setters
@@ -65,7 +57,7 @@ public class PreRegister implements Serializable{
 		return intervaloDeseado;
 	}
 
-	@ManyToOne
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -78,7 +70,7 @@ public class PreRegister implements Serializable{
 		this.customer = customer;
 	}
 
-	@ManyToOne
+
 	public Certification getCertification() {
 		return certification;
 	}
@@ -86,47 +78,6 @@ public class PreRegister implements Serializable{
 	public void setCertification(Certification certification) {
 		this.certification = certification;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((certification == null) ? 0 : certification.hashCode());
-		result = prime * result
-				+ ((customer == null) ? 0 : customer.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PreRegister other = (PreRegister) obj;
-		if (certification == null) {
-			if (other.certification != null)
-				return false;
-		} else if (!certification.equals(other.certification))
-			return false;
-		if (customer == null) {
-			if (other.customer != null)
-				return false;
-		} else if (!customer.equals(other.customer))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	
 
 	// -------------------------------------------------------------
 	// Methods

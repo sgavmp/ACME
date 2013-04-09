@@ -16,5 +16,5 @@ public interface UserRepository {
 	public List<User> getAllRole(UserType comp);
 	public List<User> getAllUser();
 	public void persistUser(User u);
-	public User getUserById(Integer id);
+	public User getUserById(Long id);
 }

@@ -7,22 +7,28 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import com.acme.model.geography.City;
 import com.acme.model.geography.Country;
 import com.acme.model.geography.State;
 
 
 @Entity
-public class Office {
+public class Office extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3659544202679382975L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
 	private String address;
 	private Integer numPostal;
 	private String director;
 	private String phone;
 	private String fax;
+	@ManyToOne
 	private City city;
 
 	// -------------------------------------------------------------
@@ -50,11 +56,6 @@ public class Office {
 		return address;
 	}
 
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Integer getNumPostal() {
 		return numPostal;
 	}
@@ -71,15 +72,8 @@ public class Office {
 		return fax;
 	}
 
-	@ManyToOne
 	public City getCity() {
 		return city;
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
 	}
 
 	public void setAddress(String address) {

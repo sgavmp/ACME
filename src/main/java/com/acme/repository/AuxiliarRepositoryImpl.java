@@ -136,22 +136,22 @@ public class AuxiliarRepositoryImpl implements AuxiliarRepository {
 
 	}
 	@Transactional
-	public Office getOfficeById(Integer id) {
+	public Office getOfficeById(Long id) {
 		return getEntityManager().find(Office.class, id);
 	}
 	
 	@Transactional
-	public Language getLanguageById(Integer id) {
+	public Language getLanguageById(Long id) {
 		return getEntityManager().find(Language.class, id);
 	}
 	
 	@Transactional
-	public Country getCountryById(Integer id) {
+	public Country getCountryById(Long id) {
 		return getEntityManager().find(Country.class, id);
 	}
 	
 	@Transactional
-	public MethodPay getMethodPayById(Integer id) {
+	public MethodPay getMethodPayById(Long id) {
 		return getEntityManager().find(MethodPay.class, id);
 	}
 

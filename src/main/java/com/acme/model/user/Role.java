@@ -22,57 +22,19 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="ROLE_TYPE")
 @DiscriminatorFormula("(CASE WHEN ROLE_TYPE IS NULL THEN '4' ELSE ROLE_TYPE END)")
-public abstract class Role implements Serializable{
+public abstract class Role extends AbstractPersistable<Long>{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private static final long serialVersionUID = 958553541203776049L;
 
 	public Role() {
-
-	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Role other = (Role) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	
-	
+	}	
 }

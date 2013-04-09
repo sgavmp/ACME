@@ -1,5 +1,7 @@
 package com.acme.controllers;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,7 +117,7 @@ public class CertificationController {
 
 	//Devuelve el certificado con id indicado en la URL
 	@RequestMapping(value = "/edit/id/{idcert}", method = RequestMethod.GET)
-	public String editCertificate(@PathVariable Integer idcert, Model model,RedirectAttributes redirectAttrs,HttpServletRequest response) {
+	public String editCertificate(@PathVariable Long idcert, Model model,RedirectAttributes redirectAttrs,HttpServletRequest response) {
 		Certification cert = servicecertification.getCertificationById(idcert);
 		if (cert==null)
 		{
@@ -151,7 +154,7 @@ public class CertificationController {
 
 	//Borra el certificado indicado en la URL por id
 	@RequestMapping(value = "/delete/id/{idcert}", method = RequestMethod.GET)
-	public String deleteCertificate(@PathVariable Integer idcert, Model model, RedirectAttributes redirectAttrs,HttpServletRequest response) {
+	public String deleteCertificate(@PathVariable Long idcert, Model model, RedirectAttributes redirectAttrs,HttpServletRequest response) {
 		Certification cert = servicecertification.getCertificationById(idcert);
 		if (cert==null)
 		{
@@ -197,5 +200,11 @@ public class CertificationController {
 	public String showAllCertificate(Model model) {
 		model.addAttribute("activeMenu", "certification");
 		return "/certification/listCertification";
+	}
+	
+	@ExceptionHandler(ConnectException.class)
+	public String exception(Model model, ConnectException ex){
+		model.addAttribute("name", ex.getClass().getSimpleName());
+		return "/error";
 	}
 }

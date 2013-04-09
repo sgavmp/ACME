@@ -19,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import com.acme.model.Office;
 import com.acme.model.Pay;
 import com.acme.model.certification.Certification;
@@ -32,24 +34,31 @@ import com.google.common.collect.Sets;
 
 
 @Entity
-public class Examination implements Serializable{
+public class Examination extends AbstractPersistable<Long>{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4256362697482687006L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Long id;
+	@Temporal(value = TemporalType.DATE)
 	private Date dateRealization;
+	@Temporal(value = TemporalType.DATE)
 	private Date dateLimitRegister;
 	private Integer maxCustomer;
 	private Integer minCustomer;
+	@ManyToOne
 	private Certification certification;
 	private Pay payCost;
+	@ManyToOne
 	private Exam exam;
+	@ManyToOne
 	private Office realizationPlace;
+	@OneToMany(mappedBy="examination",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Register> registers;
+	@ManyToOne
 	private Reviewer reviewer;
 
 	// -------------------------------------------------------------
@@ -68,6 +77,7 @@ public class Examination implements Serializable{
 		this.dateLimitRegister = dateLimitRegister;
 		this.maxCustomer = maxCustomer;
 		this.minCustomer = minCustomer;
+
 		this.certification = certification;
 		this.realizationPlace = realizationPlace;
 		this.exam = this.certification.getRandomExam();
@@ -78,7 +88,7 @@ public class Examination implements Serializable{
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
-	@Temporal(value = TemporalType.DATE)
+	
 	public Date getDateRealization() {
 		return dateRealization;
 	}
@@ -87,7 +97,7 @@ public class Examination implements Serializable{
 		this.dateRealization = dateRealization;
 	}
 
-	@Temporal(value = TemporalType.DATE)
+	
 	public Date getDateLimitRegister() {
 		return dateLimitRegister;
 	}
@@ -96,9 +106,6 @@ public class Examination implements Serializable{
 		this.dateLimitRegister = dateLimitRegister;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Integer getMaxCustomer() {
 		return maxCustomer;
@@ -116,7 +123,7 @@ public class Examination implements Serializable{
 		this.minCustomer = minCustomer;
 	}
 
-	@ManyToOne
+	
 	public Certification getCertification() {
 		return certification;
 	}
@@ -125,7 +132,7 @@ public class Examination implements Serializable{
 		this.certification = certification;
 	}
 
-	@ManyToOne
+	
 	public Exam getExam() {
 		return exam;
 	}
@@ -134,7 +141,7 @@ public class Examination implements Serializable{
 		this.exam = exam;
 	}
 
-	@ManyToOne
+	
 	public Office getRealizationPlace() {
 		return realizationPlace;
 	}
@@ -143,7 +150,7 @@ public class Examination implements Serializable{
 		this.realizationPlace = realizationPlace;
 	}
 
-	@OneToMany(mappedBy="examination",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	
 	public Set<Register> getRegisters() {
 		return registers;
 	}
@@ -152,7 +159,7 @@ public class Examination implements Serializable{
 		this.registers = registers;
 	}
 
-	@ManyToOne
+	
 	public Reviewer getReviewer() {
 		return reviewer;
 	}
@@ -161,11 +168,6 @@ public class Examination implements Serializable{
 		this.reviewer = reviewer;
 	}
 
-	@Id
-	@GeneratedValue
-	public Long getId() {
-		return id;
-	}
 	// -------------------------------------------------------------
 	// Methods
 	// -------------------------------------------------------------
@@ -202,40 +204,5 @@ public class Examination implements Serializable{
 		customer.addRegister(temp);
 		return temp;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Examination other = (Examination) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	public Pay getPayCost() {
-		return payCost;
-	}
-
-	public void setPayCost(Pay payCost) {
-		this.payCost = payCost;
-	}
-	
-	
 
 }

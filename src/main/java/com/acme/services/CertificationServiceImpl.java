@@ -22,12 +22,12 @@ public class CertificationServiceImpl implements CertificationService {
 	}
 	
 	@Transactional
-	public Certification getCertificationById(Integer id) {
+	public Certification getCertificationById(Long id) {
 		return repositorycert.getCertificationById(id);
 	}
 
 	@Transactional
-	public void removeCertificationById(Integer id) {
+	public void removeCertificationById(Long id) {
 		repositorycert.removeCertification(repositorycert.getCertificationById(id));
 	}
 
@@ -49,7 +49,7 @@ public class CertificationServiceImpl implements CertificationService {
 	}
 	
 	@Transactional
-	public FamilyProfessional getFamilyProfessionalById(Integer id) {
+	public FamilyProfessional getFamilyProfessionalById(Long id) {
 		return repositorycert.getFamilyProfessionalById(id);
 	}
 	
