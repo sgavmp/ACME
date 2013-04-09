@@ -6,14 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.acme.model.AbstractPersistable;
+
 @Entity
-public class City {
+public class City extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8778257476424365728L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	@Id
-	@GeneratedValue
-	private Integer id;
 	private String name;
 	@ManyToOne
 	@JoinColumn(name = "state_id", referencedColumnName = "id")
@@ -37,9 +40,6 @@ public class City {
 		return name;
 	}
 
-	public Integer getId() {
-		return id;
-	}
 
 	public void setName(String name) {
 		this.name = name;

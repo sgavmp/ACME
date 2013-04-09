@@ -7,5 +7,5 @@ import com.acme.model.user.User;
 
 public interface UserService {
 	public List<User> getAllCompanyWithId();
-	public User getUserById(Integer id);
+	public User getUserById(Long id);
 }

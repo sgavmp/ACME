@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import com.acme.model.AbstractPersistable;
 
 import com.acme.model.geography.City;
 import com.google.common.collect.Lists;
@@ -31,20 +32,33 @@ import com.google.common.collect.Sets;
 
 
 @Entity
-public class User {
+public class User extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5470250124962285595L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
+	@Column(nullable=false,unique=true)
 	private String username;
+	@Column(nullable=false)
 	private String password;
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+    @JoinColumn(name="USER_ID")
+	@MapKeyEnumerated(EnumType.ORDINAL)
+	@MapKeyColumn(name="ROLE_TYPE",nullable=true)
 	private Map<UserType,Role> roles=Maps.newHashMap();
+	@Column(nullable=false)
 	private String name;
 	private String surname;
 	private String address;
 	private String phone;
+	@Column(nullable=false)
 	private String mobilephone;
+	@Column(nullable=false,unique=true)
 	private String email;
+	@ManyToOne
 	private City city;
 
 	// -------------------------------------------------------------
@@ -86,7 +100,7 @@ public class User {
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
-	@Column(nullable=false,unique=true)
+	
 	public String getUsername() {
 		return username;
 	}
@@ -95,7 +109,7 @@ public class User {
 		this.username = username;
 	}
 
-	@Column(nullable=false)
+	
 	public String getPassword() {
 		return password;
 	}
@@ -104,7 +118,7 @@ public class User {
 		this.password = password;
 	}
 
-	@Column(nullable=false)
+	
 	public String getName() {
 		return name;
 	}
@@ -129,7 +143,7 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	@Column(nullable=false)
+	
 	public String getMobilephone() {
 		return mobilephone;
 	}
@@ -138,7 +152,7 @@ public class User {
 		this.mobilephone = mobilephone;
 	}
 
-	@Column(nullable=false,unique=true)
+	
 	public String getEmail() {
 		return email;
 	}
@@ -147,17 +161,7 @@ public class User {
 		this.email = email;
 	}
 
-	@Id
-    @GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id=id;
-	}
 
-	@ManyToOne
 	public City getCity() {
 		return city;
 	}
@@ -166,10 +170,7 @@ public class User {
 		this.city = city;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-    @JoinColumn(name="USER_ID")
-	@MapKeyEnumerated(EnumType.ORDINAL)
-	@MapKeyColumn(name="ROLE_TYPE",nullable=true)
+	
 	public Map<UserType, Role> getRoles() {
 		return roles;
 	}
@@ -203,30 +204,4 @@ public class User {
 	public Role getRole(UserType type){
 		return this.roles.get(type);
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 }

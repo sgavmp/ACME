@@ -26,6 +26,7 @@ public class TestQuestion extends Question {
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
+	@OneToMany(targetEntity=Option.class,mappedBy="question",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<Option> options=Sets.newHashSet();
 
 	// -------------------------------------------------------------
@@ -43,7 +44,7 @@ public class TestQuestion extends Question {
 	// Getters & Setters
 	// -------------------------------------------------------------
 
-	@OneToMany(targetEntity=Option.class,mappedBy="question",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	
 	public Set<Option> getOptions() {
 		return options;
 	}

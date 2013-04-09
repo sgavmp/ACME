@@ -22,12 +22,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<User> getAllCompanyWithId() {
-		return repositoryuser.getAllRole(UserType.COMPANY);
+		return repositoryuser.findAllUserTypeCompany();
 	}
 
 	@Override
-	public User getUserById(Integer id) {
-		return repositoryuser.getUserById(id);
+	public User getUserById(Long id) {
+		return repositoryuser.findOne(id);
 	}
 
 }

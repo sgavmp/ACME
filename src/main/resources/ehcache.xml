@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <defaultCache eternal="true" maxElementsInMemory="100" overflowToDisk="false" />
+    <cache name="certification" maxElementsInMemory="10000" timeToLiveSeconds="200" eternal="false" overflowToDisk="false" />
+    <cache name="certifications" maxElementsInMemory="10000" timeToLiveSeconds="200" eternal="false" overflowToDisk="false" />
+     <cache name="familyprofessional" maxElementsInMemory="100" timeToLiveSeconds="2000" eternal="false" overflowToDisk="false" />
+</ehcache>

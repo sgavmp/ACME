@@ -7,15 +7,21 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
+import com.acme.model.AbstractPersistable;
 
 @Entity(name="options")
-public class Option {
+public class Option extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8850921131236959093L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	private Integer id;
+	@ManyToOne
 	private Question question;
 	private String textOption;
+	@Type(type="yes_no")
 	private boolean isCorrect=true;
 
 	// -------------------------------------------------------------
@@ -37,20 +43,13 @@ public class Option {
 	public String getTextOption() {
 		return textOption;
 	}
-
-	@Id
-	@GeneratedValue
-	public Integer getId() {
-		return id;
-	}
-	
 	
 
 	public void setTextOption(String textOption) {
 		this.textOption = textOption;
 	}
 
-	@ManyToOne
+	
 	public Question getQuestion() {
 		return question;
 	}
@@ -59,11 +58,7 @@ public class Option {
 		this.question = question;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Type(type="yes_no")
+	
 	public boolean isCorrect() {
 		return isCorrect;
 	}

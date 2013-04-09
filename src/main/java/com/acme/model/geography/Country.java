@@ -10,17 +10,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.acme.model.AbstractPersistable;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Entity
-public class Country {
+public class Country extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2889976891697785126L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	@Id
-	@GeneratedValue
-	private Integer id;
 	private String name;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "country",
             fetch = FetchType.EAGER)
@@ -48,10 +51,6 @@ public class Country {
 
 	public Set<State> getStates() {
 		return states;
-	}
-	
-	public Integer getId() {
-		return id;
 	}
 
 	public void setName(String name) {

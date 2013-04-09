@@ -3,54 +3,67 @@ package com.acme.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
 import com.acme.repository.CertificationRepository;
+import com.acme.repository.FamilyProfessionalRepository;
 
 @Service
 public class CertificationServiceImpl implements CertificationService {
 
 	@Autowired
 	private CertificationRepository repositorycert;
+	@Autowired
+	private FamilyProfessionalRepository repositoryfamily;
 	
 	@Transactional
+	@Cacheable(value = "certifications")
 	public List<Certification> getAllCertification() {
-		return repositorycert.getAllCertifications();
+		return (List<Certification>) repositorycert.findAll();
 	}
 	
 	@Transactional
-	public Certification getCertificationById(Integer id) {
-		return repositorycert.getCertificationById(id);
+	@Cacheable(value = "certification",key="#id")
+	public Certification getCertificationById(Long id) {
+		return repositorycert.findOne(id);
 	}
 
 	@Transactional
-	public void removeCertificationById(Integer id) {
-		repositorycert.removeCertification(repositorycert.getCertificationById(id));
+	@Caching(evict={@CacheEvict(value="certifications",allEntries = true, beforeInvocation = false), @CacheEvict(value="certification", key="#id")})
+	public void removeCertificationById(Long id) {
+		repositorycert.delete(id);
 	}
 
 	@Transactional
-	public void updateCertification(Certification cert) {
-		repositorycert.updateCertification(cert);
+	@Caching(evict={@CacheEvict(value="certifications",allEntries = true, beforeInvocation = false)}, put={@CachePut(value="certification", key="#cert.id")})
+	public Certification updateCertification(Certification cert) {
+		return repositorycert.save(cert);
 
 	}
 
 	@Transactional
-	public void createCertification(Certification cert) {
-		repositorycert.persistCertification(cert);
+	@Caching(evict={@CacheEvict(value="certifications",allEntries = true, beforeInvocation = false)}, cacheable={@Cacheable(value="certification", key="#cert.id")})
+	public Certification createCertification(Certification cert) {
+		return repositorycert.save(cert);
 		
 	}
 
 	@Transactional
+	@Cacheable(value = "familyprofessional")
 	public List<FamilyProfessional> getAllFamilyProfessional() {
-		return repositorycert.getAllFamilyProfessional();
+		return (List<FamilyProfessional>) repositoryfamily.findAll();
 	}
 	
 	@Transactional
-	public FamilyProfessional getFamilyProfessionalById(Integer id) {
-		return repositorycert.getFamilyProfessionalById(id);
+	public FamilyProfessional getFamilyProfessionalById(Long id) {
+		return repositoryfamily.findOne(id);
 	}
 	
 

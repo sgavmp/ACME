@@ -31,8 +31,15 @@ public class Reviewer extends Role {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Transient
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "reviewer_language", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "languages_name"))
 	private List<Language> languages;
 
+	@Transient
+	@ManyToMany
+	@JoinTable(name = "reviewer_certification", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "certifications_id"))
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Certification> certifications;
 
 	// -------------------------------------------------------------
@@ -45,9 +52,7 @@ public class Reviewer extends Role {
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
-	@Transient
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "reviewer_language", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "languages_name"))
+	
 	public List<Language> getLanguages() {
 		return languages;
 	}
@@ -56,10 +61,7 @@ public class Reviewer extends Role {
 		this.languages = languages;
 	}
 
-	@Transient
-	@ManyToMany
-	@JoinTable(name = "reviewer_certification", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "certifications_id"))
-	@LazyCollection(LazyCollectionOption.FALSE)
+	
 	public List<Certification> getCertifications() {
 		return certifications;
 	}

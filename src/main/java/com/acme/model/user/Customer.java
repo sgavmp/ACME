@@ -32,7 +32,9 @@ public class Customer extends Role implements Serializable{
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
+	@OneToMany(cascade= CascadeType.ALL, mappedBy="customer", fetch=FetchType.EAGER)
 	private Set<Register> registers;
+	@OneToMany(mappedBy="customer",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	private Set<PreRegister> preregister;
 	
 
@@ -48,7 +50,7 @@ public class Customer extends Role implements Serializable{
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="customer", fetch=FetchType.EAGER)
+	
 	public Set<Register> getRegisters() {
 		return registers;
 	}
@@ -65,7 +67,7 @@ public class Customer extends Role implements Serializable{
 		this.registers.remove(r);
 	}
 
-	@OneToMany(mappedBy="customer",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+
 	public Set<PreRegister> getPreregister() {
 		return preregister;
 	}
