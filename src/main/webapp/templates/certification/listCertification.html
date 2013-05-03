@@ -17,6 +17,9 @@
 					<li><a th:text="#{menu.certificado.crear}"
 						href="/acme/certification?id=4"
 						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+					<li><a th:text="#{menu.certificado.familyprofessional}"
+						href="/acme/certification/family"
+						th:href="@{/acme/certification/family}">Familias Professionales</a></li>
 				</ul>
 			</div>
 			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
@@ -28,10 +31,12 @@
 			<p th:text="${#messages.msg('__${info}__')}">Accion realizada con
 				exito</p>
 		</div>
-		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div" class="alert alert-error">
-				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
-				<p th:text="${#messages.msg('__${error}__')}">Error</p>
-			</div>
+		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+			class="alert alert-error">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${error}__')}">Error</p>
+		</div>
 		<script>
 			require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ], function(
 					on, dom, domConstruct) {
@@ -55,7 +60,7 @@
 					th:each="cert,rowStat  : ${allCertifications}">
 					<td th:text="${cert.id}">1</td>
 					<td th:text="${cert.name}">Ingles B1</td>
-					<td>Cambridge</td>
+					<td th:text="${cert.company.name}">Cambridge</td>
 					<td th:text="${cert.familyProfessional.name}">Idiomas</td>
 					<td><a th:text="#{certificado.tabla.editar}"
 						href="/acme/certification/edit/id/4"

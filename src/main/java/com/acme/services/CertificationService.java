@@ -17,4 +17,7 @@ public interface CertificationService{
 	public Certification createCertification(Certification cert);
 	public List<FamilyProfessional> getAllFamilyProfessional();
 	public FamilyProfessional getFamilyProfessionalById(Long id);
+	public FamilyProfessional createFamilyProfessional(FamilyProfessional family);
+	public void removeFamilyProfessional(Long id);
+	public FamilyProfessional updateFamilyProfessional(FamilyProfessional family);
 }

@@ -65,6 +65,24 @@ public class CertificationServiceImpl implements CertificationService {
 	public FamilyProfessional getFamilyProfessionalById(Long id) {
 		return repositoryfamily.findOne(id);
 	}
+
+	@Transactional
+	@CacheEvict(value="familyprofessional",allEntries = true)
+	public FamilyProfessional createFamilyProfessional(FamilyProfessional family) {
+		return repositoryfamily.save(family);
+	}
+
+	@Transactional
+	@CacheEvict(value="familyprofessional",allEntries = true)
+	public void removeFamilyProfessional(Long id) {
+		repositoryfamily.delete(id);
+	}
+
+	@Transactional
+	@CacheEvict(value="familyprofessional",allEntries = true)
+	public FamilyProfessional updateFamilyProfessional(FamilyProfessional family) {
+		return repositoryfamily.save(family);
+	}
 	
 
 }

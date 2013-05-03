@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body>
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<header class="jumbotron subhead" id="submenu">
+			<div class="subnav subnav-fixed">
+				<ul class="nav nav-pills">
+					<li><a th:text="#{menu.certificado.listar}"
+						href="/acme/certification" th:href="@{/acme/certification}">Listar
+							Certificados</a></li>
+					<li><a th:text="#{menu.certificado.crear}"
+						href="/acme/certification/create"
+						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+					<li class="active"><a
+						th:text="#{menu.certificado.familyprofessional}"
+						href="/acme/certification/family"
+						th:href="@{/acme/certification/family}">Familias
+							Professionales</a></li>
+				</ul>
+			</div>
+			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
+		</header>
+		<div id="addFamily">
+			<h3>Añadir nueva Familia Profesional</h3>
+			<form class="form-horizontal" method="post"
+				th:action="${isNew}?@{/acme/certification/family/create}:@{/acme/certification/family/edit/id/__${family.id}__}"
+				th:object="${family}">
+				<div th:if="${#fields.hasErrors('*')}" id="error-div"
+					class="alert alert-error">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<ul class="errorlist">
+						<li th:each="err : ${#fields.errors('*')}"
+							th:text="${#messages.msg('__${err}__')}">Input is incorrect</li>
+					</ul>
+				</div>
+				<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+					class="alert alert-success">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<p th:text="${#messages.msg('__${info}__')}">Accion realizada
+						con exito</p>
+				</div>
+				<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+					class="alert alert-error">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<p th:text="${#messages.msg('__${error}__')}">Error</p>
+				</div>
+				<script>
+					require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ],
+							function(on, dom, domConstruct) {
+								dojo.query(".close").onclick(function(evt) {
+									domConstruct.destroy(this.parentNode);
+								});
+							});
+				</script>
+				<div class="control-group">
+					<label th:text="#{familia.id}" class="control-label">Id</label>
+					<div class="controls">
+						<input th:field="*{id}" th:value="${family.id}" type="text"
+							id="id" readonly="readonly"></input>
+						<p th:text="#{certificado.formulario.id.informacion}"
+							class="help-inline">Only information</p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label th:text="#{familia.nombre}" class="control-label">Name</label>
+					<div class="controls">
+						<input required="required" th:field="*{name}"
+							th:value="${family.name}" type="text" id="name"></input>
+					</div>
+				</div>
+				<div class="form-actions">
+					<input th:value="#{certificado.formulario.guardar}" type="submit"
+						class="btn btn-primary" value="Guardar" name="create"></input><a th:text="#{certificado.formulario.cancelar}" href="/acme/certification/family" th:href="@{/acme/certification/family}"
+					class="btn" >Cancel</a>
+				</div>
+			</form>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th th:text="#{familia.tabla.id}">ID</th>
+					<th th:text="#{familia.tabla.nombre}">Nombre</th>
+					<th th:text="#{familia.tabla.editar}">Editar</th>
+					<th th:text="#{familia.tabla.borrar}">Borrar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:unless="${#lists.isEmpty(allFamilyProfessional)}"
+					th:each="family,rowStat  : ${allFamilyProfessional}">
+					<td th:text="${family.id}">1</td>
+					<td th:text="${family.name}">Idiomas</td>
+					<td><a th:text="#{familia.tabla.editar}"
+						href="/acme/certification/family/edit/id/4"
+						th:href="@{'/acme/certification/family/edit/id/' + ${family.id}}">Edit</a></td>
+					<td><a th:text="#{familia.tabla.borrar}"
+						href="/acme/certification/family/delete/id/4"
+						th:href="@{'/acme/certification/family/delete/id/' + ${family.id}}">Delete</a></td>
+				</tr>
+				<tr th:unless="${!#lists.isEmpty(allFamilyProfessional)}">
+					<td th:text="#{certificado.tabla.vacia}" colspan="5"><h2>No
+							hay familias professionales en el sistema</h2></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>
