@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body>
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<header class="jumbotron subhead" id="submenu">
+			<div class="subnav subnav-fixed">
+				<ul class="nav nav-pills">
+					<li class="active"><a th:text="#{menu.user.listar}"
+						href="/acme/user" th:href="@{/acme/user}">Listar Usuarios</a></li>
+					<li><a th:text="#{menu.user.crear}" href="/acme/user?id=4"
+						th:href="@{/acme/user/create}">Crear Usuario</a></li>
+				</ul>
+			</div>
+			<h1 th:text="#{usuario.titulo.crear}">Crear Usuario</h1>
+		</header>
+		<form class="form-horizontal" method="post"
+			th:action="${isNew}?@{/acme/user/create}:@{/acme/user/edit/id/__${user.id}__}"
+			th:object="${user}">
+			<div th:if="${#fields.hasErrors('*')}" id="error-div"
+				class="alert alert-error">
+				<button id="btcerrar" type="button" class="close"
+					data-dismiss="alert">×</button>
+				<ul class="errorlist">
+					<li th:each="err : ${#fields.errors('*')}"
+						th:text="${#messages.msg('__${err}__')}">Input is incorrect</li>
+				</ul>
+			</div>
+			<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+				class="alert alert-success">
+				<button id="btcerrar" type="button" class="close"
+					data-dismiss="alert">×</button>
+				<p th:text="${#messages.msg('__${info}__')}">Accion realizada
+					con exito</p>
+			</div>
+			<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+				class="alert alert-error">
+				<button id="btcerrar" type="button" class="close"
+					data-dismiss="alert">×</button>
+				<p th:text="${#messages.msg('__${error}__')}">Error</p>
+			</div>
+			<script>
+				require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ],
+						function(on, dom, domConstruct) {
+							dojo.query(".close").onclick(function(evt) {
+								domConstruct.destroy(this.parentNode);
+							});
+						});
+			</script>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.id}" class="control-label">Id</label>
+				<div class="controls">
+					<input th:field="*{id}" th:value="${user.id}" type="text" id="id"
+						readonly="readonly"></input>
+					<p th:text="#{usuario.formulario.id.informacion}"
+						class="help-inline">Only information</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.nombre}" class="control-label">Name</label>
+				<div class="controls">
+					<input required="required" th:field="*{name}"
+						th:value="${user.name}" type="text" id="name"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.apellidos}"
+					class="control-label">Apellidos</label>
+				<div class="controls">
+					<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required"
+						th:field="*{surname}" th:value="${user.surname}" type="text"
+						id="surname" size="16" class="span2"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.username}"
+					class="control-label">Nombre de Usuario</label>
+				<div class="controls">
+					<input required="required" th:field="*{username}"
+						th:value="${user.username}" type="text" id="username"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.password}"
+					class="control-label">Contraseña</label>
+				<div class="controls">
+					<input pattern="(\d{1,2}([\.]\d{1})?)" required="required"
+						th:field="*{password}" type="text" id="password"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.passwordconf}"
+					class="control-label">Contraseña</label>
+				<div class="controls">
+					<input pattern="(\d{1,2}([\.]\d{1})?)" required="required"
+						type="text" id="password"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.phone}" class="control-label">Telefono</label>
+				<div class="controls">
+					<input required="required" th:field="*{phone}"
+						th:value="${user.phone}" type="text" id="phone"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.mobilephone}"
+					class="control-label">Telefono movil</label>
+				<div class="controls">
+					<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required"
+						th:field="*{mobilephone}" th:value="${user.mobilephone}"
+						type="text" id="mobilephonec" size="16" class="span2"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.direccion}"
+					class="control-label">Direccion</label>
+				<div class="controls">
+					<input required="required" th:field="*{address}"
+						th:value="${user.address}" type="text" id="direccion"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<table>
+					<thead>
+						<tr>
+							<th>Roles</th>
+							<th>
+								<button type="submit" name="addRow">Añadir Requisito</button>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="form-actions">
+				<input th:value="#{usuario.formulario.guardar}" type="submit"
+					class="btn btn-primary" value="Guardar" name="create"></input> <a
+					th:text="#{usuario.formulario.cancelar}" href="/acme/userification"
+					th:href="@{/acme/userification}" class="btn">Cancel</a>
+			</div>
+		</form>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>

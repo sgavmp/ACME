@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>smtp.gmail.com</smtpHost>
+		<smtpPort>465</smtpPort>
+		<SSL>true</SSL>
+		<username>sga.vmp@gmail.com</username>
+		<password>uisd74gas</password>
+		<to>vampiro_violador@hotmail.com</to>
+		<from>sga.vmp@gmail.com</from>
+		<subject>TESTING: %logger{20} - %m</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger{35} - %message%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+		<connectionSource
+			class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+			<driverClass>com.mysql.jdbc.Driver</driverClass>
+			<url>jdbc:mysql://localhost:3306/acme</url>
+			<user>root</user>
+			<password>root</password>
+		</connectionSource>
+	</appender>
+
+	<logger name="org.springframework">
+		<level value="INFO" />
+	</logger>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="EMAIL" />
+		<appender-ref ref="DB" />
+	</root>
+</configuration>

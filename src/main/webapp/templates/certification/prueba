@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="common :: head">
-<!-- Aquí se incluye el head del archivo common.html-->
+<!-- AquÃ­ se incluye el head del archivo common.html-->
 </head>
 <body>
 	<header th:include="common :: header" id="menu">
-		<!-- Aquí se incluye el menu superior del archivo common.html-->
+		<!-- AquÃ­ se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
 		<header class="jumbotron subhead" id="submenu">
@@ -27,20 +27,20 @@
 		<form class="form-horizontal" method="post"
 			th:action="${isNew}?@{/acme/certification/create}:@{/acme/certification/edit/id/__${cert.id}__}"
 			th:object="${cert}"
-			val:validate="${cert}">
+			val:validate="${userFormBean}">
 			<div th:if="${#fields.hasErrors('*')}" id="error-div" class="alert alert-error">
-				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
+				<button id="btcerrar" type="button" class="close" data-dismiss="alert">Ã—</button>
 				<ul class="errorlist">
 					<li th:each="err : ${#fields.errors('*')}" th:text="${#messages.msg('__${err}__')}">Input
 						is incorrect</li>
 				</ul>
 			</div>
 			<div th:if="${!#strings.isEmpty(info)}" id="alerta-div" class="alert alert-success">
-				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
+				<button id="btcerrar" type="button" class="close" data-dismiss="alert">Ã—</button>
 				<p th:text="${#messages.msg('__${info}__')}">Accion realizada con exito</p>
 			</div>
 			<div th:if="${!#strings.isEmpty(error)}" id="alerta-div" class="alert alert-error">
-				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
+				<button id="btcerrar" type="button" class="close" data-dismiss="alert">Ã—</button>
 				<p th:text="${#messages.msg('__${error}__')}">Error</p>
 			</div>
 			<script>
@@ -54,7 +54,8 @@
 			<div class="control-group">
 				<label th:text="#{certificado.formulario.id}" class="control-label">Id</label>
 				<div class="controls">
-					<input th:field="*{id}" th:value="${cert.id}" type="text" id="id"></input>
+					<input th:field="*{id}" th:value="${cert.id}" type="text" id="id"
+						readonly="readonly"></input>
 					<p th:text="#{certificado.formulario.id.informacion}"
 						class="help-inline">Only information</p>
 				</div>
@@ -63,7 +64,7 @@
 				<label th:text="#{certificado.formulario.nombre}"
 					class="control-label">Name</label>
 				<div class="controls">
-					<input th:field="*{name}" th:value="${cert.name}" type="text"
+					<input required="required" th:field="*{name}" th:value="${cert.name}" type="text"
 						id="name"></input>
 				</div>
 			</div>
@@ -72,7 +73,7 @@
 					class="control-label">Cost</label>
 				<div class="controls">
 					<div class="input-append">
-						<input th:field="*{cost}" th:value="${cert.cost}" type="text"
+						<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required" th:field="*{cost}" th:value="${cert.cost}" type="text"
 							id="cost" size="16" class="span2"></input><span class="add-on">&euro;</span>
 					</div>
 				</div>
@@ -81,7 +82,7 @@
 				<label th:text="#{certificado.formulario.descripcion}"
 					class="control-label">Description</label>
 				<div class="controls">
-					<input th:field="*{description}" th:value="${cert.description}"
+					<input required="required" th:field="*{description}" th:value="${cert.description}"
 						type="text" id="description"></input>
 				</div>
 			</div>
@@ -89,7 +90,7 @@
 				<label th:text="#{certificado.formulario.familia}"
 					class="control-label">FamilyProfessional</label>
 				<div class="controls">
-					<select  th:field="*{familyProfessional}" id="familyprofessional">
+					<select required="required" th:field="*{familyProfessional.id}" id="familyprofessional">
 						<option th:each="fam : ${allFamilyProfessional}"
 							th:value="${fam.id}" th:text="${fam.name}">Idiomas</option>
 					</select>
@@ -100,7 +101,7 @@
 					class="control-label">Price Public</label>
 				<div class="controls">
 					<div class="input-append">
-						<input th:field="*{pricePublic}" th:value="${cert.pricePublic}"
+						<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required" th:field="*{pricePublic}" th:value="${cert.pricePublic}"
 							type="text" id="pricepublic" size="16" class="span2"></input><span
 							class="add-on">&euro;</span>
 					</div>
@@ -110,7 +111,7 @@
 				<label th:text="#{certificado.formulario.validez}"
 					class="control-label">Validate</label>
 				<div class="controls">
-					<input  th:field="*{validez}" th:value="${cert.validez}" type="text"
+					<input required="required" th:field="*{validez}" th:value="${cert.validez}" type="text"
 						id="validate"></input>
 				</div>
 			</div>
@@ -118,7 +119,7 @@
 				<label th:text="#{certificado.formulario.calificacion}"
 					class="control-label">Requirement Califitacion</label>
 				<div class="controls">
-					<input th:field="*{requirementCalification}" type="text"
+					<input pattern="(\d{1,2}([\.]\d{1})?)" required="required" th:field="*{requirementCalification}" type="text"
 						id="requirementCalification"></input>
 				</div>
 			</div>
@@ -128,14 +129,14 @@
 						<tr>
 							<th>Requisitos</th>
 							<th>
-								<button  type="submit" name="addRow">Añadir Requisito</button>
+								<button  type="submit" name="addRow">AÃ±adir Requisito</button>
 							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="row,rowStat : *{requirements}">
 							<td th:text="${rowStat.count}">1</td>
-							<td><input type="text"
+							<td><input required="required" type="text"
 								th:field="*{requirements[__${rowStat.index}__]}" /></td>
 							<td>
 								<button type="submit" name="removeRow"
@@ -149,7 +150,7 @@
 				<label th:text="#{certificado.formulario.company}"
 					class="control-label">Company</label>
 				<div class="controls">
-					<select th:field="*{company}" id="company">
+					<select required="required" th:field="*{company.id}" id="company">
 						<option th:each="user : ${allCompany}" th:value="${user.id}"
 							th:text="${user.name}">IBM</option>
 					</select>
@@ -164,7 +165,7 @@
 		</form>
 	</section>
 	<footer th:include="common :: footer">
-		<!-- Aquí se incluye el footer del archivo common.html-->
+		<!-- AquÃ­ se incluye el footer del archivo common.html-->
 	</footer>
 </body>
 </html>

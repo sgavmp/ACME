@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://github.com/dandelion/datatables">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body>
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<header class="jumbotron subhead" id="submenu">
+			<div class="subnav subnav-fixed">
+				<ul class="nav nav-pills">
+					<li class="active"><a th:text="#{menu.user.listar}"
+						href="/acme/user" th:href="@{/acme/user}">Listar
+							Usuarios</a></li>
+					<li><a th:text="#{menu.user.crear}"
+						href="/acme/user?id=4"
+						th:href="@{/acme/user/create}">Crear Usuario</a></li>
+				</ul>
+			</div>
+			<h1 th:text="#{usuario.tabla.titulo}">Lista de Usuarios</h1>
+		</header>
+		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+			class="alert alert-success">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${info}__')}">Accion realizada con
+				exito</p>
+		</div>
+		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+			class="alert alert-error">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${error}__')}">Error</p>
+		</div>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ], function(
+					on, dom, domConstruct) {
+				dojo.query(".close").onclick(function(evt) {
+					domConstruct.destroy(this.parentNode);
+				});
+			});
+		</script>
+		<table id="table_cert" class="table table-striped" dt:table="true" dt:theme="bootstrap2">
+			<thead>
+				<tr>
+					<th th:text="#{usuario.tabla.id}">ID</th>
+					<th th:text="#{usuario.tabla.nombre}">Nombre</th>
+					<th th:text="#{usuario.tabla.apellidos}">Apellidos</th>
+					<th th:text="#{usuario.tabla.username}">Usuario</th>
+					<th th:text="#{usuario.tabla.email}">Email</th>
+					<th th:text="#{usuario.tabla.roles}">Roles</th>
+					<th th:text="#{usuario.tabla.acciones}">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:unless="${#lists.isEmpty(allUsers)}"
+					th:each="user,rowStat  : ${allUsers}">
+					<td th:text="${user.id}">1</td>
+					<td th:text="${user.name}">Pepe</td>
+					<td th:text="${user.surname}">Alonso</td>
+					<td th:text="${user.username}">purbea</td>
+					<td th:text="${user.email}">prubea@correo.es</td>
+					<td th:each="rol : ${user.roles.keySet()}">
+						<p th:text="${#messages.msg('__${rol}__')}"></p>
+					</td>
+					<td><a th:text="#{usuario.tabla.editar}"
+						href="/acme/user/edit/id/4"
+						th:href="@{'/acme/user/edit/id/' + ${user.id}}">Edit</a>/
+						<a th:text="#{usuario.tabla.borrar}"
+						href="/acme/user/delete/id/4"
+						th:href="@{'/acme/user/delete/id/' + ${user.id}}">Delete</a></td>
+				</tr>
+				<tr th:unless="${!#lists.isEmpty(allUsers)}">
+					<td th:text="#{usuario.tabla.vacia}" colspan="5"><h2>No
+							hay usuarios en el sistema</h2></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>

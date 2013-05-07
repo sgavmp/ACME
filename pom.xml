@@ -286,7 +286,11 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${springsecurity}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>net.sourceforge.html5valdialect</groupId>
+			<artifactId>html5valdialect</artifactId>
+			<version>1.0.0-beta3</version>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 	<properties>

@@ -60,6 +60,7 @@ public class User extends AbstractPersistable<Long>{
 	private String email;
 	@ManyToOne
 	private City city;
+	private boolean enabled=true;
 
 	// -------------------------------------------------------------
 	// Constructors
@@ -203,5 +204,13 @@ public class User extends AbstractPersistable<Long>{
 	
 	public Role getRole(UserType type){
 		return this.roles.get(type);
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

@@ -6,11 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 public enum UserType {
-	ADMINISTRATOR(0),
-	WORKER(1),
-	REVIEWER(2),
-	COMPANY(3),
-	CUSTOMER(4);	
+	ROLE_ADMIN(0),
+	ROLE_WORKER(1),
+	ROLE_REVIEWER(2),
+	ROLE_COMPANY(3),
+	ROLE_USER(4);	
 	
 	private final int num;
 	UserType(Integer num) {

@@ -24,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
+import com.acme.model.user.Admin;
 import com.acme.model.user.Company;
+import com.acme.model.user.Customer;
+import com.acme.model.user.Role;
 import com.acme.model.user.User;
 import com.acme.model.user.UserType;
 import com.acme.repository.CertificationRepository;
@@ -143,13 +146,17 @@ public class CertificationTest {
 	
 			// Creamos un usuario con rol de company
 			Company comp = new Company();
+			Customer cust = new Customer();
+			Admin admin = new Admin();
 			mCompany = new User();
 			mCompany.setUsername("Microsfot");
 			mCompany.setEmail("pepe@msn.es");
 			mCompany.setMobilephone("66666666");
 			mCompany.setName("Bill");
-			mCompany.setPassword("asdf87sd8f7asd");
-			mCompany.addRoleToUser(comp, UserType.COMPANY);
+			mCompany.setPassword("123456");
+			mCompany.addRoleToUser(comp, UserType.ROLE_COMPANY);
+			mCompany.addRoleToUser(cust, UserType.ROLE_USER);
+			mCompany.addRoleToUser(admin, UserType.ROLE_ADMIN);
 			mCompany=userrep.save(mCompany);
 	
 			// Creamos una familia profesional
