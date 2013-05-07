@@ -170,6 +170,23 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.0.0.CR1</version>
@@ -195,6 +212,7 @@
 			<artifactId>ehcache</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+
 	</dependencies>
 	<packaging>war</packaging>
 	<properties>
