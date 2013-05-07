@@ -17,6 +17,7 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
  http://www.springframework.org/schema/cache 
  http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
+
 	<context:annotation-config />
 	<context:spring-configured />
 	<context:component-scan base-package="com.acme" />
@@ -63,7 +64,8 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 	<!--========== /TransactionManager Repository ========== -->
 
 	<!--========== /TransactionManager Service ========== -->
-	<bean id="servicecertification" name="servicecertification" class="com.acme.services.CertificationService" />
+	<bean id="servicecertification" name="servicecertification"
+		class="com.acme.services.CertificationService" />
 	<bean id="serviceuser" name="serviceuser" class="com.acme.services.UserService" />
 
 	<!-- **************************************************************** -->
@@ -109,11 +111,12 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
 		<property name="additionalDialects">
-        <set>
-            <bean class="com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect" />
-            <bean class="com.acme.util.validation.html.ValidateDialect" />
-        </set>
-    </property>
+			<set>
+				<bean
+					class="com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect" />
+				<bean class="com.acme.util.validation.html.ValidateDialect" />
+			</set>
+		</property>
 	</bean>
 
 	<bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
@@ -129,19 +132,19 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 		típico de ehcache -->
 	<bean id="ehcache"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		p:config-location="classpath:ehcache.xml" />
-		
-	<!--
-        - This bean resolves specific types of exceptions to corresponding logical 
-        - view names for error views.
-    -->
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <!-- view name resolved using bean of type InternalResourceViewResolver (declared in mvc-view-config.xml) -->
-        <property name="defaultErrorView" value="error"/>
-        <!-- results into 'WEB-INF/jsp/exception.jsp' -->
-        <property name="warnLogCategory" value="warn"/>
-        <!-- needed otherwise exceptions won't be logged anywhere -->
-    </bean>
+		p:config-location="classpath:ehcache.xml" p:shared="true"/>
+
+	<!-- - This bean resolves specific types of exceptions to corresponding 
+		logical - view names for error views. -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- view name resolved using bean of type InternalResourceViewResolver 
+			(declared in mvc-view-config.xml) -->
+		<property name="defaultErrorView" value="error" />
+		<!-- results into 'WEB-INF/jsp/exception.jsp' -->
+		<property name="warnLogCategory" value="warn" />
+		<!-- needed otherwise exceptions won't be logged anywhere -->
+	</bean>
 </beans>
 
 
