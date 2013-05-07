@@ -255,24 +255,29 @@ public class CertificationController {
 		return "redirect:/acme/certification/family";
 	}
 
-	// Borra el certificado indicado en la URL por id
+	// Borra la familia profesional indicado en la URL por id
 	@RequestMapping(value = "/family/delete/id/{idfamiy}", method = RequestMethod.GET)
 	public String deleteFamily(@PathVariable Long idfamiy, Model model,
 			RedirectAttributes redirectAttrs, HttpServletRequest response) {
-		FamilyProfessional family = servicecertification
-				.getFamilyProfessionalById(idfamiy);
-		if (family == null) {
-			redirectAttrs.addFlashAttribute("error", "certification.noexist");
-			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-					HttpStatus.NOT_FOUND);
+		try {
+			FamilyProfessional family = servicecertification.getFamilyProfessionalById(idfamiy);
+			if (family == null) {
+				redirectAttrs.addFlashAttribute("error", "familia.noexist");
+				response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
+						HttpStatus.NOT_FOUND);
+			}
+			servicecertification.removeFamilyProfessional(idfamiy);
+			redirectAttrs.addFlashAttribute("info", "familia.delete");
+		}
+		catch (Exception e){
+			redirectAttrs.addFlashAttribute("error", "familia.asociado");
+		}
+		finally{
 			return "redirect:/acme/certification/family";
 		}
-		servicecertification.removeFamilyProfessional(idfamiy);
-		redirectAttrs.addFlashAttribute("info", "familia.delete");
-		return "redirect:/acme/certification/family";
 	}
 
-	// Modifica los datos del certificado pasado por POST
+	// Modifica los datos de la familia profesional pasado por POST
 	@RequestMapping(value = "/family/edit/id/{idfamiy}", method = RequestMethod.POST)
 	public String editFamily(@PathVariable Integer idfamiy, Model model,
 			@ModelAttribute("family") @Valid FamilyProfessional family,
@@ -290,11 +295,5 @@ public class CertificationController {
 		model.addAttribute("isNew", false);
 		model.addAttribute("info", "family.modify");
 		return "/certification/familyprofessional";
-	}
-
-	@ExceptionHandler(Exception.class)
-	public String exception(Model model, ConnectException ex) {
-		model.addAttribute("name", ex.getClass().getSimpleName());
-		return "/error";
 	}
 }

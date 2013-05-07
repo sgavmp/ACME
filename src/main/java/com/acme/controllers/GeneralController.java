@@ -34,4 +34,5 @@ public class GeneralController {
 		model.addAttribute("activeMenu", "index");
         return "/common";
     }
+
 }

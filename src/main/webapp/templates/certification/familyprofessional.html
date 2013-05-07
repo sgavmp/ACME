@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://github.com/dandelion/datatables">
 <head th:include="common :: head">
 <!-- Aquí se incluye el head del archivo common.html-->
 </head>
@@ -24,7 +24,6 @@
 							Professionales</a></li>
 				</ul>
 			</div>
-			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
 		</header>
 		<div id="addFamily">
 			<h3>Añadir nueva Familia Profesional</h3>
@@ -84,7 +83,8 @@
 				</div>
 			</form>
 		</div>
-		<table class="table table-striped">
+		<h1 th:text="#{familia.tabla.titulo}">Lista de Familias Profesionales</h1>
+		<table id="tabla_family" class="table table-striped" dt:table="true" dt:theme="bootstrap2">
 			<thead>
 				<tr>
 					<th th:text="#{familia.tabla.id}">ID</th>

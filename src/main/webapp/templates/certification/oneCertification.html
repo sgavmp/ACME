@@ -26,7 +26,8 @@
 		</header>
 		<form class="form-horizontal" method="post"
 			th:action="${isNew}?@{/acme/certification/create}:@{/acme/certification/edit/id/__${cert.id}__}"
-			th:object="${cert}">
+			th:object="${cert}"
+			validate:class="Certification">
 			<div th:if="${#fields.hasErrors('*')}" id="error-div" class="alert alert-error">
 				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
 				<ul class="errorlist">

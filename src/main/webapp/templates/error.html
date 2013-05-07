@@ -49,8 +49,8 @@
     </div>
 </header>
 <section class="container">
-	<article class="well"><h1>ACME</h1>
-	<h2 th:text="#{error}">Ha ocurrido un error co el servidor. Vuelve a intentarlo mas tarde o pongase en contaco con el administrador.</h2>
+	<article class="well"><h1>ACME</h1></article>
+	<p th:text="${exception.message}">The exception message...</p>
 </section>
 <footer th:fragment="footer">
 	<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME Diseñado por: Rafa Vázquez Sánchez | Sergio Garcia Alonso</div>
