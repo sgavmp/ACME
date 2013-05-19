@@ -40,10 +40,11 @@
               <li class="divider-vertical">
               </li>
               <li th:class="((${activeMenu}=='profile')?'active')">
-                <a th:text="#{menu.principal.perfil}" th:href="@{/spring_security_login}">Login</a>
+                <a th:if="!${#authentication}" th:text="#{menu.principal.login}" th:href="@{/acme/login}">Login</a>
+                <a th:if="${#authentication}" th:href="@{/acme/profile}" sec:authentication="name">Bob</a> 
               </li>
               <li>
-                <a th:text="#{menu.principal.salir}" th:href="@{/j_spring_security_logout}">Salir</a>
+                <a th:if="${#authentication}" th:text="#{menu.principal.salir}" th:href="@{/acme/logout}">Salir</a>
               </li>
             </ul>
           </div>

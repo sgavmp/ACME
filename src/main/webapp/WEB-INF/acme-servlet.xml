@@ -115,6 +115,7 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 				<bean
 					class="com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect" />
 				<bean class="net.sourceforge.html5val.Html5ValDialect" />
+				<bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect"/>
 			</set>
 		</property>
 	</bean>

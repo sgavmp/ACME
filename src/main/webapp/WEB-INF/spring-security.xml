@@ -7,11 +7,26 @@
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<sec:http auto-config="true" access-decision-manager-ref="accessDecisionManager">
-		<!-- <sec:intercept-url pattern="/**" access="3" /> -->
-		<sec:intercept-url pattern="/login" access="permitAll"/>
-		<sec:form-login login-page="/login" authentication-failure-url="/login-error" /> 
-        <sec:logout /> 
+	<sec:http pattern="/css/**" security="none" />
+	<sec:http pattern="/js/**" security="none" />
+	<sec:http pattern="/img/**" security="none" />
+	<sec:http pattern="/webjars/**" security="none" />
+	<sec:http pattern="/datatablescontroller/**" security="none" />
+	<sec:http pattern="/acme/login" security="none" />
+	<sec:http pattern="/acme/index" security="none" />
+
+	<sec:http auto-config="false" use-expressions="true">
+		<sec:intercept-url pattern="/acme/logout" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/acme/" access="permitAll" />
+		<sec:intercept-url pattern="/acme/index" access="permitAll" />
+		<sec:intercept-url pattern="/acme/certification/**"
+			access="hasRole('3')" />
+		<sec:intercept-url pattern="/acme/user/**" access="hasRole('3')" />
+		<sec:intercept-url pattern="/**" access="denyAll" />
+		<sec:form-login login-page="/acme/login"
+			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />
+		<sec:logout logout-url="/acme/logout" logout-success-url="/acme/index" />
+		<sec:anonymous enabled="false" />
 	</sec:http>
 
 	<sec:authentication-manager>
@@ -22,32 +37,9 @@
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
-	<bean id="authenticatedVoter"
-		class="org.springframework.security.access.vote.AuthenticatedVoter" />
-
-	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter ">
-		<property name="rolePrefix" value="" />
-	</bean>
-
-	<bean id="accessDecisionManager"
-		class="org.springframework.security.access.vote.AffirmativeBased">
-		<property name="decisionVoters">
-			<list>
-				<ref bean="roleVoter" />
-				<ref bean="authenticatedVoter" />
-			</list>
-		</property>
-	</bean>
-
 	<bean id="authenticationSuccessHandler"
 		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 		<!-- After login, return to the last visited page -->
 		<property name="useReferer" value="true" />
-	</bean>
-
-	<bean id="authenticationSuccessHandlerWithoutReferer"
-		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-		<!-- After login, stay to the same page -->
-		<property name="useReferer" value="false" />
 	</bean>
 </beans>
