@@ -31,13 +31,11 @@
 		<class>com.acme.model.IntervalDate</class>
 		<class>com.acme.model.AbstractPersistable</class>
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost/acme"/>
-			<property name="hibernate.connection.username" value="rafa"/>
-			<property name="hibernate.connection.password" value=""/>
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+            <property name="hibernate.connection.charSet" value="UTF-8"/>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-			<property name="hibernate.show_sql" value="true"/>
-			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- Auto-detect entity classes -->
 			<property name="hibernate.archive.autodetection" value="class, hbm" />
 		</properties>

@@ -26,14 +26,14 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 	<!--========== Spring Data Source ========== -->
 	
 	<bean class="java.net.URI" id="dbUrl">
-	    <constructor-arg value="postgres://rafa@localhost/acme"/>
+    	<constructor-arg value="${DATABASE_URL}"/>
 	</bean>
 	
 	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
-	    <property name="driverClassName" value="org.postgresql.Driver"/>
-	    <property name="url" value="jdbc:postgresql://127.0.0.1:5432/acme"/>
-	    <property name="username" value="rafa"/>
-	    <property name="password" value=""/>
+	    <property name="driverClassName" value="${database.driverClassName}"/>
+	    <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+	    <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+	    <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
     </bean>
 	    
 	<!--========== /Spring Data Source ========== -->
