@@ -16,9 +16,9 @@ import com.acme.model.user.UserType;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 	
-	@Query("SELECT u FROM User u JOIN u.roles r WHERE KEY(r)=3")
+	@Query("SELECT u FROM AcmeUser u JOIN u.roles r WHERE KEY(r)=3")
 	public List<User> findAllUserTypeCompany();
 	
-	@Query("SELECT u FROM User u WHERE u.username LIKE :username")
+	@Query("SELECT u FROM AcmeUser u WHERE u.username LIKE :username")
 	public User findUserByUsername(@Param("username")String username);
 }

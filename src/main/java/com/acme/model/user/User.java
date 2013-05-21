@@ -41,7 +41,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 
-@Entity
+@Entity (name="AcmeUser")
 public class User extends AbstractPersistable<Long>{
 	/**
 	 * 

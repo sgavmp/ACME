@@ -31,12 +31,12 @@
 		<class>com.acme.model.IntervalDate</class>
 		<class>com.acme.model.AbstractPersistable</class>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/acme" />
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="root" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost/acme"/>
+			<property name="hibernate.connection.username" value="rafa"/>
+			<property name="hibernate.connection.password" value=""/>
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- Auto-detect entity classes -->
 			<property name="hibernate.archive.autodetection" value="class, hbm" />

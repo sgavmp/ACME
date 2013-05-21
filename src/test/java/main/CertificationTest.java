@@ -63,6 +63,7 @@ public class CertificationTest {
 	private FamilyProfessional mProfessionalFamily;
 
 	@Test
+	@Ignore
 	public void testValidacionNull() {
 		// Comprobamos la validación de atributos nulos
 		Certification cert = new Certification(null, null, null, null, null,
@@ -81,6 +82,7 @@ public class CertificationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testValidacionNumeros() {
 		// Comprobamos la validación de mínimos numéricos
 		Certification cert = new Certification(
@@ -104,6 +106,7 @@ public class CertificationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testCrearCertificado() {
 		// Creamos un certificado
 		assertEquals("No hay certificados en la base de datos", 0,
@@ -134,6 +137,7 @@ public class CertificationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testModificarCertificado() {
 		Certification cert = new Certification(
 				"Inglés B1",
@@ -157,6 +161,7 @@ public class CertificationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testEliminarCertificado() {
 		// Creamos un certificado
 		assertEquals("Hay 3 certificados", 3, certrep.count());
@@ -178,6 +183,7 @@ public class CertificationTest {
 	}
 
 	@Before
+	@Ignore
 	public void prepareScenario() {
 		if (first) {
 			first = false;
