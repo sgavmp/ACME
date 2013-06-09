@@ -5,6 +5,35 @@
 	<artifactId>Grupo15.ACME</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Grupo15.ACME</name>
+	<profiles>
+		<profile>
+			<id>development</id>
+			<properties>
+				<db.driverId>dataSourceDevelopment</db.driverId>
+				<db.driverClass>org.hibernate.dialect.MySQLDialect</db.driverClass>
+				<db.dialect>org.hibernate.dialect.MySQLDialect</db.dialect>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<db.driverId>dataSourceProduction</db.driverId>
+				<db.driverClass>org.postgresql.Driver</db.driverClass>
+				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+			</properties>
+		</profile>
+		<profile>
+			<id>postgres</id>
+			<properties>
+				<db.driverId>dataSourcePostgres</db.driverId>
+				<db.driverClass>org.postgresql.Driver</db.driverClass>
+				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -19,27 +48,64 @@
 				</configuration>
 			</plugin>
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-dependency-plugin</artifactId>
-			    <version>2.3</version>
-			    <executions>
-			        <execution>
-			            <phase>package</phase>
-			            <goals><goal>copy</goal></goals>
-			            <configuration>
-			                <artifactItems>
-			                    <artifactItem>
-			                        <groupId>org.mortbay.jetty</groupId>
-			                        <artifactId>jetty-runner</artifactId>
-			                        <version>7.4.5.v20110725</version>
-			                        <destFileName>jetty-runner.jar</destFileName>
-			                    </artifactItem>
-			                </artifactItems>
-			            </configuration>
-			        </execution>
-			    </executions>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.mortbay.jetty</groupId>
+									<artifactId>jetty-runner</artifactId>
+									<version>7.4.5.v20110725</version>
+									<destFileName>jetty-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<nonFilteredFileExtensions>
+			            <nonFilteredFileExtension>properties</nonFilteredFileExtension>
+			            <nonFilteredFileExtension>sql</nonFilteredFileExtension>
+			          </nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/*.xml</include>
+								<!-- include any other file types you want to filter -->
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<dependencies>
 		<dependency>

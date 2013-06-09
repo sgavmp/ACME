@@ -30,15 +30,16 @@
 	<section class="container">
 		<form class="form-signin" th:action="@{/j_spring_security_check}"
 			method="post">
-			<div th:if="${loginError}" class="alert alert-error">
-				<p th:text="#{login.error}">Wrong user or passshhword</p>
-			</div>
+			  <div th:if="${param.error != null}" class="alert alert-error">
+				<p th:text="#{login.error}">Wrong user or password</p>
+			</div>  
+			
 			<h3 class="form-signin-heading" th:text="#{login.titulo}">Identifícate</h3>
 			<input id="j_username" name="j_username" type="text"
-				class="input-block-level" th:placeholder="#{login.username}" placeholder="Usuario" required="required">
-			</input> <input id="j_password" name="j_password" type="password"
+				class="input-block-level" th:placeholder="#{login.username}" placeholder="Usuario" required="required" />
+			 <input id="j_password" name="j_password" type="password"
 				class="input-block-level" th:placeholder="#{login.password}" placeholder="Contrasenna"
-				required="required"></input>
+				required="required"/>
 			<button class="btn btn-large btn-primary" type="submit" th:text="#{login.button}">Entrar</button>
 		</form>
 	</section>

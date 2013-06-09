@@ -24,16 +24,16 @@
 		<sec:intercept-url pattern="/acme/customer/**" access="hasRole('4')" />
 		<sec:intercept-url pattern="/**" access="denyAll" />
 		<sec:form-login login-page="/acme/login"
-			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />
+			authentication-failure-url="/acme/login?error=true" default-target-url="/acme/index" />
 		<sec:logout logout-url="/acme/logout" logout-success-url="/acme/index" />
 		<sec:anonymous enabled="false" />
 	</sec:http>
 
 	<sec:authentication-manager>
 		<sec:authentication-provider>
-			<sec:jdbc-user-service data-source-ref="dataSource"
-				users-by-username-query="select username,password,enabled from user where username=?"
-				authorities-by-username-query="select u.username, ur.role_type from user u, role ur where u.id = ur.user_id and u.username =?" />
+			<sec:jdbc-user-service data-source-ref="${db.driverId}"
+				users-by-username-query="select username,password,enabled from acme_user where username=?"
+				authorities-by-username-query="select u.username, ur.role_type from acme_user u, role ur where u.id = ur.user_id and u.username =?" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
