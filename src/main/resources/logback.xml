@@ -30,9 +30,9 @@
 		</connectionSource>
 	</appender>
 
-	<logger name="org.springframework">
+<!-- <logger name="org.springframework">
 		<level value="INFO" />
-		</logger>
+	</logger>  -->
 
 	<root>
 		<level value="INFO" />

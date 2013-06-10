@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body class="claro">
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<header class="jumbotron subhead" id="submenu">
+			<div class="subnav subnav-fixed">
+				<ul class="nav nav-pills">
+					<li><a th:text="#{menu.certificado.listar}"
+						href="/acme/certification" th:href="@{/acme/certification}">Listar
+							Certificados</a></li>
+					<li><a th:text="#{menu.certificado.crear}"
+						href="/acme/certification/create"
+						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+					<li class="active"><a
+						th:text="#{menu.certificado.familyprofessional}"
+						href="/acme/certification/family"
+						th:href="@{/acme/certification/family}">Familias
+							Professionales</a></li>
+				</ul>
+			</div>
+		</header>
+		<div id="addExamination">
+			<h3>Añadir nueva Convocatoria</h3>
+			<form class="form-horizontal" method="post"
+				th:action="${isNew}?@{/acme/examination/create}:@{/acme/examination/edit/id/__${exam.id}__}"
+				th:object="${exam}" val:validate="${exam}">
+				<div th:if="${#fields.hasErrors('*')}" id="error-div"
+					class="alert alert-error">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<ul class="errorlist">
+						<li th:each="err : ${#fields.errors('*')}"
+							th:text="${#messages.msg('__${err}__')}">Input is incorrect</li>
+					</ul>
+				</div>
+				<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+					class="alert alert-success">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<p th:text="${#messages.msg('__${info}__')}">Accion realizada
+						con exito</p>
+				</div>
+				<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+					class="alert alert-error">
+					<button id="btcerrar" type="button" class="close"
+						data-dismiss="alert">×</button>
+					<p th:text="${#messages.msg('__${error}__')}">Error</p>
+				</div>
+				<script>
+					require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ],
+							function(on, dom, domConstruct) {
+								dojo.query(".close").onclick(function(evt) {
+									domConstruct.destroy(this.parentNode);
+								});
+							});
+				</script>
+				<div class="control-group">
+					<label th:text="#{exam.id}" class="control-label">Id</label>
+					<div class="controls">
+						<input th:field="*{id}" th:value="${exam.id}" type="text" id="id"
+							readonly="readonly"></input>
+						<p th:text="#{certificado.formulario.id.informacion}"
+							class="help-inline">Only information</p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label th:text="#{exam.certification}" class="control-label">Certificado</label>
+					<div class="controls">
+						<select th:field="*{certification}"
+							th:value="${exam.certification}" id="name">
+							<option th:each="c : ${allCertifications}" th:value="${c.id}"
+								th:text="${c.name}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label th:text="#{exam.feclimit}" class="control-label">Fecha
+						limite registro</label>
+					<div class="controls">
+						<input th:field="*{dateLimitRegister}" th:with="df=#{date.format}"
+							th:value="${#dates.format(exam.dateLimitRegister,df)}"
+							type="text" id="dateLimitRegister" name="date1"
+							data-dojo-type="dijit/form/DateTextBox"></input>
+					</div>
+				</div>
+				<div class="control-group">
+					<label th:text="#{exam.fecrealizacion}" class="control-label">Fecha
+						de Realizacion</label>
+					<div class="controls">
+						<input th:field="*{dateRealization}" th:with="df=#{date.format}"
+							th:value="${#dates.format(exam.dateRealization,df)}" type="text"
+							id="dateRealization" name="date2"
+							data-dojo-type="dijit/form/DateTextBox"></input>
+					</div>
+				</div>
+				<div class="control-group">
+					<label th:text="#{exam.timeRealization}" class="control-label">Hora
+						de Realizacion</label>
+					<div class="controls">
+						<input th:field="*{timeRealization}" th:with="df=#{time.format}"
+							th:value="${#dates.format(exam.timeRealization,df)}" type="text"
+							id="timeRealization" name="time"
+							data-dojo-type="dijit/form/TimeTextBox"></input>
+					</div>
+				</div>
+				<div class="form-actions">
+					<input th:value="#{certificado.formulario.guardar}" type="submit"
+						class="btn btn-primary" value="Guardar" name="create"></input><a
+						th:text="#{certificado.formulario.cancelar}"
+						href="/acme/examination/" th:href="@{/acme/examination/}"
+						class="btn">Cancel</a>
+				</div>
+			</form>
+		</div>
+		<h1 th:text="#{examination.tabla.titulo}">Lista de Convocatorias</h1>
+		<table id="tabla_examination" class="table table-striped"
+			dt:table="true" dt:theme="bootstrap2">
+			<thead>
+				<tr>
+					<th th:text="#{exam.tabla.id}">ID</th>
+					<th th:text="#{exam.tabla.nombre}">Certifcado</th>
+					<th th:text="#{exam.tabla.feclimite}">Fecha Limite Registro</th>
+					<th th:text="#{exam.tabla.fecrealizacion}">Fecha Realizacion</th>
+					<th th:text="#{exam.tabla.timerealizacion}">Hora Realizacion</th>
+					<th th:text="#{exam.tabla.editar}">Editar</th>
+					<th th:text="#{exam.tabla.borrar}">Borrar</th>
+					<th th:text="#{exam.tabla.registrar}">Registrarse</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:unless="${#lists.isEmpty(allExamination)}"
+					th:each="exam,rowStat  : ${allExamination}">
+					<td th:text="${exam.id}">1</td>
+					<td th:text="${exam.certification.name}">Ingles</td>
+					<td th:with="df=#{date.format}"
+						th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</td>
+					<td th:with="df=#{date.format}"
+						th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
+					<td th:with="df=#{time.format}"
+						th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
+					<td><a th:text="#{exam.tabla.editar}"
+						href="/acme/examination/edit/id/4"
+						th:href="@{'/acme/examination/edit/id/' + ${exam.id}}">Edit</a></td>
+					<td><a th:text="#{exam.tabla.borrar}"
+						href="/acme/examination/delete/id/4"
+						th:href="@{'/acme/examination/delete/id/' + ${exam.id}}">Delete</a></td>
+					<td><a th:text="#{exam.tabla.registrar}"
+						href="/acme/register/examination/"
+						th:href="@{'/acme/register/examination/id/' + ${exam.id}}">Registrarse</a></td>
+				</tr>
+				<tr th:unless="${!#lists.isEmpty(allExamination)}">
+					<td th:text="#{examination.tabla.vacia}" colspan="8"><h2>No
+							hay familias convocatorias en el sistema</h2></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>

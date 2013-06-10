@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.DiscriminatorValue;
@@ -32,8 +34,6 @@ public class Customer extends Role implements Serializable{
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="customer", fetch=FetchType.EAGER)
-	private Set<Register> registers;
 	@OneToMany(mappedBy="customer",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	private Set<PreRegister> preregister;
 	
@@ -44,29 +44,11 @@ public class Customer extends Role implements Serializable{
 	public Customer() {
 		super();
 		this.preregister=Sets.newHashSet();
-		this.registers=Sets.newHashSet();
 	}
 
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------	
-	
-	public Set<Register> getRegisters() {
-		return registers;
-	}
-
-	public void setRegisters(Set<Register> registers) {
-		this.registers = registers;
-	}
-	
-	public void addRegister(Register r){
-		this.registers.add(r);
-	}
-	
-	public void removeRegister(Register r){
-		this.registers.remove(r);
-	}
-
 
 	public Set<PreRegister> getPreregister() {
 		return preregister;

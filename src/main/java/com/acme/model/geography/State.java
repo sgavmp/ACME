@@ -3,6 +3,8 @@ package com.acme.model.geography;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+
 import com.acme.model.AbstractPersistable;
 
 import com.google.common.collect.Lists;
@@ -19,16 +23,16 @@ import com.google.common.collect.Sets;
 
 @Entity
 public class State extends AbstractPersistable<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1394668146985629345L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
 	private String name;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "state",
-            fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<City> cities;
-	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id")
-	private Country country;
 
 	// -------------------------------------------------------------
 	// Constructors
@@ -38,10 +42,10 @@ public class State extends AbstractPersistable<Long>{
 
 	}
 
-	public State(String name, Set<City> cities) {
+	public State(String id) {
 		super();
-		this.name = name;
-		this.cities = cities;
+		this.id = Long.valueOf(id);
+		this.cities=Sets.newHashSet();
 	}
 
 	// -------------------------------------------------------------
@@ -63,14 +67,6 @@ public class State extends AbstractPersistable<Long>{
 		this.cities = cities;
 	}
 
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-
 	// -------------------------------------------------------------
 	// Method
 	// -------------------------------------------------------------
@@ -82,7 +78,6 @@ public class State extends AbstractPersistable<Long>{
 	public City createCity(String name){
 		City temp = new City();
 		temp.setName(name);
-		temp.setState(this);
 		this.cities.add(temp);
 		return temp;
 	}

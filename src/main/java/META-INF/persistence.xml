@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Grupo15.ACME">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.acme.model.user.User</class>
+		<class>com.acme.model.user.Role</class>
+		<class>com.acme.model.user.Reviewer</class>
+		<class>com.acme.model.user.Customer</class>
+		<class>com.acme.model.user.Company</class>
+		<class>com.acme.model.geography.State</class>
+		<class>com.acme.model.geography.Language</class>
+		<class>com.acme.model.geography.Country</class>
+		<class>com.acme.model.geography.City</class>
+		<class>com.acme.model.examination.TestAnswerExam</class>
+		<class>com.acme.model.examination.Register</class>
+		<class>com.acme.model.examination.PreRegister</class>
+		<class>com.acme.model.examination.OpenAnswerExam</class>
+		<class>com.acme.model.examination.Examination</class>
+		<class>com.acme.model.examination.AnswerExam</class>
+		<class>com.acme.model.exam.TestQuestion</class>
+		<class>com.acme.model.exam.Question</class>
+		<class>com.acme.model.exam.Option</class>
+		<class>com.acme.model.exam.Exam</class>
+		<class>com.acme.model.certification.FamilyProfessional</class>
+		<class>com.acme.model.certification.Certification</class>
+		<class>com.acme.model.Pay</class>
+		<class>com.acme.model.Office</class>
+		<class>com.acme.model.MethodPay</class>
+		<class>com.acme.model.IntervalDate</class>
+		<class>com.acme.model.AbstractPersistable</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/acme" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="root" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- Auto-detect entity classes -->
+			<property name="hibernate.archive.autodetection" value="class, hbm" />
+		</properties>
+	</persistence-unit>
+</persistence>

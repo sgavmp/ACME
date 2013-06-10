@@ -21,7 +21,8 @@
 		</header>
 		<form class="form-horizontal" method="post"
 			th:action="${isNew}?@{/acme/user/create}:@{/acme/user/edit/id/__${user.id}__}"
-			th:object="${user}">
+			th:object="${user}"
+			val:validate="${user}">
 			<div th:if="${#fields.hasErrors('*')}" id="error-div"
 				class="alert alert-error">
 				<button id="btcerrar" type="button" class="close"
@@ -45,12 +46,12 @@
 				<p th:text="${#messages.msg('__${error}__')}">Error</p>
 			</div>
 			<script>
-				require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ],
-						function(on, dom, domConstruct) {
-							dojo.query(".close").onclick(function(evt) {
-								domConstruct.destroy(this.parentNode);
-							});
-						});
+				require([ "dojo/on", "dojo/dom", "dojo/dom-construct",
+						"dojo/query" ], function(on, dom, domConstruct, query) {
+					query(".close").onclick(function(evt) {
+						domConstruct.destroy(this.parentNode);
+					});
+				});
 			</script>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.id}" class="control-label">Id</label>
@@ -64,7 +65,7 @@
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.nombre}" class="control-label">Name</label>
 				<div class="controls">
-					<input required="required" th:field="*{name}"
+					<input th:field="*{name}"
 						th:value="${user.name}" type="text" id="name"></input>
 				</div>
 			</div>
@@ -72,16 +73,24 @@
 				<label th:text="#{usuario.formulario.apellidos}"
 					class="control-label">Apellidos</label>
 				<div class="controls">
-					<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required"
-						th:field="*{surname}" th:value="${user.surname}" type="text"
-						id="surname" size="16" class="span2"></input>
+					<input th:field="*{surname}"
+						th:value="${user.surname}" type="text" id="surname" size="16"
+						class="span2"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.email}" class="control-label">Email</label>
+				<div class="controls">
+					<input th:field="*{email}"
+						th:value="${user.email}" type="text" id="surname" size="16"
+						class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.username}"
 					class="control-label">Nombre de Usuario</label>
 				<div class="controls">
-					<input required="required" th:field="*{username}"
+					<input th:field="*{username}"
 						th:value="${user.username}" type="text" id="username"></input>
 				</div>
 			</div>
@@ -89,22 +98,14 @@
 				<label th:text="#{usuario.formulario.password}"
 					class="control-label">Contraseña</label>
 				<div class="controls">
-					<input pattern="(\d{1,2}([\.]\d{1})?)" required="required"
-						th:field="*{password}" type="text" id="password"></input>
-				</div>
-			</div>
-			<div class="control-group">
-				<label th:text="#{usuario.formulario.passwordconf}"
-					class="control-label">Contraseña</label>
-				<div class="controls">
-					<input pattern="(\d{1,2}([\.]\d{1})?)" required="required"
-						type="text" id="password"></input>
+					<input th:required="${isNew}" th:field="*{password}" type="password"
+						id="password"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.phone}" class="control-label">Telefono</label>
 				<div class="controls">
-					<input required="required" th:field="*{phone}"
+					<input th:field="*{phone}"
 						th:value="${user.phone}" type="text" id="phone"></input>
 				</div>
 			</div>
@@ -112,26 +113,133 @@
 				<label th:text="#{usuario.formulario.mobilephone}"
 					class="control-label">Telefono movil</label>
 				<div class="controls">
-					<input pattern="(\d{1,3}([\.]\d{1,2})?)" required="required"
-						th:field="*{mobilephone}" th:value="${user.mobilephone}"
-						type="text" id="mobilephonec" size="16" class="span2"></input>
+					<input  th:field="*{mobilephone}"
+						th:value="${user.mobilephone}" type="text" id="mobilephonec"
+						size="16" class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.direccion}"
 					class="control-label">Direccion</label>
 				<div class="controls">
-					<input required="required" th:field="*{address}"
+					<input th:field="*{address}"
 						th:value="${user.address}" type="text" id="direccion"></input>
 				</div>
 			</div>
 			<div class="control-group">
+				<label th:text="#{usuario.formulario.country}" class="control-label">Pais</label>
+				<div class="controls">
+					<select id="country" th:field="*{country}">
+						<option th:each="c : ${allCountry}" th:value="${c.id}"
+							th:text="${c.name}">España</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.state}" class="control-label">Provincia</label>
+				<div class="controls">
+					<select id="state" th:field="*{state}">
+						<option th:each="s : ${statesInCountry}" th:value="${s.id}"
+						th:text="${s.name}">Seleccione un Pais</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label th:text="#{usuario.formulario.city}" class="control-label">Ciudad</label>
+				<div class="controls">
+					<select id="city" th:field="*{city}">
+						<option th:each="ci : ${citiesByState}" th:value="${ci.id}"
+						th:text="${ci.name}">Selecciona una Provincia</option>
+					</select>
+				</div>
+			</div>
+			<script>
+				require(
+						[ "dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/_base/array" ],
+						function(on, dom, domConstruct, array) {
+							on(dom.byId("pais"),"change",function(evt) {
+										index = evt.target.selectedIndex;
+										val = evt.target[index].value;
+										dojo.xhrGet({
+													url : "country/" + val+"/states",
+													handleAs:"json",
+													load : function(result) {
+														domConstruct.empty("state");
+														dojo.byId("state").add(dojo.create("option", { innerHTML:"Selecciona una provincia", value:-1, disabled:"True", selected:"True" }));
+														array.forEach(result, function(item){
+															dojo.byId("state").add(dojo.create("option", { innerHTML:item.name, value:item.id }));
+														});
+														domConstruct.empty("city");
+														dojo.byId("city").add(dojo.create("option", { innerHTML:"Selecciona una Provincia", value:-1, disabled:"True", selected:"True" }));
+														}});
+													});
+							on(dom.byId("state"),"change",function(evt) {
+								index = evt.target.selectedIndex;
+								val = evt.target[index].value;
+								dojo.xhrGet({
+											url : "state/" + val+"/cities",
+											handleAs:"json",
+											load : function(result) {
+												domConstruct.empty("city");
+												dojo.byId("city").add(dojo.create("option", { innerHTML:"Selecciona una Ciudad", value:-1, disabled:"True", selected:"True" }));
+												array.forEach(result, function(item){
+													dojo.byId("city").add(dojo.create("option", { innerHTML:item.name, value:item.id }));
+												});
+												}});
+											});
+												});
+			</script>
+			<div class="control-group" th:unless="${isNew}">
 				<table>
 					<thead>
 						<tr>
 							<th>Roles</th>
 							<th>
-								<button type="submit" name="addRow">Añadir Requisito</button>
+								<button
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_ADMIN)}"
+									type="submit" name="createRoleAdmin">Crear Rol Admin</button>
+								<button
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_ADMIN)}"
+									type="submit" name="removeRoleAdmin">Borrar Rol Admin</button>
+							</th>
+							<th>
+								<button
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_USER)}"
+									type="submit" name="createRoleCustomer">Crear Rol
+									Customer</button>
+								<button
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_USER)}"
+									type="submit" name="removeRoleCustomer">Borrar Rol
+									Customer</button>
+							</th>
+							<th>
+								<button
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_COMPANY)}"
+									type="submit" name="createRoleCompany">Crear Rol
+									Compañia</button>
+								<button
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_COMPANY)}"
+									type="submit" name="removeRoleCompany">Borrar Rol
+									Compañia</button>
+							</th>
+							<th>
+								<button
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_REVIEWER)}"
+									type="submit" name="createRoleReviewer">Crear Rol
+									Reviewer</button>
+								<button
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_REVIEWER)}"
+									type="submit" name="removeRoleReviewer">Borrar Rol
+									Reviewer</button>
+							</th>
+							<th>
+								<button
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_WORKER)}"
+									type="submit" name="createRoleWorker">Crear Rol Worker</button>
+								<button
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_WORKER)}"
+									type="submit" name="removeRoleWorker">Borrar Rol
+									Worker</button>
 							</th>
 						</tr>
 					</thead>
@@ -142,8 +250,8 @@
 			<div class="form-actions">
 				<input th:value="#{usuario.formulario.guardar}" type="submit"
 					class="btn btn-primary" value="Guardar" name="create"></input> <a
-					th:text="#{usuario.formulario.cancelar}" href="/acme/userification"
-					th:href="@{/acme/userification}" class="btn">Cancel</a>
+					th:text="#{usuario.formulario.cancelar}" href="/acme/user"
+					th:href="@{/acme/user}" class="btn">Cancel</a>
 			</div>
 		</form>
 	</section>

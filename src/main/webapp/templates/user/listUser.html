@@ -62,8 +62,8 @@
 					<td th:text="${user.surname}">Alonso</td>
 					<td th:text="${user.username}">purbea</td>
 					<td th:text="${user.email}">prubea@correo.es</td>
-					<td th:each="rol : ${user.roles.keySet()}">
-						<p th:text="${#messages.msg('__${rol}__')}"></p>
+					<td>
+						<p th:each="rol : ${user.roles.keySet()}" th:text="${#messages.msg('__${rol}__')}"> </p>
 					</td>
 					<td><a th:text="#{usuario.tabla.editar}"
 						href="/acme/user/edit/id/4"

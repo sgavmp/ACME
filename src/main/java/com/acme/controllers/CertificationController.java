@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.ws.http.HTTPException;
 
+import org.hibernate.OptimisticLockException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -105,7 +106,7 @@ public class CertificationController {
 		return "/certification/oneCertification";
 	}
 
-	// Bora un requisito cuando se esta modificando un certificado
+	// Borra un requisito cuando se esta modificando un certificado
 	@RequestMapping(value = "/edit/id/{idcert}", params = "removeRow", method = RequestMethod.POST)
 	public String removeRowEdit(
 			@ModelAttribute("cert") final Certification cert,
@@ -150,7 +151,13 @@ public class CertificationController {
 		cert.setFamilyProfessional(servicecertification
 				.getFamilyProfessionalById(cert.getFamilyProfessional().getId()));
 		cert.setCompany(serviceuser.getUserById(cert.getCompany().getId()));
-		servicecertification.updateCertification(cert);
+		try {
+		cert=servicecertification.updateCertification(cert);
+		}
+		catch(Exception e) {
+			model.addAttribute("error", "certification.lockexception");
+			return "/certification/oneCertification";
+		}
 		model.addAttribute("activeMenu", "certification");
 		model.addAttribute("cert", cert);
 		model.addAttribute("isNew", false);
@@ -198,7 +205,7 @@ public class CertificationController {
 		cert.setFamilyProfessional(servicecertification
 				.getFamilyProfessionalById(cert.getFamilyProfessional().getId()));
 		cert.setCompany(serviceuser.getUserById(cert.getCompany().getId()));
-		servicecertification.createCertification(cert);
+		cert=servicecertification.createCertification(cert);
 		redirectAttrs.addAttribute("id", cert.getId()).addFlashAttribute(
 				"info", "certification.create");
 		return "redirect:/acme/certification/edit/id/{id}";

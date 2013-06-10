@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -20,6 +22,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 import com.acme.model.AbstractPersistable;
 import com.acme.model.IntervalDate;
@@ -37,11 +41,12 @@ import com.google.common.collect.Sets;
 
 @Entity
 public class Certification extends AbstractPersistable<Long> {
+
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6344712055991213828L;
-
+	private static final long serialVersionUID = 2546415602571603134L;
 
 	// -------------------------------------------------------------
 	// Attributes
@@ -84,13 +89,8 @@ public class Certification extends AbstractPersistable<Long> {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "requirement")
+	@Fetch(FetchMode.SELECT)
 	private List<String> requirements;
-
-	@OneToMany(mappedBy = "certification", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Examination> examinations;
-
-	@OneToMany(mappedBy = "certification", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<PreRegister> preRegisters;
 
 	@OneToMany(mappedBy = "certification", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Exam.class, fetch = FetchType.EAGER)
 	private Set<Exam> exams;
@@ -101,8 +101,6 @@ public class Certification extends AbstractPersistable<Long> {
 	public Certification() {
 		super();
 		this.requirements = Lists.newArrayList();
-		this.examinations = Sets.newHashSet();
-		this.preRegisters = Sets.newHashSet();
 		this.exams = Sets.newHashSet();
 	}
 
@@ -120,9 +118,6 @@ public class Certification extends AbstractPersistable<Long> {
 		this.familyProfessional = familyProfessional;
 		this.requirements = requirements;
 		this.exams = Sets.newHashSet();
-		;
-		this.preRegisters = Sets.newHashSet();
-		this.examinations = Sets.newHashSet();
 		this.requirementCalification = requirementCalification;
 	}
 
@@ -177,22 +172,6 @@ public class Certification extends AbstractPersistable<Long> {
 		this.requirements = requirements;
 	}
 
-	public Set<Examination> getExaminations() {
-		return examinations;
-	}
-
-	public void setExaminations(Set<Examination> examinations) {
-		this.examinations = examinations;
-	}
-
-	public Set<PreRegister> getPreRegisters() {
-		return preRegisters;
-	}
-
-	public void setPreRegisters(Set<PreRegister> preRegisters) {
-		this.preRegisters = preRegisters;
-	}
-
 	public User getCompany() {
 		return company;
 	}
@@ -241,25 +220,6 @@ public class Certification extends AbstractPersistable<Long> {
 		this.requirements.remove(this.requirements.get(r));
 	}
 
-	public void addExamination(Examination e) {
-		this.examinations.add(e);
-	}
-
-	public void removeExamination(Examination e) {
-		this.examinations.remove(e);
-	}
-
-	public void addPreRegister(PreRegister p) {
-		if (this.preRegisters == null) {
-			this.preRegisters = Sets.newHashSet();
-		}
-		this.preRegisters.add(p);
-	}
-
-	public void removePreRegister(PreRegister p) {
-		this.preRegisters.remove(p);
-	}
-
 	public void addExam(Exam e) {
 		if (this.exams == null) {
 			this.exams = Sets.newHashSet();
@@ -282,7 +242,6 @@ public class Certification extends AbstractPersistable<Long> {
 	public PreRegister createPreRegisterCustomer(IntervalDate intervaloDeseado,
 			Customer customer) {
 		PreRegister temp = new PreRegister(intervaloDeseado, customer, this);
-		this.addPreRegister(temp);
 		customer.addPreRegister(temp);
 		return temp;
 	}
@@ -296,16 +255,10 @@ public class Certification extends AbstractPersistable<Long> {
 
 	public Examination createNewExaminationForCertification(
 			Date dateRealization, Date dateLimit, Integer maxCustomer,
-			Integer minCustomer, Office place, Reviewer reviewer) {
+			Integer minCustomer, Office place, User reviewer) {
 		Examination temp = new Examination(dateRealization, dateLimit,
 				maxCustomer, minCustomer, this, place, reviewer);
-		this.addExamination(temp);
 		return temp;
-	}
-
-	public void removePreRegisterCustomer(PreRegister pre) {
-		this.removePreRegister(pre);
-		pre.getCustomer().removePreRegister(pre);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.acme.model.user;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -25,7 +27,6 @@ public class Company extends Role {
 	// -------------------------------------------------------------
 	public Company() {
 		super();
-
 	}
 
 	public Company(String fax, String web, String contactName,

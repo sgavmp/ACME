@@ -3,6 +3,8 @@ package com.acme.model.user;
 import java.io.Serializable;
 
 import javax.jws.HandlerChain;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;

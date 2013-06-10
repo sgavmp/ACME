@@ -1,5 +1,7 @@
 package com.acme.model.geography;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,9 +20,6 @@ public class City extends AbstractPersistable<Long>{
 	// Attributes
 	// -------------------------------------------------------------
 	private String name;
-	@ManyToOne
-	@JoinColumn(name = "state_id", referencedColumnName = "id")
-	private State state;
 
 	// -------------------------------------------------------------
 	// Constructors
@@ -28,9 +27,10 @@ public class City extends AbstractPersistable<Long>{
 	public City() {
 	}
 
-	public City(String name) {
+	//Constructor solo para thymeleaf
+	public City(String id) {
 		super();
-		this.name = name;
+		this.id = Long.valueOf(id);
 	}
 
 	// -------------------------------------------------------------
@@ -45,41 +45,9 @@ public class City extends AbstractPersistable<Long>{
 		this.name = name;
 	}
 
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
 	// -------------------------------------------------------------
 	// Methods
 	// -------------------------------------------------------------
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		City other = (City) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
 	
 	@Override
 	public String toString() {

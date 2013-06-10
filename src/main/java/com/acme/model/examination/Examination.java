@@ -1,10 +1,13 @@
 package com.acme.model.examination;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -18,6 +21,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Future;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acme.model.AbstractPersistable;
 
@@ -28,6 +36,7 @@ import com.acme.model.exam.Exam;
 import com.acme.model.user.Customer;
 import com.acme.model.user.Reviewer;
 import com.acme.model.user.Role;
+import com.acme.model.user.User;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -43,35 +52,52 @@ public class Examination extends AbstractPersistable<Long>{
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
+	@NotNull(message="examination.daterealization.notnull")
+	@Future(message="examination.daterealization.futuro")
 	private Date dateRealization;
+	
 	@Temporal(value = TemporalType.DATE)
+	@NotNull(message="examination.datelimitregister.notnull")
+	@Future(message="examination.datelimitregister.futuro")
 	private Date dateLimitRegister;
+	
+	@Temporal(TemporalType.TIME)
+	@NotNull(message="examination.timerealization.nontull")
+	private Date timeRealization;
+	
 	private Integer maxCustomer;
+	
 	private Integer minCustomer;
+	
 	@ManyToOne
+	@NotNull(message="examination.daterealization.nontull")
 	private Certification certification;
+	
 	private Pay payCost;
+	
 	@ManyToOne
 	private Exam exam;
+	
 	@ManyToOne
 	private Office realizationPlace;
-	@OneToMany(mappedBy="examination",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	private Set<Register> registers;
+	
 	@ManyToOne
-	private Reviewer reviewer;
+	private User reviewer;
 
 	// -------------------------------------------------------------
 	// Constructors
 	// -------------------------------------------------------------
 	public Examination() {
 		super();
-		this.registers= Sets.newHashSet();
+		this.dateLimitRegister=new Date(System.currentTimeMillis());
+		this.dateRealization=new Date(System.currentTimeMillis());
+		this.timeRealization=new Date(System.currentTimeMillis());
 	}
 
 	public Examination(Date dateRealization, Date dateLimitRegister,
 			Integer maxCustomer, Integer minCustomer,
-			Certification certification, Office realizationPlace, Reviewer reviewer) {
+			Certification certification, Office realizationPlace, User reviewer) {
 		super();
 		this.dateRealization = dateRealization;
 		this.dateLimitRegister = dateLimitRegister;
@@ -82,7 +108,6 @@ public class Examination extends AbstractPersistable<Long>{
 		this.realizationPlace = realizationPlace;
 		this.exam = this.certification.getRandomExam();
 		this.setReviewer(reviewer);
-		this.registers= Sets.newHashSet();
 	}
 
 	// -------------------------------------------------------------
@@ -149,60 +174,34 @@ public class Examination extends AbstractPersistable<Long>{
 	public void setRealizationPlace(Office realizationPlace) {
 		this.realizationPlace = realizationPlace;
 	}
-
 	
-	public Set<Register> getRegisters() {
-		return registers;
-	}
-
-	public void setRegisters(Set<Register> registers) {
-		this.registers = registers;
-	}
-
-	
-	public Reviewer getReviewer() {
+	public User getReviewer() {
 		return reviewer;
 	}
 
-	public void setReviewer(Reviewer reviewer) {
+	public void setReviewer(User reviewer) {
 		this.reviewer = reviewer;
 	}
 
 	// -------------------------------------------------------------
 	// Methods
 	// -------------------------------------------------------------
-	public void correctTestExams() {
-		for (Register r : this.registers){
-			r.correctTestExam();
-		}
-	}
-
-	public void addRegister(Register r) {
-		this.registers.add(r);
-	}
-
-	public void removeRegister(Register r) {
-		this.registers.remove(r);
-	}
-
-	@Transient
-	public List<Role> getCustomers() {
-		return (List<Role>) Iterables.transform(this.registers,
-				new FunctionRegisterToCustomer());
-	}
-
-	public Register createRegisterWithPay(Pay pay, Customer customer) {
+	public Register createRegisterWithPay(Pay pay, User customer) {
 		Register temp = new Register(pay, this, customer);
-		this.addRegister(temp);
-		customer.addRegister(temp);
 		return temp;
 	}
 	
-	public Register createRegisterWithoutPay(Customer customer) {
+	public Register createRegisterWithoutPay(User customer) {
 		Register temp = new Register(this, customer);
-		this.addRegister(temp);
-		customer.addRegister(temp);
 		return temp;
+	}
+
+	public Date getTimeRealization() {
+		return timeRealization;
+	}
+
+	public void setTimeRealization(Date timeRealization) {
+		this.timeRealization = timeRealization;
 	}
 
 }

@@ -28,6 +28,7 @@
 			th:action="${isNew}?@{/acme/certification/create}:@{/acme/certification/edit/id/__${cert.id}__}"
 			th:object="${cert}"
 			val:validate="${cert}">
+			<input type="hidden" th:field="*{version}" th:value="${cert.version}" id="version" ></input>
 			<div th:if="${#fields.hasErrors('*')}" id="error-div" class="alert alert-error">
 				<button id="btcerrar" type="button" class="close" data-dismiss="alert">×</button>
 				<ul class="errorlist">

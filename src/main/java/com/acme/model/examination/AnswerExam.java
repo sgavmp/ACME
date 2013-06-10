@@ -1,5 +1,7 @@
 package com.acme.model.examination;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;

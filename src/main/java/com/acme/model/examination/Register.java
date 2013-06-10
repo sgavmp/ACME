@@ -3,6 +3,8 @@ package com.acme.model.examination;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -24,6 +26,7 @@ import com.acme.model.exam.ExamType;
 import com.acme.model.exam.Option;
 import com.acme.model.user.Customer;
 import com.acme.model.user.Role;
+import com.acme.model.user.User;
 
 
 @Entity
@@ -42,10 +45,10 @@ public class Register extends AbstractPersistable<Long>{
 	private Double calification;
 	@OneToMany(mappedBy="register",targetEntity=AnswerExam.class,cascade=CascadeType.ALL)
 	private List<AnswerExam> answerExam;
-	@ManyToOne(targetEntity=Examination.class)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Examination examination;
-	@ManyToOne(targetEntity=Role.class,fetch=FetchType.EAGER)
-	private Role customer;
+	@ManyToOne(fetch=FetchType.EAGER)
+	private User customer;
 
 	// -------------------------------------------------------------
 	// Constructors
@@ -58,7 +61,7 @@ public class Register extends AbstractPersistable<Long>{
 	}
 
 	public Register(Pay pay, Examination examination,
-			Customer customer) {
+			User customer) {
 		super();
 		this.pay=pay;
 		this.examination = examination;
@@ -66,7 +69,7 @@ public class Register extends AbstractPersistable<Long>{
 	}
 	
 	public Register(Examination examination,
-			Customer customer) {
+			User customer) {
 		super();
 		this.pay=null;
 		this.examination = examination;
@@ -87,11 +90,11 @@ public class Register extends AbstractPersistable<Long>{
 	}
 
 
-	public Role getCustomer() {
+	public User getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Role customer) {
+	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
 

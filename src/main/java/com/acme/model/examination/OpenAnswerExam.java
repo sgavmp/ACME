@@ -1,5 +1,7 @@
 package com.acme.model.examination;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -8,6 +10,7 @@ import com.acme.model.exam.Question;
 
 @Entity
 @DiscriminatorValue("T")
+@Access(AccessType.PROPERTY)
 public class OpenAnswerExam extends AnswerExam {
 	// -------------------------------------------------------------
 	// Attributes

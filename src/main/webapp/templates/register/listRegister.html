@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body class="claro">
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+			class="alert alert-success">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${info}__')}">Accion realizada con
+				exito</p>
+		</div>
+		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+			class="alert alert-error">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${error}__')}">Error</p>
+		</div>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ], function(
+					on, dom, domConstruct) {
+				dojo.query(".close").onclick(function(evt) {
+					domConstruct.destroy(this.parentNode);
+				});
+			});
+		</script>
+		<h1 th:text="#{registro.tabla.titulo}">Lista de Registros</h1>
+		<table id="tabla_examination" class="table table-striped"
+			dt:table="true" dt:theme="bootstrap2">
+			<thead>
+				<tr>
+					<th th:text="#{registro.tabla.id}">ID</th>
+					<th th:text="#{registro.tabla.certificado}">Convocatoria</th>
+					<th th:text="#{registro.tabla.fecrealizacion}">Fecha de realizacion</th>
+					<th th:text="#{registro.tabla.timerealizacion}">Hora de realizacion</th>
+					<th th:text="#{registro.tabla.calificacion}">Calificacion</th>
+					<th th:text="#{registro.tabla.borrar}">Borrar Registro</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:unless="${#lists.isEmpty(allRegisters)}"
+					th:each="reg,rowStat  : ${allRegisters}">
+					<td th:text="${reg.id}">1</td>
+					<td th:text="${reg.examination.certification.name}">Ingles</td>
+					<td th:with="df=#{date.format}"
+						th:text="${#dates.format(reg.examination.dateRealization,df)}">25/05/2013</td>
+					<td th:with="df=#{time.format}"
+						th:text="${#dates.format(reg.examination.timeRealization,df)}">13:30</td>
+						<td th:text="${reg.calification}">6</td>
+					<td><a th:text="#{registro.tabla.borrar}"
+						href="/acme/register/delete/id/4"
+						th:href="@{'/acme/register/delete/id/' + ${reg.id}}">Delete</a></td>
+				</tr>
+				<tr th:unless="${!#lists.isEmpty(allRegisters)}">
+					<td th:text="#{registro.tabla.vacia}" colspan="6"><h2>No
+							hay familias registros en el sistema</h2></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>

@@ -2,17 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
 <meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 <title>ACME</title>
 <!--  <link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/> -->
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap.css}'/>
+<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap.css}' media="all"/>
+<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap-responsive.css}' media="all"/>
+<link rel='stylesheet' href='/webjars/dojo/1.8.1/dijit/themes/claro/claro.css' th:href='@{/webjars/dojo/1.8.1/dijit/themes/claro/claro.css}'/>
 <link href="../css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 <link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/datatables-bootstrap/2-20120201/DT_bootstrap.css}'/>
 <script>dojoConfig = {parseOnLoad: true}</script>
-<!-- <script src="../js/dojo/dojo.js" th:src="@{/js/dojo/dojo.js}"></script>  -->
 <script src="../js/dojo/dojo.js" th:src="@{/webjars/dojo/1.8.1/dojo/dojo.js}"></script>
 <script src="../js/jquery" th:src="@{/webjars/jquery/2.0.0/jquery.min.js}"></script>
 <script src="../js/jquery.datatables" th:src="@{/webjars/datatables/1.9.4/media/js/jquery.dataTables.min.js}"></script>
-<script>require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);</script>
+<script>require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button", "dijit/form/DateTextBox",  "dijit/form/TimeTextBox"]);</script>
 </head>
 <body>
 <header id="menu" th:fragment="header">
@@ -28,14 +30,14 @@
               <li th:class="((${activeMenu}=='certification')?'active')">
                 <a th:text="#{menu.principal.certificados}" th:href="@{/acme/certification}">Certificados</a>
               </li>
-              <li th:class="((${activeMenu}=='convocatorias')?'active')">
-                <a th:text="#{menu.principal.convocatorias}" href="">Convocatorias</a>
+              <li th:class="((${activeMenu}=='examination')?'active')">
+                <a th:text="#{menu.principal.convocatorias}" th:href="@{/acme/examination}">Convocatorias</a>
               </li>
-              <li th:class="((${activeMenu}=='users')?'active')">
+              <li th:class="((${activeMenu}=='user')?'active')">
                 <a th:text="#{menu.principal.usuarios}" th:href="@{/acme/user}">Usuarios</a>
               </li>
-              <li th:class="((${activeMenu}=='registers')?'active')">
-                <a th:text="#{menu.principal.registros}" href="">Registros</a>
+              <li th:class="((${activeMenu}=='register')?'active')">
+                <a th:text="#{menu.principal.registros}" th:href="@{/acme/register}">Registros</a>
               </li>
               <li class="divider-vertical">
               </li>

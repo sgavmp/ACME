@@ -17,8 +17,8 @@ import com.google.common.collect.Maps;
 @Service
 public class UserService {
 
-	 @Autowired
-	 private UserRepository repositoryuser;
+	@Autowired
+	private UserRepository repositoryuser;
 	
 	public List<User> getAllCompanyWithId() {
 		return repositoryuser.findAllUserTypeCompany();
@@ -30,5 +30,25 @@ public class UserService {
 
 	public List<User> getAllUsers() {
 		return (List<User>) repositoryuser.findAll();
+	}
+	
+	public User updateUser(User u){
+		return repositoryuser.save(u);
+	}
+	
+	public User createUser(User u){
+		return repositoryuser.save(u);
+	}
+	
+	public void removeUser(User u){
+		repositoryuser.delete(u);
+	}
+	
+	public void removeUser(Long id){
+		repositoryuser.delete(id);
+	}
+	
+	public User getUserByUsername(String username){
+		return repositoryuser.findUserByUsername(username);
 	}
 }

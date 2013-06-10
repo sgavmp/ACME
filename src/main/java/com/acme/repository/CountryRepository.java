@@ -6,6 +6,6 @@ import com.acme.model.examination.Examination;
 import com.acme.model.geography.Country;
 import com.acme.model.geography.State;
 
-public interface StateRepository  extends CrudRepository<State, Long>  {
+public interface CountryRepository  extends CrudRepository<Country, Long>  {
 
 }

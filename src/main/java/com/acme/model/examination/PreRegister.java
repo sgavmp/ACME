@@ -2,6 +2,8 @@ package com.acme.model.examination;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

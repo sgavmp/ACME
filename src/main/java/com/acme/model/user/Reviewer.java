@@ -2,6 +2,8 @@ package com.acme.model.user;
 
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

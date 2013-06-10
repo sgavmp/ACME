@@ -21,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 import org.springframework.data.domain.Persistable;
 
@@ -38,7 +39,9 @@ public abstract class AbstractPersistable<PK extends Serializable> implements Pe
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private PK id;
+	protected PK id;
+	@Version
+	private Integer version;
 
 	/*
 	 * (non-Javadoc)
@@ -119,5 +122,13 @@ public abstract class AbstractPersistable<PK extends Serializable> implements Pe
 		hashCode += null == getId() ? 0 : getId().hashCode() * 31;
 
 		return hashCode;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }
