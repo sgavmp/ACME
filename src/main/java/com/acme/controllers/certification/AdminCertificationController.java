@@ -1,4 +1,4 @@
-package com.acme.controllers;
+package com.acme.controllers.certification;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -42,8 +42,8 @@ import com.acme.services.UserService;
 import com.google.common.collect.Lists;
 
 @Controller
-@RequestMapping({ "/certification" })
-public class CertificationController {
+@RequestMapping({ "/admin/certification" })
+public class AdminCertificationController {
 
 	@Autowired
 	private MessageSource messageSource;
@@ -54,7 +54,7 @@ public class CertificationController {
 	@Autowired
 	private UserService serviceuser;
 
-	public CertificationController() {
+	public AdminCertificationController() {
 		super();
 	}
 
@@ -209,13 +209,6 @@ public class CertificationController {
 		redirectAttrs.addAttribute("id", cert.getId()).addFlashAttribute(
 				"info", "certification.create");
 		return "redirect:/acme/certification/edit/id/{id}";
-	}
-
-	// Muestra un listado con todos los certificados
-	@RequestMapping({ "/**", "/list" })
-	public String showAllCertificate(Model model) {
-		model.addAttribute("activeMenu", "certification");
-		return "/certification/listCertification";
 	}
 
 	// Muestra el formulario de crear una nueva familia profesional y el listado

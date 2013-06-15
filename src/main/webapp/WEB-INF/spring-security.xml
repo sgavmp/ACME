@@ -18,13 +18,10 @@
 		<sec:intercept-url pattern="/acme/logout" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/acme/" access="permitAll" />
 		<sec:intercept-url pattern="/acme/index" access="permitAll" />
-		<sec:intercept-url pattern="/acme/certification/**"
-			access="hasRole('3')" />
-		<sec:intercept-url pattern="/acme/examination/**"
-			access="hasRole('3')" />
-			<sec:intercept-url pattern="/acme/register/**"
-			access="hasRole('3')" />
-		<sec:intercept-url pattern="/acme/user/**" access="hasRole('3')" />
+		<sec:intercept-url pattern="/acme/certification/**" access="permitAll" />
+		<sec:intercept-url pattern="/acme/examination/**" access="permitAll" />
+		<sec:intercept-url pattern="/acme/admin/**" access="hasRole('0')" />
+		<sec:intercept-url pattern="/acme/customer/**" access="hasRole('4')" />
 		<sec:intercept-url pattern="/**" access="denyAll" />
 		<sec:form-login login-page="/acme/login"
 			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />

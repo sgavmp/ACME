@@ -1,4 +1,4 @@
-package com.acme.controllers;
+package com.acme.controllers.user;
 
 import java.util.List;
 import java.util.Set;
@@ -36,8 +36,8 @@ import com.acme.services.GeographyService;
 import com.acme.services.UserService;
 
 @Controller
-@RequestMapping({ "/user" })
-public class UserController {
+@RequestMapping({ "/admin/user" })
+public class AdminUserController {
 
 	@Autowired
 	private MessageSource messageSource;

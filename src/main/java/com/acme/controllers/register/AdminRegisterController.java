@@ -1,4 +1,4 @@
-package com.acme.controllers;
+package com.acme.controllers.register;
 
 import java.util.List;
 import java.util.Set;
@@ -41,8 +41,8 @@ import com.acme.services.RegisterService;
 import com.acme.services.UserService;
 
 @Controller
-@RequestMapping({ "/register" })
-public class RegisterController {
+@RequestMapping({ "/admin/register" })
+public class AdminRegisterController {
 
 	@Autowired
 	private MessageSource messageSource;

@@ -1,4 +1,4 @@
-package com.acme.controllers;
+package com.acme.controllers.examination;
 
 import java.util.List;
 import java.util.Set;
@@ -39,8 +39,8 @@ import com.acme.services.GeographyService;
 import com.acme.services.UserService;
 
 @Controller
-@RequestMapping({ "/examination" })
-public class ExaminationController {
+@RequestMapping({ "/admin/examination" })
+public class AdminExaminationController {
 
 	@Autowired
 	private MessageSource messageSource;
@@ -59,15 +59,6 @@ public class ExaminationController {
 	@ModelAttribute("allCertifications")
 	public List<Certification> getAllCertifications() {
 		return servicecertification.getAllCertification();
-	}
-	
-	// Muestra un listado con todos las convocatorias y el formulario para crear una nueva
-	@RequestMapping({ "", "/**", "/list" })
-	public String showAllExamination(Model model) {
-		model.addAttribute("activeMenu", "examination");
-		model.addAttribute("isNew", true);
-		model.addAttribute("exam", new Examination());
-		return "/examination/listExamination";
 	}
 	
 	@RequestMapping(value = "/edit/id/{idExam}", method = RequestMethod.GET)
