@@ -9,17 +9,17 @@
 	</header>
 	<section class="container">
 		<header class="jumbotron subhead" id="submenu">
-			<div class="subnav subnav-fixed">
+			<div class="subnav subnav-fixed" sec:authorize="hasRole(0)">
 				<ul class="nav nav-pills">
 					<li class="active"><a th:text="#{menu.certificado.listar}"
-						href="/acme/certification" th:href="@{/acme/certification}">Listar
+						href="/acme/admin/certification" th:href="@{/acme/admin/certification}">Listar
 							Certificados</a></li>
 					<li><a th:text="#{menu.certificado.crear}"
-						href="/acme/certification?id=4"
-						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+						href="/acme/admin/certification?id=4"
+						th:href="@{/acme/admin/certification/create}">Crear Certificado</a></li>
 					<li><a th:text="#{menu.certificado.familyprofessional}"
-						href="/acme/certification/family"
-						th:href="@{/acme/certification/family}">Familias Professionales</a></li>
+						href="/acme/admin/certification/family"
+						th:href="@{/acme/admin/certification/family}">Familias Professionales</a></li>
 				</ul>
 			</div>
 			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
@@ -52,7 +52,7 @@
 					<th th:text="#{certificado.tabla.nombre}">Nombre</th>
 					<th th:text="#{certificado.tabla.company}">Empresa</th>
 					<th th:text="#{certificado.tabla.familia}">Familia Profesional</th>
-					<th th:text="#{certificado.tabla.acciones}">Acciones</th>
+					<th th:text="#{certificado.tabla.acciones}" sec:authorize="hasRole(0)">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,7 +62,7 @@
 					<td th:text="${cert.name}">Ingles B1</td>
 					<td th:text="${cert.company.name}">Cambridge</td>
 					<td th:text="${cert.familyProfessional.name}">Idiomas</td>
-					<td><a th:text="#{certificado.tabla.editar}"
+					<td sec:authorize="hasRole(0)"><a th:text="#{certificado.tabla.editar}"
 						href="/acme/certification/edit/id/4"
 						th:href="@{'/acme/certification/edit/id/' + ${cert.id}}">Edit</a>/
 						<a th:text="#{certificado.tabla.borrar}"

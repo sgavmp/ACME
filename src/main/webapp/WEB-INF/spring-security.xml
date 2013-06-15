@@ -7,22 +7,11 @@
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<sec:http pattern="/css/**" security="none" />
-	<sec:http pattern="/js/**" security="none" />
-	<sec:http pattern="/img/**" security="none" />
-	<sec:http pattern="/webjars/**" security="none" />
-	<sec:http pattern="/datatablescontroller/**" security="none" />
-	<sec:http pattern="/acme/login" security="none" />
-
 	<sec:http auto-config="false" use-expressions="true">
 		<sec:intercept-url pattern="/acme/logout" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/acme/" access="permitAll" />
-		<sec:intercept-url pattern="/acme/index" access="permitAll" />
-		<sec:intercept-url pattern="/acme/certification/**" access="permitAll" />
-		<sec:intercept-url pattern="/acme/examination/**" access="permitAll" />
+		<sec:intercept-url pattern="/acme/profile" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/acme/admin/**" access="hasRole('0')" />
 		<sec:intercept-url pattern="/acme/customer/**" access="hasRole('4')" />
-		<sec:intercept-url pattern="/**" access="denyAll" />
 		<sec:form-login login-page="/acme/login"
 			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />
 		<sec:logout logout-url="/acme/logout" logout-success-url="/acme/index" />

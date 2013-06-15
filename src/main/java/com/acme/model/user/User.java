@@ -255,6 +255,8 @@ public class User extends AbstractPersistable<Long>{
 		this.setPhone(u.getPhone());
 		this.setSurname(u.getSurname());
 		this.setUsername(u.getUsername());
+		if (!u.getRoles().isEmpty()) 
+			this.setRoles(u.getRoles());
 	}
 
 	public void addRoleToUser(Role rol,UserType type) {

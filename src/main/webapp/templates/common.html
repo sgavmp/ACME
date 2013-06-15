@@ -33,10 +33,10 @@
               <li th:class="((${activeMenu}=='examination')?'active')">
                 <a th:text="#{menu.principal.convocatorias}" th:href="@{/acme/examination}">Convocatorias</a>
               </li>
-              <li th:class="((${activeMenu}=='user')?'active')">
+              <li th:class="((${activeMenu}=='user')?'active')" sec:authorize="hasRole(0)">
                 <a th:text="#{menu.principal.usuarios}" th:href="@{/acme/user}">Usuarios</a>
               </li>
-              <li th:class="((${activeMenu}=='register')?'active')">
+              <li th:if="${#authentication}" th:class="((${activeMenu}=='register')?'active')">
                 <a th:text="#{menu.principal.registros}" th:href="@{/acme/register}">Registros</a>
               </li>
               <li class="divider-vertical">
@@ -47,6 +47,9 @@
               </li>
               <li>
                 <a th:if="${#authentication}" th:text="#{menu.principal.salir}" th:href="@{/acme/logout}">Salir</a>
+              </li>
+              <li th:class="((${activeMenu}=='profile')?'active')">
+                <a th:if="!${#authentication}" th:text="#{menu.principal.signin}" th:href="@{/acme/signin}">Registrarse</a>
               </li>
             </ul>
           </div>
