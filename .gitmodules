@@ -1,3 +1,0 @@
-[submodule "ACME"]
-	path = ACME
-	url = git://github.com/Sloy/ACME.git
