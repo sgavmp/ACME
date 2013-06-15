@@ -20,7 +20,7 @@
 			<h1 th:text="#{usuario.titulo.crear}">Crear Usuario</h1>
 		</header>
 		<form class="form-horizontal" method="post"
-			th:action="${isNew}?@{/acme/user/create}:@{/acme/user/edit/id/__${user.id}__}"
+			th:action="${isProfile}?@{/acme/profile}:(${isNew}?@{/acme/create}:@{/acme/user/edit/id/__${user.id}__})"
 			th:object="${user}"
 			val:validate="${user}">
 			<div th:if="${#fields.hasErrors('*')}" id="error-div"
@@ -189,7 +189,7 @@
 											});
 												});
 			</script>
-			<div class="control-group" th:unless="${isNew}">
+			<div class="control-group" th:unless="${isNew}" sec:authorize="hasRole(0)">
 				<table>
 					<thead>
 						<tr>
@@ -251,7 +251,7 @@
 				<input th:value="#{usuario.formulario.guardar}" type="submit"
 					class="btn btn-primary" value="Guardar" name="create"></input> <a
 					th:text="#{usuario.formulario.cancelar}" href="/acme/user"
-					th:href="@{/acme/user}" class="btn">Cancel</a>
+					th:href="${isProfile}?@{/acme/}:@{acme/user}" class="btn">Cancel</a>
 			</div>
 		</form>
 	</section>

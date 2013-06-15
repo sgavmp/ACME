@@ -9,24 +9,7 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
-		<header class="jumbotron subhead" id="submenu">
-			<div class="subnav subnav-fixed">
-				<ul class="nav nav-pills">
-					<li><a th:text="#{menu.certificado.listar}"
-						href="/acme/certification" th:href="@{/acme/certification}">Listar
-							Certificados</a></li>
-					<li><a th:text="#{menu.certificado.crear}"
-						href="/acme/certification/create"
-						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
-					<li class="active"><a
-						th:text="#{menu.certificado.familyprofessional}"
-						href="/acme/certification/family"
-						th:href="@{/acme/certification/family}">Familias
-							Professionales</a></li>
-				</ul>
-			</div>
-		</header>
-		<div id="addExamination">
+		<div id="addExamination" sec:authorize="hasRole(0)">
 			<h3>Añadir nueva Convocatoria</h3>
 			<form class="form-horizontal" method="post"
 				th:action="${isNew}?@{/acme/examination/create}:@{/acme/examination/edit/id/__${exam.id}__}"
@@ -114,7 +97,7 @@
 					<input th:value="#{certificado.formulario.guardar}" type="submit"
 						class="btn btn-primary" value="Guardar" name="create"></input><a
 						th:text="#{certificado.formulario.cancelar}"
-						href="/acme/examination/" th:href="@{/acme/examination/}"
+						href="/acme/admin/examination/" th:href="@{/acme/admin/examination/}"
 						class="btn">Cancel</a>
 				</div>
 			</form>
@@ -129,9 +112,9 @@
 					<th th:text="#{exam.tabla.feclimite}">Fecha Limite Registro</th>
 					<th th:text="#{exam.tabla.fecrealizacion}">Fecha Realizacion</th>
 					<th th:text="#{exam.tabla.timerealizacion}">Hora Realizacion</th>
-					<th th:text="#{exam.tabla.editar}">Editar</th>
-					<th th:text="#{exam.tabla.borrar}">Borrar</th>
-					<th th:text="#{exam.tabla.registrar}">Registrarse</th>
+					<th th:text="#{exam.tabla.editar}" sec:authorize="hasRole(0)">Editar</th>
+					<th th:text="#{exam.tabla.borrar}" sec:authorize="hasRole(0)">Borrar</th>
+					<th th:text="#{exam.tabla.registrar}" sec:authorize="hasRole(4)">Registrarse</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -145,15 +128,15 @@
 						th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
 					<td th:with="df=#{time.format}"
 						th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
-					<td><a th:text="#{exam.tabla.editar}"
-						href="/acme/examination/edit/id/4"
-						th:href="@{'/acme/examination/edit/id/' + ${exam.id}}">Edit</a></td>
-					<td><a th:text="#{exam.tabla.borrar}"
-						href="/acme/examination/delete/id/4"
-						th:href="@{'/acme/examination/delete/id/' + ${exam.id}}">Delete</a></td>
-					<td><a th:text="#{exam.tabla.registrar}"
-						href="/acme/register/examination/"
-						th:href="@{'/acme/register/examination/id/' + ${exam.id}}">Registrarse</a></td>
+					<td sec:authorize="hasRole(0)"><a th:text="#{exam.tabla.editar}"
+						href="/acme/admin/examination/edit/id/4"
+						th:href="@{'/acme/admin/examination/edit/id/' + ${exam.id}}">Edit</a></td>
+					<td sec:authorize="hasRole(0)"><a th:text="#{exam.tabla.borrar}"
+						href="/acme/admin/examination/delete/id/4"
+						th:href="@{'/acme/admin/examination/delete/id/' + ${exam.id}}">Delete</a></td>
+					<td sec:authorize="hasRole(4)"><a th:text="#{exam.tabla.registrar}"
+						href="/acme/customer/register/examination/"
+						th:href="@{'/acme/customer/register/examination/id/' + ${exam.id}}">Registrarse</a></td>
 				</tr>
 				<tr th:unless="${!#lists.isEmpty(allExamination)}">
 					<td th:text="#{examination.tabla.vacia}" colspan="8"><h2>No

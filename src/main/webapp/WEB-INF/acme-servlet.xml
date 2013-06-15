@@ -188,8 +188,12 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
 		class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<list>
-				<!-- <bean id="certificationToString" class="com.acme.converters.CertificationToString" /> -->
 				<bean id="stringToCertification" class="com.acme.converters.StringToCertification" />
+				<bean id="stringToCountry" class="com.acme.converters.StringToCountry" />
+				<bean id="stringToState" class="com.acme.converters.StringToState" />
+				<bean id="stringToCity" class="com.acme.converters.StringToCity" />
+				<bean id="stringToUser" class="com.acme.converters.StringToUser" />
+				<bean id="stringToFamilyProfessional" class="com.acme.converters.StringToFamilyProfessional" />
 			</list>
 		</property>
 	</bean>
