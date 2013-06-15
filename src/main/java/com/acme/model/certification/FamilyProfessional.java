@@ -1,7 +1,5 @@
 package com.acme.model.certification;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
 import com.acme.model.AbstractPersistable;
@@ -26,15 +24,8 @@ public class FamilyProfessional extends AbstractPersistable<Long>{
 		super();
 	}
 	
-	public FamilyProfessional(Long id, String name){
-		this.id=id;
+	public FamilyProfessional(String name) {
 		this.name=name;
-	}
-	
-	//Constructor usado solo para Thymeleaf
-	public FamilyProfessional(String id) {
-		super();
-		this.id = Long.decode(id);
 	}
 
 	// -------------------------------------------------------------

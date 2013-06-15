@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * security.xml * * Copyright (C) 2013 Universidad de Sevilla * Author 
+	(A) 2012 Rafael Corchuelo (corchu@us.es) * * The use of this project is hereby 
+	constrained to the conditions of the * TDG Licence, a copy of which you may 
+	download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd		
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+    ">
+
+	<!-- Security infrastructure -->
+
+	<bean id="serviceuser" name="serviceuser" class="com.acme.services.UserService" />
+
+	<bean
+		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"
+		id="passwordEncoder">
+		<constructor-arg value="256" />
+	</bean>
+
+	<!-- Access control -->
+
+	<sec:http auto-config="false" use-expressions="true">
+		<sec:intercept-url pattern="/acme/logout" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/acme/register" access="hasAnyRole('0','4')" />
+		<sec:intercept-url pattern="/acme/profile" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/acme/admin/**" access="hasRole('0')" />
+		<sec:intercept-url pattern="/acme/customer/**" access="hasRole('4')" />
+		<sec:form-login login-page="/acme/login"
+			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />
+		<sec:logout logout-url="/acme/logout" logout-success-url="/acme/index" />
+		<sec:anonymous enabled="false" />
+	</sec:http>
+
+	<!-- Redireccion -->
+	<bean id="authenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<!-- After login, return to the last visited page -->
+		<property name="useReferer" value="true" />
+	</bean>
+
+</beans>

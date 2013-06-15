@@ -1,39 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
-<meta charset="UTF-8"></meta>
-<title>ACME</title>
-<!--  <link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/> -->
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css'
-	th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap.css}' />
-<link href="../css/style.css" th:href="@{/css/style.css}"
-	rel="stylesheet" />
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css'
-	th:href='@{/webjars/datatables-bootstrap/2-20120201/DT_bootstrap.css}' />
-<script>
-	dojoConfig = {
-		parseOnLoad : true
-	}
-</script>
-<!-- <script src="../js/dojo/dojo.js" th:src="@{/js/dojo/dojo.js}"></script>  -->
-<script src="../js/dojo/dojo.js"
-	th:src="@{/webjars/dojo/1.8.1/dojo/dojo.js}"></script>
-<script src="../js/jquery"
-	th:src="@{/webjars/jquery/2.0.0/jquery.min.js}"></script>
-<script src="../js/jquery.datatables"
-	th:src="@{/webjars/datatables/1.9.4/media/js/jquery.dataTables.min.js}"></script>
-<script>
-	require([ "dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button" ]);
-</script>
+<head th:include="common :: head">
+<!-- AquÌ se incluye el head del archivo common.html-->
 </head>
 <body>
+	<header th:include="common :: header" id="menu">
+		<!-- AquÌ se incluye el menu superior del archivo common.html-->
+	</header>
 	<section class="container">
 		<form class="form-signin" th:action="@{/j_spring_security_check}"
 			method="post">
 			<div th:if="${loginError}" class="alert alert-error">
 				<p th:text="#{login.error}">Wrong user or passshhword</p>
 			</div>
-			<h3 class="form-signin-heading" th:text="#{login.titulo}">Identif√≠cate</h3>
+			<h3 class="form-signin-heading" th:text="#{login.titulo}">IdentifÌcate</h3>
 			<input id="j_username" name="j_username" type="text"
 				class="input-block-level" th:placeholder="#{login.username}" placeholder="Usuario" required="required">
 			</input> <input id="j_password" name="j_password" type="password"
@@ -42,10 +22,8 @@
 			<button class="btn btn-large btn-primary" type="submit" th:text="#{login.button}">Entrar</button>
 		</form>
 	</section>
-	<footer th:fragment="footer">
-		<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME
-			Dise√±ado por: Rafa V√°zquez S√°nchez | Sergio Garcia Alonso</div>
-		<div class="footer"></div>
+	<footer th:include="common :: footer">
+		<!-- AquÌ se incluye el footer del archivo common.html-->
 	</footer>
 </body>
 </html>

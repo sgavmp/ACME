@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acme.exception.RegisterNoExistException;
 import com.acme.model.examination.Register;
+import com.acme.model.user.User;
 import com.acme.repository.RegisterRepository;
 import com.acme.repository.UserRepository;
 
@@ -19,12 +21,13 @@ public class RegisterService {
 	private UserRepository repositoryuser;
 	
 	public List<Register> getAllRegisters() {
-		// TODO Auto-generated method stub
 		return (List<Register>) repositoryregister.findAll();
 	}
 
-	public Register getRegisterById(Long idReg) {
-		// TODO Auto-generated method stub
+	public Register getRegisterById(Long idReg) throws RegisterNoExistException {
+		if (!repositoryregister.exists(idReg)) {
+			throw new RegisterNoExistException("exception.register.noexist");
+		}
 		return repositoryregister.findOne(idReg);
 	}
 
@@ -37,7 +40,8 @@ public class RegisterService {
 	}
 	
 	public List<Register> allRegisterByUserUsername(String username) {
-		return repositoryregister.findByUserId(repositoryuser.findUserByUsername(username).getId());
+		User u =repositoryuser.findUserByUsername(username);
+		return repositoryregister.findByUser(u);
 	}
 
 }

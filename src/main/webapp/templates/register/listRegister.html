@@ -9,6 +9,19 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
+		<header class="jumbotron subhead" id="submenu"
+			sec:authorize="hasRole(0)">
+			<div class="subnav subnav-fixed">
+				<ul class="nav nav-pills">
+					<li th:class="${isAdmin}?'active':''"><a
+						th:text="#{menu.register.todos}" href="/acme/admin/register"
+						th:href="@{/acme/admin/register}">Todos los Registros</a></li>
+					<li th:class="!${isAdmin}?'active':''" sec:authorize="hasRole(4)"><a
+						th:text="#{menu.register.personal}" href="/acme/customer/register"
+						th:href="@{/acme/customer/register}">Registros personales</a></li>
+				</ul>
+			</div>
+		</header>
 		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
 			class="alert alert-success">
 			<button id="btcerrar" type="button" class="close"
@@ -35,34 +48,77 @@
 			dt:table="true" dt:theme="bootstrap2">
 			<thead>
 				<tr>
-					<th th:text="#{registro.tabla.id}">ID</th>
+					<th class="optional-plus" th:text="#{certificado.tabla.mas}">Mas Info</th>
+					<th class="optional" th:text="#{registro.tabla.id}">ID</th>
 					<th th:text="#{registro.tabla.certificado}">Convocatoria</th>
-					<th th:text="#{registro.tabla.fecrealizacion}">Fecha de realizacion</th>
-					<th th:text="#{registro.tabla.timerealizacion}">Hora de realizacion</th>
-					<th th:text="#{registro.tabla.calificacion}">Calificacion</th>
+					<th th:text="#{registro.tabla.fecrealizacion}">Fecha de
+						realizacion</th>
+					<th class="optional" th:text="#{registro.tabla.timerealizacion}">Hora
+						de realizacion</th>
+					<th th:text="#{registro.tabla.usuario}">Usuario</th>
+					<th class="optional" th:text="#{registro.tabla.nombre}">Nombre</th>
+					<th class="optional" th:text="#{registro.tabla.apellidos}">Apellidos</th>
+					<th class="optional" th:text="#{registro.tabla.calificacion}">Calificacion</th>
 					<th th:text="#{registro.tabla.borrar}">Borrar Registro</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:unless="${#lists.isEmpty(allRegisters)}"
-					th:each="reg,rowStat  : ${allRegisters}">
-					<td th:text="${reg.id}">1</td>
+			<tbody th:unless="${#lists.isEmpty(allRegisters)}"
+				th:each="reg,rowStat  : ${allRegisters}">
+				<tr>
+					<td class="optional-plus"><img th:id="${reg.id}" class="fila"
+						th:src="@{/img/plus.png}"></img></td>
+					<td class="optional" th:text="${reg.id}">1</td>
 					<td th:text="${reg.examination.certification.name}">Ingles</td>
 					<td th:with="df=#{date.format}"
 						th:text="${#dates.format(reg.examination.dateRealization,df)}">25/05/2013</td>
-					<td th:with="df=#{time.format}"
+					<td class="optional" th:with="df=#{time.format}"
 						th:text="${#dates.format(reg.examination.timeRealization,df)}">13:30</td>
-						<td th:text="${reg.calification}">6</td>
+					<td class="optional" th:text="${reg.customer.username}">paco</td>
+					<td th:text="${reg.customer.name}">Pepe</td>
+					<td class="optional" th:text="${reg.customer.surname}">alonso</td>
+					<td class="optional" th:text="${reg.calification}">6</td>
 					<td><a th:text="#{registro.tabla.borrar}"
-						href="/acme/register/delete/id/4"
-						th:href="@{'/acme/register/delete/id/' + ${reg.id}}">Delete</a></td>
+						href="/acme/customer/register/delete/id/4"
+						th:href="${isAdmin}?@{'/acme/admin/register/delete/id/' + ${reg.id}}:@{'/acme/customer/register/delete/id/' + ${reg.id}}">Delete</a></td>
 				</tr>
-				<tr th:unless="${!#lists.isEmpty(allRegisters)}">
-					<td th:text="#{registro.tabla.vacia}" colspan="6"><h2>No
-							hay familias registros en el sistema</h2></td>
+				<tr th:id="'row_'+${reg.id}" style="display: none">
+					<td class="optional-plus" colspan="5">
+						<blockquote>
+							<dl>
+								<dt class="optional" th:text="#{registro.tabla.timerealizacion}">Hora
+									de realizacion</dt>
+								<dd class="optional" th:with="df=#{time.format}"
+									th:text="${#dates.format(reg.examination.timeRealization,df)}">13:30</dd>
+								<dt class="optional" th:text="#{registro.tabla.usuario}">Usuario</dt>
+								<dd class="optional" th:text="${reg.customer.username}">paco</dd>
+								<dt class="optional" th:text="#{registro.tabla.apellidos}">Apellidos</dt>
+								<dd class="optional" th:text="${reg.customer.surname}">alonso</dd>
+								<dt class="optional" th:text="#{registro.tabla.calificacion}">Calificacion</dt>
+								<dd class="optional" th:text="${reg.calification}">6</dd>
+							</dl>
+						</blockquote>
+					</td>
+				</tr>
+			</tbody>
+			<tbody th:unless="${!#lists.isEmpty(allRegisters)}">
+				<tr>
+					<td th:text="#{registro.tabla.vacia}" colspan="9"><h2>No
+							hay registros en el sistema</h2></td>
 				</tr>
 			</tbody>
 		</table>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-style" ], function(on,
+					dom, domStyle) {
+				dojo.query(".fila").onclick(function(evt) {
+					var node = "row_" + evt.target.id;
+					if (domStyle.get(node, "display") != "none")
+						domStyle.set(node, "display", "none");
+					else
+						domStyle.set(node, "display", "");
+				});
+			});
+		</script>
 	</section>
 	<footer th:include="common :: footer">
 		<!-- Aquí se incluye el footer del archivo common.html-->

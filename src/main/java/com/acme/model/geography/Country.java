@@ -1,20 +1,13 @@
 package com.acme.model.geography;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.acme.model.AbstractPersistable;
-
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Entity
@@ -35,13 +28,6 @@ public class Country extends AbstractPersistable<Long>{
 	// Constructors
 	// -------------------------------------------------------------
 	public Country() {
-		this.states=Sets.newHashSet();
-	}
-
-	//Constructor solo para thymeleaf
-	public Country(String id) {
-		super();
-		this.id = Long.valueOf(id);
 		this.states=Sets.newHashSet();
 	}
 

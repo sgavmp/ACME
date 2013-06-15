@@ -1,10 +1,9 @@
 package com.acme.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.acme.model.Office;
-import com.acme.model.examination.Examination;
 
-public interface OfficeRepository  extends CrudRepository<Office, Long> {
+public interface OfficeRepository  extends PagingAndSortingRepository<Office, Long> {
 
 }

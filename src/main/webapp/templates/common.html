@@ -5,69 +5,135 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 <title>ACME</title>
 <!--  <link href="../css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/> -->
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap.css}' media="all"/>
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap-responsive.css}' media="all"/>
-<link rel='stylesheet' href='/webjars/dojo/1.8.1/dijit/themes/claro/claro.css' th:href='@{/webjars/dojo/1.8.1/dijit/themes/claro/claro.css}'/>
-<link href="../css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
-<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css' th:href='@{/webjars/datatables-bootstrap/2-20120201/DT_bootstrap.css}'/>
-<script>dojoConfig = {parseOnLoad: true}</script>
-<script src="../js/dojo/dojo.js" th:src="@{/webjars/dojo/1.8.1/dojo/dojo.js}"></script>
-<script src="../js/jquery" th:src="@{/webjars/jquery/2.0.0/jquery.min.js}"></script>
-<script src="../js/jquery.datatables" th:src="@{/webjars/datatables/1.9.4/media/js/jquery.dataTables.min.js}"></script>
-<script>require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button", "dijit/form/DateTextBox",  "dijit/form/TimeTextBox"]);</script>
+<link rel='stylesheet' href='/webjars/bootstrap/2.3.1/css/bootstrap.css'
+	th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap.css}' media="all" />
+<link rel='stylesheet'
+	href='/webjars/bootstrap/2.3.1/css/bootstrap-responsive.css'
+	th:href='@{/webjars/bootstrap/2.3.1/css/bootstrap-responsive.css}'
+	media="all" />
+<link rel='stylesheet'
+	href='/webjars/dojo/1.8.1/dijit/themes/claro/claro.css'
+	th:href='@{/webjars/dojo/1.8.1/dijit/themes/claro/claro.css}' />
+<link href="../css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+<link href="../css/unseen.css" th:href="@{/css/unseen.css}"
+	rel="stylesheet" />
+<script>
+	dojoConfig = {
+		parseOnLoad : true
+	}
+</script>
+<script src="../js/dojo/dojo.js"
+	th:src="@{/webjars/dojo/1.8.1/dojo/dojo.js}"></script>
+<script src="../js/jquery"
+	th:src="@{/webjars/jquery/2.0.0/jquery.min.js}"></script>
+<script src="../js/jquery.datatables"
+	th:src="@{/webjars/datatables/1.9.4/media/js/jquery.dataTables.min.js}"></script>
+<script>
+	require([ "dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button",
+			"dijit/form/DateTextBox", "dijit/form/TimeTextBox" ]);
+</script>
 </head>
 <body>
-<header id="menu" th:fragment="header">
-	<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="./index.html">ACME</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li th:class="((${activeMenu}=='index')?'active')">
-                <a th:text="#{menu.principal.indice}" href="/index.html" th:href="@{/acme/index}">Inicio</a>
-              </li>
-              <li th:class="((${activeMenu}=='certification')?'active')">
-                <a th:text="#{menu.principal.certificados}" th:href="@{/acme/certification}">Certificados</a>
-              </li>
-              <li th:class="((${activeMenu}=='examination')?'active')">
-                <a th:text="#{menu.principal.convocatorias}" th:href="@{/acme/examination}">Convocatorias</a>
-              </li>
-              <li th:class="((${activeMenu}=='user')?'active')">
-                <a th:text="#{menu.principal.usuarios}" th:href="@{/acme/user}">Usuarios</a>
-              </li>
-              <li th:class="((${activeMenu}=='register')?'active')">
-                <a th:text="#{menu.principal.registros}" th:href="@{/acme/register}">Registros</a>
-              </li>
-              <li class="divider-vertical">
-              </li>
-              <li th:class="((${activeMenu}=='profile')?'active')">
-                <a th:if="!${#authentication}" th:text="#{menu.principal.login}" th:href="@{/acme/login}">Login</a>
-                <a th:if="${#authentication}" th:href="@{/acme/profile}" sec:authentication="name">Bob</a> 
-              </li>
-              <li>
-                <a th:if="${#authentication}" th:text="#{menu.principal.salir}" th:href="@{/acme/logout}">Salir</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-</header>
-<section class="container">
-	<article class="well"><h1>ACME</h1>
-	<h2 th:text="#{main.title}">Sistema web de Gesti&oacute;n</h2>
-	<p th:utext="#{main.text}">Bienvenido,
-	<br></br>
-	 en esta web podras gestionar todo lo referente al sistema de gestion de la empresa ACME. Actualmente no esta completado al 100% pero poco a poco iras disponiendo de todas las opciones y herramientas necesarias para su administracion.
-		<br></br>
-		Un saludo.</p></article>
-</section>
-<footer th:fragment="footer">
-	<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME Diseñado por: Rafa Vázquez Sánchez | Sergio Garcia Alonso</div>
-	<div class="footer">
-		
-	</div>
-</footer>
+	<header id="menu" th:fragment="header">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="brand" href="./index.html">ACME</a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li th:class="((${activeMenu}=='index')?'active')"><a
+								th:text="#{menu.principal.indice}" href="/index.html"
+								th:href="@{/acme/index}">Inicio</a></li>
+							<li th:class="((${activeMenu}=='certification')?'active')">
+								<a th:text="#{menu.principal.certificados}"
+								th:href="@{/acme/certification}">Certificados</a>
+							</li>
+							<li th:class="((${activeMenu}=='examination')?'active')"><a
+								th:text="#{menu.principal.convocatorias}"
+								th:href="@{/acme/examination}">Convocatorias</a></li>
+							<li th:class="((${activeMenu}=='user')?'active')"
+								sec:authorize="hasRole(0)"><a
+								th:text="#{menu.principal.usuarios}"
+								th:href="@{/acme/admin/user}">Usuarios</a></li>
+							<li th:if="${#authentication}"
+								th:class="((${activeMenu}=='register')?'active')"><a
+								th:text="#{menu.principal.registros}"
+								th:href="@{/acme/register}">Registros</a></li>
+							<li class="divider-vertical"></li>
+							<li th:class="((${activeMenu}=='profile')?'active')"><a
+								th:if="!${#authentication}" th:text="#{menu.principal.login}"
+								th:href="@{/acme/login}">Login</a> <a th:if="${#authentication}"
+								th:href="@{/acme/profile}" sec:authentication="name">Bob</a></li>
+							<li><a th:if="${#authentication}"
+								th:text="#{menu.principal.salir}" th:href="@{/acme/logout}">Salir</a>
+							</li>
+							<li th:class="((${activeMenu}=='profile')?'active')"><a
+								th:if="!${#authentication}" th:text="#{menu.principal.signin}"
+								th:href="@{/acme/signin}">Registrarse</a></li>
+							<li class="divider-vertical"></li>
+							<li class="menu-element" th:text="#{menu.lang}"></li>
+							<li><a href="?locale=es"><img src="/img/es.png"
+									alt="spanish" th:src="@{/img/es.png}"></img></a></li>
+							<li><a href="?locale=en"><img src="/img/gb.png"
+									alt="english" th:src="@{/img/gb.png}"></img></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section class="container">
+		<article class="well">
+			<h1>ACME</h1>
+			<h2 th:text="#{main.title}">Sistema web de Gesti&oacute;n</h2>
+			<p th:utext="#{main.text}">
+				Bienvenido, <br></br> en esta web podras gestionar todo lo referente
+				al sistema de gestion de la empresa ACME. Actualmente no esta
+				completado al 100% pero poco a poco iras disponiendo de todas las
+				opciones y herramientas necesarias para su administracion. <br></br>
+				Un saludo.
+			</p>
+		</article>
+	</section>
+	<footer th:fragment="footer">
+		<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME
+			Diseñado por: Rafa Vázquez Sánchez | Sergio Garcia Alonso</div>
+		<div class="footer"></div>
+
+		<!-- Le javascript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="http://twitter.github.io/bootstrap/assets/js/jquery.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-transition.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-alert.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-modal.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-tab.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-popover.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-button.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-collapse.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-carousel.js"></script>
+		<script
+			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+	</footer>
 </body>
 </html>

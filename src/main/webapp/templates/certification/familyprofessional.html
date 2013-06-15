@@ -8,19 +8,19 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
-		<header class="jumbotron subhead" id="submenu">
+		<header class="jumbotron subhead" id="submenu" sec:authorize="hasRole(0)">
 			<div class="subnav subnav-fixed">
 				<ul class="nav nav-pills">
 					<li><a th:text="#{menu.certificado.listar}"
 						href="/acme/certification" th:href="@{/acme/certification}">Listar
 							Certificados</a></li>
 					<li><a th:text="#{menu.certificado.crear}"
-						href="/acme/certification/create"
-						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+						href="/acme/admin/certification/create"
+						th:href="@{/acme/admin/certification/create}">Crear Certificado</a></li>
 					<li class="active"><a
 						th:text="#{menu.certificado.familyprofessional}"
-						href="/acme/certification/family"
-						th:href="@{/acme/certification/family}">Familias
+						href="/acme/admin/certification/family"
+						th:href="@{/acme/admin/certification/family}">Familias
 							Professionales</a></li>
 				</ul>
 			</div>
@@ -28,7 +28,7 @@
 		<div id="addFamily">
 			<h3>Añadir nueva Familia Profesional</h3>
 			<form class="form-horizontal" method="post"
-				th:action="${isNew}?@{/acme/certification/family/create}:@{/acme/certification/family/edit/id/__${family.id}__}"
+				th:action="${isNew}?@{/acme/admin/certification/family/create}:@{/acme/admin/certification/family/edit/id/__${family.id}__}"
 				th:object="${family}">
 				<div th:if="${#fields.hasErrors('*')}" id="error-div"
 					class="alert alert-error">
@@ -89,8 +89,8 @@
 				<tr>
 					<th th:text="#{familia.tabla.id}">ID</th>
 					<th th:text="#{familia.tabla.nombre}">Nombre</th>
-					<th th:text="#{familia.tabla.editar}">Editar</th>
-					<th th:text="#{familia.tabla.borrar}">Borrar</th>
+					<th th:text="#{familia.tabla.editar}" sec:authorize="hasRole(0)">Editar</th>
+					<th th:text="#{familia.tabla.borrar}" sec:authorize="hasRole(0)">Borrar</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -98,12 +98,12 @@
 					th:each="family,rowStat  : ${allFamilyProfessional}">
 					<td th:text="${family.id}">1</td>
 					<td th:text="${family.name}">Idiomas</td>
-					<td><a th:text="#{familia.tabla.editar}"
+					<td sec:authorize="hasRole(0)"><a th:text="#{familia.tabla.editar}"
 						href="/acme/certification/family/edit/id/4"
-						th:href="@{'/acme/certification/family/edit/id/' + ${family.id}}">Edit</a></td>
-					<td><a th:text="#{familia.tabla.borrar}"
+						th:href="@{'/acme/admin/certification/family/edit/id/' + ${family.id}}">Edit</a></td>
+					<td sec:authorize="hasRole(0)"><a th:text="#{familia.tabla.borrar}"
 						href="/acme/certification/family/delete/id/4"
-						th:href="@{'/acme/certification/family/delete/id/' + ${family.id}}">Delete</a></td>
+						th:href="@{'/acme/admin/certification/family/delete/id/' + ${family.id}}">Delete</a></td>
 				</tr>
 				<tr th:unless="${!#lists.isEmpty(allFamilyProfessional)}">
 					<td th:text="#{certificado.tabla.vacia}" colspan="5"><h2>No

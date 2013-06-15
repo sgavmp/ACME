@@ -15,17 +15,17 @@
 						href="/acme/certification" th:href="@{/acme/certification}">Listar
 							Certificados</a></li>
 					<li class="active"><a th:text="#{menu.certificado.crear}"
-						href="/acme/certification?id=4"
-						th:href="@{/acme/certification/create}">Crear Certificado</a></li>
+						href="/acme/admin/certification?id=4"
+						th:href="@{/acme/admin/certification/create}">Crear Certificado</a></li>
 					<li><a th:text="#{menu.certificado.familyprofessional}"
-						href="/acme/certification/family"
-						th:href="@{/acme/certification/family}">Familias Professionales</a></li>
+						href="/acme/admin/certification/family"
+						th:href="@{/acme/admin/certification/family}">Familias Professionales</a></li>
 				</ul>
 			</div>
 			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
 		</header>
 		<form class="form-horizontal" method="post"
-			th:action="${isNew}?@{/acme/certification/create}:@{/acme/certification/edit/id/__${cert.id}__}"
+			th:action="${isNew}?@{/acme/admin/certification/create}:@{/acme/admin/certification/edit/id/__${cert.id}__}"
 			th:object="${cert}"
 			val:validate="${cert}">
 			<input type="hidden" th:field="*{version}" th:value="${cert.version}" id="version" ></input>

@@ -1,14 +1,11 @@
 package com.acme.controllers.examination;
 
 import java.util.List;
-import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,44 +13,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.acme.exception.CertificationNoExistException;
+import com.acme.exception.ExaminationNoExistException;
+import com.acme.exception.PageNumberIncorrectException;
 import com.acme.model.certification.Certification;
-import com.acme.model.certification.FamilyProfessional;
 import com.acme.model.examination.Examination;
-import com.acme.model.geography.City;
-import com.acme.model.geography.Country;
-import com.acme.model.geography.State;
-import com.acme.model.user.Admin;
-import com.acme.model.user.Company;
-import com.acme.model.user.Customer;
-import com.acme.model.user.Reviewer;
-import com.acme.model.user.User;
-import com.acme.model.user.UserType;
-import com.acme.model.user.Worker;
 import com.acme.services.CertificationService;
 import com.acme.services.ExaminationService;
-import com.acme.services.GeographyService;
-import com.acme.services.UserService;
 
 @Controller
 @RequestMapping({ "/admin/examination" })
 public class AdminExaminationController {
 
 	@Autowired
-	private MessageSource messageSource;
-
-	@Autowired
 	private ExaminationService serviceexamination;
 	
 	@Autowired
 	private CertificationService servicecertification;
-	
+
 	@ModelAttribute("allExamination")
-	public List<Examination> getAllExaminations() {
-		return serviceexamination.getAllExamination();
+	public Page<Examination> gettAllExamination() throws PageNumberIncorrectException{
+		return serviceexamination.getAllExamination(0);
 	}
 	
 	@ModelAttribute("allCertifications")
@@ -63,12 +45,12 @@ public class AdminExaminationController {
 	
 	@RequestMapping(value = "/edit/id/{idExam}", method = RequestMethod.GET)
 	public String editExamination(@PathVariable Long idExam, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
-		Examination exam=serviceexamination.getExaminationById(idExam);
-		if (exam == null) {
-			redirectAttrs.addFlashAttribute("error", "certification.noexist");
-			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-					HttpStatus.NOT_FOUND);
+			RedirectAttributes redirectAttrs) {
+		Examination exam;
+		try {
+			exam = serviceexamination.getExaminationById(idExam);
+		} catch (ExaminationNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
 			return "redirect:/acme/certification/family";
 		}
 		model.addAttribute("exam", exam);
@@ -87,24 +69,28 @@ public class AdminExaminationController {
 			model.addAttribute("activeMenu", "examination");
 			return "/examination/listExamination";
 		}
-		exam.setCertification(servicecertification.getCertificationById(exam.getCertification().getId()));
+		try {
+			exam.setCertification(servicecertification.getCertificationById(exam.getCertification().getId()));
+		} catch (CertificationNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			return "redirect:/acme/examination/";
+		}
 		serviceexamination.saveExamination(exam);
 		redirectAttrs.addFlashAttribute("info", "examination.create");
 		return "redirect:/acme/examination/";
 	}
 	
+	@SuppressWarnings("finally")
 	@RequestMapping(value = "/delete/id/{idExam}", method = RequestMethod.GET)
 	public String deleteExamination(@PathVariable Long idExam, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
+			RedirectAttributes redirectAttrs) {
 		try {
 			Examination exam=serviceexamination.getExaminationById(idExam);
-			if (exam == null) {
-				redirectAttrs.addFlashAttribute("error", "familia.noexist");
-				response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-						HttpStatus.NOT_FOUND);
-			}
 			serviceexamination.removeExamination(idExam);
 			redirectAttrs.addFlashAttribute("info", "examination.delete");
+		}
+		catch (ExaminationNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", "familia.noexist");
 		}
 		catch (Exception e){
 			redirectAttrs.addFlashAttribute("error", "examination.asociado");

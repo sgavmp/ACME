@@ -1,12 +1,6 @@
 package com.acme.model.geography;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.acme.model.AbstractPersistable;
 
@@ -25,12 +19,6 @@ public class City extends AbstractPersistable<Long>{
 	// Constructors
 	// -------------------------------------------------------------
 	public City() {
-	}
-
-	//Constructor solo para thymeleaf
-	public City(String id) {
-		super();
-		this.id = Long.valueOf(id);
 	}
 
 	// -------------------------------------------------------------

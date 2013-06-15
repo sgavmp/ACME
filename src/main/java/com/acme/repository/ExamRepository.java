@@ -1,9 +1,7 @@
 package com.acme.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.acme.model.examination.Examination;
-
-public interface ExamRepository  extends CrudRepository<ExamRepository, Long> {
+public interface ExamRepository  extends PagingAndSortingRepository<ExamRepository, Long> {
 
 }

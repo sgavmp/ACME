@@ -2,18 +2,11 @@ package com.acme.model.examination;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.acme.model.exam.Option;
 import com.acme.model.exam.Question;
@@ -23,6 +16,10 @@ import com.acme.model.exam.TestQuestion;
 @Entity
 @DiscriminatorValue("T")
 public class TestAnswerExam extends AnswerExam {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8950128780058719682L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------

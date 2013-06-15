@@ -20,6 +20,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Maven MILESTONE Repository</name>
+			<url>http://repo.springsource.org/libs-milestone</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -292,12 +299,22 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 	<properties>
 		<thymeleaf.version>2.0.16</thymeleaf.version>
 		<springframework.version>3.2.3.RELEASE</springframework.version>
-		<hibernate.version>4.1.9.Final</hibernate.version>
+		<hibernate.version>4.2.0.Final</hibernate.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.12</logback.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

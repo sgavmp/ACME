@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://github.com/dandelion/datatables">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
 <head th:include="common :: head">
 <!-- Aquí se incluye el head del archivo common.html-->
 </head>
@@ -11,15 +12,16 @@
 		<header class="jumbotron subhead" id="submenu">
 			<div class="subnav subnav-fixed">
 				<ul class="nav nav-pills">
-					<li class="active"><a th:text="#{menu.user.listar}"
-						href="/acme/user" th:href="@{/acme/user}">Listar
-							Usuarios</a></li>
+					<li th:class="!${isSearch}?'active':''" class="active"><a
+						th:text="#{menu.user.listar}" href="/acme/admin/user"
+						th:href="@{/acme/admin/user}">Listar Usuarios</a></li>
 					<li><a th:text="#{menu.user.crear}"
-						href="/acme/user?id=4"
-						th:href="@{/acme/user/create}">Crear Usuario</a></li>
+						href="/acme/admin/user?id=4" th:href="@{/acme/admin/user/create}">Crear
+							Usuario</a></li>
+					<li th:if="${isSearch}" class="active"><a
+						th:text="#{menu.user.busqueda}" href="">Crear Usuario</a></li>
 				</ul>
 			</div>
-			<h1 th:text="#{usuario.tabla.titulo}">Lista de Usuarios</h1>
 		</header>
 		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
 			class="alert alert-success">
@@ -42,42 +44,109 @@
 				});
 			});
 		</script>
-		<table id="table_cert" class="table table-striped" dt:table="true" dt:theme="bootstrap2">
+		<h1
+			th:text="${isSearch}?#{usuario.tabla.titulo.busqueda}:#{usuario.tabla.titulo}">Lista
+			de Usuarios</h1>
+		<form class="form-search search-right"
+			action="/acme/admin/user/search"
+			th:action="@{/acme/admin/user/search/}" method="get">
+			<input th:value="${search}" name="search" type="text"
+				class="input-medium search-query"></input>
+			<button type="submit" class="btn">Search</button>
+		</form>
+		<table id="table_cert" class="table table-striped" dt:table="true"
+			dt:theme="bootstrap2">
 			<thead>
 				<tr>
-					<th th:text="#{usuario.tabla.id}">ID</th>
+					<th th:text="#{certificado.tabla.mas}">Mas Info</th>
+					<th class="optional" th:text="#{usuario.tabla.id}">ID</th>
 					<th th:text="#{usuario.tabla.nombre}">Nombre</th>
 					<th th:text="#{usuario.tabla.apellidos}">Apellidos</th>
 					<th th:text="#{usuario.tabla.username}">Usuario</th>
-					<th th:text="#{usuario.tabla.email}">Email</th>
-					<th th:text="#{usuario.tabla.roles}">Roles</th>
+					<th class="optional" th:text="#{usuario.tabla.email}">Email</th>
+					<th class="optional" th:text="#{usuario.tabla.roles}">Roles</th>
 					<th th:text="#{usuario.tabla.acciones}">Acciones</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:unless="${#lists.isEmpty(allUsers)}"
-					th:each="user,rowStat  : ${allUsers}">
-					<td th:text="${user.id}">1</td>
+			<tbody th:unless="${#lists.isEmpty(allUsers.content)}"
+				th:each="user,rowStat  : ${allUsers}">
+				<tr>
+					<th><img th:id="${user.id}" class="fila"
+						th:src="@{/img/plus.png}"></img></th>
+					<td class="optional" th:text="${user.id}">1</td>
 					<td th:text="${user.name}">Pepe</td>
 					<td th:text="${user.surname}">Alonso</td>
 					<td th:text="${user.username}">purbea</td>
-					<td th:text="${user.email}">prubea@correo.es</td>
-					<td>
-						<p th:each="rol : ${user.roles.keySet()}" th:text="${#messages.msg('__${rol}__')}"> </p>
+					<td class="optional" th:text="${user.email}">prubea@correo.es</td>
+					<td class="optional">
+						<p th:each="rol : ${user.roles.keySet()}"
+							th:text="${#messages.msg('__${rol}__')}"></p>
 					</td>
 					<td><a th:text="#{usuario.tabla.editar}"
-						href="/acme/user/edit/id/4"
-						th:href="@{'/acme/user/edit/id/' + ${user.id}}">Edit</a>/
-						<a th:text="#{usuario.tabla.borrar}"
-						href="/acme/user/delete/id/4"
-						th:href="@{'/acme/user/delete/id/' + ${user.id}}">Delete</a></td>
+						href="/acme/admin/user/edit/id/4"
+						th:href="@{'/acme/admin/user/edit/id/' + ${user.id}}">Edit</a>/ <a
+						th:text="#{usuario.tabla.borrar}"
+						href="/acme/admin/user/delete/id/4"
+						th:href="@{'/acme/admin/user/delete/id/' + ${user.id}}">Delete</a></td>
 				</tr>
-				<tr th:unless="${!#lists.isEmpty(allUsers)}">
-					<td th:text="#{usuario.tabla.vacia}" colspan="5"><h2>No
-							hay usuarios en el sistema</h2></td>
+				<tr th:id="'row_'+${user.id}" style="display: none">
+					<td colspan="8">
+						<blockquote>
+							<dl>
+								<dt class="optional" th:text="#{usuario.tabla.id}">ID</dt>
+								<dt>Direccion:</dt>
+								<dd th:text="${user.address}">C/Falsa 123</dd>
+								<dt>Localidad:</dt>
+								<dd
+									th:text="${user.city}+' ('+${user.state}+') - '+${user.country}">Jerez
+									(CADIZ)</dd>
+								<dt>Telefonos:</dt>
+								<dd th:text="${user.phone}+' / '+${user.mobilephone}">65478556
+									/ 3453345</dd>
+								<dt class="optional" th:text="#{usuario.tabla.email}">Email</dt>
+								<dd class="optional" th:text="${user.email}">prubea@correo.es</dd>
+								<dt class="optional" th:text="#{usuario.tabla.roles}">Roles</dt>
+								<dd class="optional">
+									<p th:each="rol : ${user.roles.keySet()}"
+										th:text="${#messages.msg('__${rol}__')}"></p>
+								</dd>
+							</dl>
+						</blockquote>
+					</td>
+				</tr>
+			</tbody>
+			<tbody th:unless="${!#lists.isEmpty(allUsers.content)}">
+				<tr>
+					<td
+						th:text="${isSearch}?#{usuario.tabla.busqueda.vacia}:#{usuario.tabla.vacia}"
+						colspan="5"><h2>No hay usuarios en el sistema</h2></td>
 				</tr>
 			</tbody>
 		</table>
+		<ul class="pager">
+			<li class="previous"
+				th:class="${allUsers.firstPage?'previous disabled':'previous'}"><a
+				href="#" th:disabled="${allUsers.firstPage}"
+				th:href="!${allUsers.firstPage}?(${isSearch}?(@{/acme/admin/user/search/page/}+${allUsers.number-1}+'?search='+${search}):(@{/acme/admin/user/page/}+${allUsers.number-1})):'#'">&larr;
+					Anterior</a></li>
+			<li class="next"
+				th:class="${allUsers.lastPage?'next disabled':'next'}"><a
+				href="#" th:disabled="${allUsers.lastPage}"
+				th:href="!${allUsers.lastPage}?(${isSearch}?(@{/acme/admin/user/search/page/}+${allUsers.number+1}+'?search='+${search}):(@{/acme/admin/user/page/}+${allUsers.number+1})):'#'">Siguiente
+					&rarr;</a></li>
+		</ul>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-style" ], function(on,
+					dom, domStyle) {
+				dojo.query(".fila").onclick(function(evt) {
+					var node = "row_" + evt.target.id;
+					if (domStyle.get(node, "display") != "none")
+						domStyle.set(node, "display", "none");
+					else
+						domStyle.set(node, "display", "");
+				});
+			});
+		</script>
 	</section>
 	<footer th:include="common :: footer">
 		<!-- Aquí se incluye el footer del archivo common.html-->

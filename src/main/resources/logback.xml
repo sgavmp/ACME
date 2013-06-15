@@ -31,11 +31,15 @@
 	</appender>
 
 <!-- <logger name="org.springframework">
-		<level value="INFO" />
-	</logger>  -->
+		<level value="DEBUG" />
+	</logger> -->
+
+<!--	<logger name="org.hibernate">
+		<level value="DEBUG" />
+	</logger> -->
 
 	<root>
-		<level value="INFO" />
+		<level value="WARN" />
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="EMAIL" />
 		<appender-ref ref="DB" />

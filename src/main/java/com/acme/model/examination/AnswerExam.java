@@ -1,25 +1,14 @@
 package com.acme.model.examination;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Type;
 import com.acme.model.AbstractPersistable;
-
 import com.acme.model.exam.Question;
 
 

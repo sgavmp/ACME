@@ -1,10 +1,9 @@
 package com.acme.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.acme.model.certification.FamilyProfessional;
-import com.acme.model.examination.Examination;
 
-public interface FamilyProfessionalRepository extends CrudRepository<FamilyProfessional, Long> {
+public interface FamilyProfessionalRepository extends PagingAndSortingRepository<FamilyProfessional, Long> {
 
 }

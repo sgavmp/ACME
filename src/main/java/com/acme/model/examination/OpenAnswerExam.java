@@ -12,6 +12,10 @@ import com.acme.model.exam.Question;
 @DiscriminatorValue("T")
 @Access(AccessType.PROPERTY)
 public class OpenAnswerExam extends AnswerExam {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1006891616829877366L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
