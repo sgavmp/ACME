@@ -83,6 +83,7 @@ public class UserService {
 	
 	@Transactional
 	public Page<User> searchUsers(String text, Integer page) {
+		text=text.toLowerCase();
 		FullTextEntityManager fullTextEntityManager = 
 			    org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
 		QueryBuilder qb = fullTextEntityManager.getSearchFactory()

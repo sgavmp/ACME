@@ -63,6 +63,7 @@ public class ExaminationService {
 
 	@Transactional
 	public Page<Examination> searchExamination(String text, Integer page) throws PageNumberIncorrectException{
+		text=text.toLowerCase();
 		FullTextEntityManager fullTextEntityManager = 
 			    org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
 		QueryBuilder qb = fullTextEntityManager.getSearchFactory()

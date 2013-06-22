@@ -25,6 +25,7 @@ import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
 import com.acme.repository.CertificationRepository;
 import com.acme.repository.FamilyProfessionalRepository;
+import com.google.common.base.Strings;
 
 @Service
 public class CertificationService {
@@ -121,6 +122,7 @@ public class CertificationService {
 	
 	@Transactional
 	public Page<Certification> searchCertification(String s,Integer page) throws PageNumberIncorrectException {
+		s=s.toLowerCase();
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
 		QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity( Certification.class ).get();
 		org.apache.lucene.search.Query query = qb.keyword()
