@@ -340,11 +340,12 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
 			<version>${hibernate.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
