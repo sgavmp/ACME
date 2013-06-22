@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<sec:http auto-config="false" use-expressions="true">
+		<sec:intercept-url pattern="/acme/logout" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/acme/profile" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/acme/admin/**" access="hasRole('0')" />
+		<sec:intercept-url pattern="/acme/customer/**" access="hasRole('4')" />
+		<sec:form-login login-page="/acme/login"
+			authentication-failure-url="/acme/login-error" default-target-url="/acme/index" />
+		<sec:logout logout-url="/acme/logout" logout-success-url="/acme/index" />
+		<sec:anonymous enabled="false" />
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select username,password,enabled from user where username=?"
+				authorities-by-username-query="select u.username, ur.role_type from user u, role ur where u.id = ur.user_id and u.username =?" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<bean id="authenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<!-- After login, return to the last visited page -->
+		<property name="useReferer" value="true" />
+	</bean>
+</beans>
