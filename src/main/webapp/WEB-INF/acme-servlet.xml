@@ -34,38 +34,16 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
 	<!--========== Spring Data Source ========== -->
 
 	<bean class="java.net.URI" id="dbUrl">
-		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />
+		<constructor-arg value="postgres://yfwqcimoetgxdt:aHlPx7bwQgq_PNbZM5UsHklejp@ec2-54-227-255-156.compute-1.amazonaws.com:5432/dbthe921i4dfo7" />
 	</bean>
 
 	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSourceProduction">
-		<property name="driverClassName" value="${db.driverClass}" />
+		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url"
 			value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }" />
 		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }" />
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
 	    <property name="connectionProperties" value="ssl=true;sslfactory=org.postgresql.ssl.NonValidatingFactory;"/>
-	</bean>
-	
-	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSourcePostgres">
-		<property name="driverClassName" value="${db.driverClass}" />
-		<property name="url" value="jdbc:postgresql://127.0.0.1/acme"/>
-		<property name="username" value="rafa" />
-		<property name="password" value="" />
-	</bean>
-
-	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSourceDevelopment">
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-		<property name="url">
-			<value>jdbc:mysql://localhost/acme</value>
-		</property>
-		<property name="username">
-			<value>root</value>
-		</property>
-		<property name="password">
-			<value>root</value>
-		</property>
 	</bean>
 
 	<!--========== /Spring Data Source ========== -->
@@ -74,13 +52,13 @@ http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="Grupo15.ACME" />
-		<property name="dataSource" ref="${db.driverId}" />
+		<property name="dataSource" ref="dataSourceProduction" />
 	</bean>
 
 	<!--========== TransactionManager ========== -->
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="dataSource" ref="${db.driverId}" />
+		<property name="dataSource" ref="dataSourceProduction" />
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
