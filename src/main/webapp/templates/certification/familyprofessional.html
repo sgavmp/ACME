@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://github.com/dandelion/datatables">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
 <head th:include="common :: head">
 <!-- Aquí se incluye el head del archivo common.html-->
 </head>
@@ -8,15 +9,17 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
-		<header class="jumbotron subhead" id="submenu" sec:authorize="hasRole(0)">
+		<header class="jumbotron subhead" id="submenu"
+			sec:authorize="hasRole(0)">
 			<div class="subnav subnav-fixed">
 				<ul class="nav nav-pills">
 					<li><a th:text="#{menu.certificado.listar}"
-						href="/acme/admin/certification" th:href="@{/acme/admin/certification}">Listar
-							Certificados</a></li>
+						href="/acme/admin/certification"
+						th:href="@{/acme/admin/certification}">Listar Certificados</a></li>
 					<li><a th:text="#{menu.certificado.crear}"
 						href="/acme/admin/certification/create"
-						th:href="@{/acme/admin/certification/create}">Crear Certificado</a></li>
+						th:href="@{/acme/admin/certification/create}">Crear
+							Certificado</a></li>
 					<li class="active"><a
 						th:text="#{menu.certificado.familyprofessional}"
 						href="/acme/admin/certification/family"
@@ -28,7 +31,7 @@
 		<div id="addFamily">
 			<h3>Añadir nueva Familia Profesional</h3>
 			<form class="form-horizontal" method="post"
-				th:action="${isNew}?@{/acme/certification/family/create}:@{/acme/certification/family/edit/id/__${family.id}__}"
+				th:action="${isNew}?@{/acme/admin/certification/family/create}:@{/acme/admin/certification/family/edit/id/__${family.id}__}"
 				th:object="${family}">
 				<div th:if="${#fields.hasErrors('*')}" id="error-div"
 					class="alert alert-error">
@@ -78,13 +81,17 @@
 				</div>
 				<div class="form-actions">
 					<input th:value="#{certificado.formulario.guardar}" type="submit"
-						class="btn btn-primary" value="Guardar" name="create"></input><a th:text="#{certificado.formulario.cancelar}" href="/acme/certification/family" th:href="@{/acme/certification/family}"
-					class="btn" >Cancel</a>
+						class="btn btn-primary" value="Guardar" name="create"></input><a
+						th:text="#{certificado.formulario.cancelar}"
+						href="/acme/certification/family"
+						th:href="@{/acme/certification/family}" class="btn">Cancel</a>
 				</div>
 			</form>
 		</div>
-		<h1 th:text="#{familia.tabla.titulo}">Lista de Familias Profesionales</h1>
-		<table id="tabla_family" class="table table-striped" dt:table="true" dt:theme="bootstrap2">
+		<h1 th:text="#{familia.tabla.titulo}">Lista de Familias
+			Profesionales</h1>
+		<table id="tabla_family" class="table table-striped" dt:table="true"
+			dt:theme="bootstrap2">
 			<thead>
 				<tr>
 					<th th:text="#{familia.tabla.id}">ID</th>
@@ -98,12 +105,14 @@
 					th:each="family,rowStat  : ${allFamilyProfessional}">
 					<td th:text="${family.id}">1</td>
 					<td th:text="${family.name}">Idiomas</td>
-					<td sec:authorize="hasRole(0)"><a th:text="#{familia.tabla.editar}"
+					<td sec:authorize="hasRole(0)"><a
+						th:text="#{familia.tabla.editar}"
 						href="/acme/certification/family/edit/id/4"
-						th:href="@{'/acme/certification/family/edit/id/' + ${family.id}}">Edit</a></td>
-					<td sec:authorize="hasRole(0)"><a th:text="#{familia.tabla.borrar}"
+						th:href="@{'/acme/admin/certification/family/edit/id/' + ${family.id}}">Edit</a></td>
+					<td sec:authorize="hasRole(0)"><a
+						th:text="#{familia.tabla.borrar}"
 						href="/acme/certification/family/delete/id/4"
-						th:href="@{'/acme/certification/family/delete/id/' + ${family.id}}">Delete</a></td>
+						th:href="@{'/acme/admin/certification/family/delete/id/' + ${family.id}}">Delete</a></td>
 				</tr>
 				<tr th:unless="${!#lists.isEmpty(allFamilyProfessional)}">
 					<td th:text="#{certificado.tabla.vacia}" colspan="5"><h2>No

@@ -1,31 +1,17 @@
 package com.acme.model.examination;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
-import com.acme.model.AbstractPersistable;
 
+import com.acme.model.AbstractPersistable;
 import com.acme.model.Pay;
-import com.acme.model.exam.ExamType;
-import com.acme.model.exam.Option;
-import com.acme.model.user.Customer;
-import com.acme.model.user.Role;
 import com.acme.model.user.User;
 
 

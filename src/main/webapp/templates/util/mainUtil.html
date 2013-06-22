@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
+<head th:include="common :: head">
+<!-- Aquí se incluye el head del archivo common.html-->
+</head>
+<body class="claro">
+	<header th:include="common :: header" id="menu">
+		<!-- Aquí se incluye el menu superior del archivo common.html-->
+	</header>
+	<section class="container">
+		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+			class="alert alert-success">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${info}__')}">Accion realizada con
+				exito</p>
+		</div>
+		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+			class="alert alert-error">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${error}__')}">Error</p>
+		</div>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ], function(
+					on, dom, domConstruct) {
+				dojo.query(".close").onclick(function(evt) {
+					domConstruct.destroy(this.parentNode);
+				});
+			});
+		</script>
+		<h1 th:text="#{util.titulo}">Utiles</h1>
+		<a href="/acme/admin/util" th:href="@{/acme/admin/util/index}" class="btn btn-large btn-block btn-primary" type="button">Ejecutar Indexado (Hibernate Search)</a>
+		<a href="#" class="btn btn-large btn-block" disabled="disabled" type="button">Realizar Buckp Base de Datos</a>
+	</section>
+	<footer th:include="common :: footer">
+		<!-- Aquí se incluye el footer del archivo common.html-->
+	</footer>
+</body>
+</html>

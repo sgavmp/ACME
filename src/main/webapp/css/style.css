@@ -1,5 +1,4 @@
 body {
-	padding-top: 80px;
 	background-image: url(../img/grid.png);
 	background-repeat: repeat;
 }
@@ -31,6 +30,27 @@ footer .credits {
 
 section {
 	padding-bottom: 70px;
+}
+
+.search-right {
+	float: right;
+}
+
+section.container {
+	margin-top: 80px;
+}
+
+blockquote .optional {
+	display:none;
+}
+
+.optional-plus {
+	display:none;
+}
+
+.menu-element {
+	padding: 10px 15px 10px;
+	color: #999999;
 }
 /* Jumbotrons
  -------------------------------------------------- */

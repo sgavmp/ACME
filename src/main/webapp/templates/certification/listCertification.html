@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://github.com/dandelion/datatables">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://github.com/dandelion/datatables">
 <head th:include="common :: head">
 <!-- Aquí se incluye el head del archivo common.html-->
 </head>
@@ -11,18 +12,22 @@
 		<header class="jumbotron subhead" id="submenu">
 			<div class="subnav subnav-fixed" sec:authorize="hasRole(0)">
 				<ul class="nav nav-pills">
-					<li class="active"><a th:text="#{menu.certificado.listar}"
-						href="/acme/admin/certification" th:href="@{/acme/admin/certification}">Listar
-							Certificados</a></li>
+					<li th:class="!${isSearch}?'active':''" class="active"><a
+						th:text="#{menu.certificado.listar}" href="/acme/certification"
+						th:href="@{/acme/certification}">Listar Certificados</a></li>
 					<li><a th:text="#{menu.certificado.crear}"
 						href="/acme/admin/certification?id=4"
-						th:href="@{/acme/admin/certification/create}">Crear Certificado</a></li>
+						th:href="@{/acme/admin/certification/create}">Crear
+							Certificado</a></li>
 					<li><a th:text="#{menu.certificado.familyprofessional}"
 						href="/acme/admin/certification/family"
-						th:href="@{/acme/admin/certification/family}">Familias Professionales</a></li>
+						th:href="@{/acme/admin/certification/family}">Familias
+							Professionales</a></li>
+					<li th:if="${isSearch}" class="active"><a
+						th:text="#{menu.certificado.busqueda}" href="">Listar
+							Certificados</a></li>
 				</ul>
 			</div>
-			<h1 th:text="#{certificado.tabla.titulo}">Lista de Certificados</h1>
 		</header>
 		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
 			class="alert alert-success">
@@ -45,36 +50,100 @@
 				});
 			});
 		</script>
-		<table id="table_cert" class="table table-striped" dt:table="true" dt:theme="bootstrap2">
+		<h1
+			th:text="${isSearch}?#{certificado.tabla.titulo.busqueda}:#{certificado.tabla.titulo}">Lista
+			de Certificados</h1>
+		<form class="form-search search-right"
+			action="/acme/certification/search"
+			th:action="@{/acme/certification/search/}" method="get">
+			<input th:value="${search}" name="search" type="text"
+				class="input-medium search-query"></input>
+			<button type="submit" class="btn">Search</button>
+		</form>
+		<table id="table_cert" class="table table-border">
 			<thead>
 				<tr>
-					<th th:text="#{certificado.tabla.id}">ID</th>
+					<th th:text="#{certificado.tabla.mas}">Mas Info</th>
+					<th class="optional" th:text="#{certificado.tabla.id}">ID</th>
 					<th th:text="#{certificado.tabla.nombre}">Nombre</th>
-					<th th:text="#{certificado.tabla.company}">Empresa</th>
-					<th th:text="#{certificado.tabla.familia}">Familia Profesional</th>
-					<th th:text="#{certificado.tabla.acciones}" sec:authorize="hasRole(0)">Acciones</th>
+					<th class="optional" th:text="#{certificado.tabla.company}">Empresa</th>
+					<th class="optional" th:text="#{certificado.tabla.familia}">Familia
+						Profesional</th>
+					<th th:text="#{certificado.tabla.acciones}"
+						sec:authorize="hasRole(0)">Acciones</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:unless="${#lists.isEmpty(allCertifications)}"
-					th:each="cert,rowStat  : ${allCertifications}">
-					<td th:text="${cert.id}">1</td>
+			<tbody th:unless="${#lists.isEmpty(allCertifications.content)}"
+				th:each="cert,rowStat  : ${allCertifications}">
+				<tr>
+					<th><img th:id="${cert.id}" class="fila"
+						th:src="@{/img/plus.png}"></img></th>
+					<td class="optional" th:text="${cert.id}">1</td>
 					<td th:text="${cert.name}">Ingles B1</td>
-					<td th:text="${cert.company.name}">Cambridge</td>
-					<td th:text="${cert.familyProfessional.name}">Idiomas</td>
-					<td sec:authorize="hasRole(0)"><a th:text="#{certificado.tabla.editar}"
-						href="/acme/certification/edit/id/4"
-						th:href="@{'/acme/certification/edit/id/' + ${cert.id}}">Edit</a>/
+					<td class="optional" th:text="${cert.company.name}">Cambridge</td>
+					<td class="optional" th:text="${cert.familyProfessional.name}">Idiomas</td>
+					<td sec:authorize="hasRole(0)"><a
+						th:text="#{certificado.tabla.editar}"
+						href="/acme/admin/certification/edit/id/4"
+						th:href="@{'/acme/admin/certification/edit/id/' + ${cert.id}}">Edit</a>/
 						<a th:text="#{certificado.tabla.borrar}"
-						href="/acme/certification/delete/id/4"
-						th:href="@{'/acme/certification/delete/id/' + ${cert.id}}">Delete</a></td>
+						href="/acme/admin/certification/delete/id/4"
+						th:href="@{'/acme/admin/certification/delete/id/' + ${cert.id}}">Delete</a></td>
 				</tr>
-				<tr th:unless="${!#lists.isEmpty(allCertifications)}">
-					<td th:text="#{certificado.tabla.vacia}" colspan="5"><h2>No
-							hay certificados en el sistema</h2></td>
+				<tr th:id="'row_'+${cert.id}" style="display: none">
+					<td colspan="5">
+						<blockquote>
+							<dl>
+								<dt class="optional">Id:</dt>
+								<dd class="optional" th:text="${cert.id}">1</dd>
+								<dt th:text="#{certificado.description}">Descripcion</dt>
+								<dd th:text="${cert.description}">Prueba de idiomas</dd>
+								<dt th:text="#{certificado.price}">Precio:</dt>
+								<dd th:text="${cert.pricePublic}+'&euro;'">30</dd>
+								<dt th:text="#{certificado.validez}">Validez:</dt>
+								<dd th:text="${cert.validez}">1 año</dd>
+								<dt class="optional" th:text="#{certificado.tabla.company}">Empresa:</dt>
+								<dd class="optional" th:text="${cert.company.name}">Company</dd>
+								<dt class="optional" th:text="#{certificado.tabla.familia}">Familia
+									Profesional:</dt>
+								<dd class="optional" th:text="${cert.familyProfessional.name}">Idiomas</dd>
+							</dl>
+						</blockquote>
+					</td>
+				</tr>
+			</tbody>
+			<tbody th:unless="${!#lists.isEmpty(allCertifications.content)}">
+				<tr>
+					<td
+						th:text="${isSearch}?#{certificado.tabla.busqueda.vacia}:#{certificado.tabla.vacia}"
+						colspan="5"><h2>No hay certificados en el sistema</h2></td>
 				</tr>
 			</tbody>
 		</table>
+		<ul class="pager">
+			<li class="previous"
+				th:class="${allCertifications.firstPage?'previous disabled':'previous'}"><a
+				href="#" th:disabled="${allCertifications.firstPage}"
+				th:href="!${allCertifications.firstPage}?(${isSearch}?(@{/acme/certification/search/page/}+${allCertifications.number-1}+'?search='+${search}):(@{/acme/certification/page/}+${allCertifications.number-1})):'#'">&larr;
+					Anterior</a></li>
+			<li class="next"
+				th:class="${allCertifications.lastPage?'next disabled':'next'}"><a
+				href="#" th:disabled="${allCertifications.lastPage}"
+				th:href="!${allCertifications.lastPage}?(${isSearch}?(@{/acme/certification/search/page/}+${allCertifications.number+1}+'?search='+${search}):(@{/acme/certification/page/}+${allCertifications.number+1})):'#'">Siguiente
+					&rarr;</a></li>
+		</ul>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-style" ], function(on,
+					dom, domStyle) {
+				dojo.query(".fila").onclick(function(evt) {
+					var node = "row_" + evt.target.id;
+					if (domStyle.get(node, "display") != "none")
+						domStyle.set(node, "display", "none");
+					else
+						domStyle.set(node, "display", "");
+				});
+			});
+		</script>
 	</section>
 	<footer th:include="common :: footer">
 		<!-- Aquí se incluye el footer del archivo common.html-->

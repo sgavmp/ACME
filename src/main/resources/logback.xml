@@ -7,8 +7,12 @@
 	</appender>
 
 <!-- <logger name="org.springframework">
-		<level value="INFO" />
-	</logger>  -->
+		<level value="DEBUG" />
+	</logger> -->
+
+<!--	<logger name="org.hibernate">
+		<level value="DEBUG" />
+	</logger> -->
 
 	<root>
 		<level value="DEBUG" />

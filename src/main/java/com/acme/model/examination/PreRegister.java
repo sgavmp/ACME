@@ -1,23 +1,9 @@
 package com.acme.model.examination;
 
-import java.io.Serializable;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
 
-import org.hibernate.annotations.Parent;
 import com.acme.model.AbstractPersistable;
-
 import com.acme.model.IntervalDate;
 import com.acme.model.certification.Certification;
 import com.acme.model.user.Customer;

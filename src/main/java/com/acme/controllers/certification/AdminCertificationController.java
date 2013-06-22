@@ -1,52 +1,32 @@
 package com.acme.controllers.certification;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.xml.ws.http.HTTPException;
 
-import org.hibernate.OptimisticLockException;
-import org.hibernate.exception.JDBCConnectionException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.transaction.annotation.Propagation;
-import org.thymeleaf.util.Validate;
 
+import com.acme.exception.CertificationNoExistException;
+import com.acme.exception.FamilyProfessionalNoExistException;
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
-import com.acme.model.user.Company;
 import com.acme.model.user.User;
 import com.acme.services.CertificationService;
 import com.acme.services.UserService;
-import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping({ "/admin/certification" })
 public class AdminCertificationController {
-
-	@Autowired
-	private MessageSource messageSource;
 
 	@Autowired
 	private CertificationService servicecertification;
@@ -56,11 +36,6 @@ public class AdminCertificationController {
 
 	public AdminCertificationController() {
 		super();
-	}
-
-	@ModelAttribute("allCertifications")
-	public List<Certification> allCertifications() {
-		return servicecertification.getAllCertification();
 	}
 
 	@ModelAttribute("allFamilyProfessional")
@@ -76,8 +51,8 @@ public class AdminCertificationController {
 	// Añade un nuevo requisito cuando se esta creando un nuevo certificado
 	@RequestMapping(value = "/create", params = "addRow", method = RequestMethod.POST)
 	public String addRowCreate(
-			@ModelAttribute("cert") final Certification cert,
-			final BindingResult bindingResult, Model model) {
+			@ModelAttribute("cert") Certification cert,
+			BindingResult bindingResult, Model model) {
 		cert.addRequiremnt("");
 		model.addAttribute("isNew", true);
 		model.addAttribute("activeMenu", "certification");
@@ -87,9 +62,9 @@ public class AdminCertificationController {
 	// Borra un requisito cuando se esta creando un nuevo certificado
 	@RequestMapping(value = "/create", params = "removeRow", method = RequestMethod.POST)
 	public String removeRowCreate(@ModelAttribute("cert") Certification cert,
-			final BindingResult bindingResult, final HttpServletRequest req,
+			BindingResult bindingResult, HttpServletRequest req,
 			Model model) {
-		final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+		Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
 		cert.removeRequirement(rowId);
 		model.addAttribute("isNew", true);
 		model.addAttribute("activeMenu", "certification");
@@ -98,8 +73,8 @@ public class AdminCertificationController {
 
 	// Crea un requisito cuando se esta modificando un certificado
 	@RequestMapping(value = "/edit/id/{idcert}", params = "addRow", method = RequestMethod.POST)
-	public String addRowEdit(@ModelAttribute("cert") Certification cert,
-			final BindingResult bindingResult, Model model) {
+	public String addRowEdit(@PathVariable Long idcert, @ModelAttribute("cert") Certification cert,
+			BindingResult bindingResult, Model model) {
 		cert.addRequiremnt("");
 		model.addAttribute("isNew", false);
 		model.addAttribute("activeMenu", "certification");
@@ -108,11 +83,10 @@ public class AdminCertificationController {
 
 	// Borra un requisito cuando se esta modificando un certificado
 	@RequestMapping(value = "/edit/id/{idcert}", params = "removeRow", method = RequestMethod.POST)
-	public String removeRowEdit(
-			@ModelAttribute("cert") final Certification cert,
-			final BindingResult bindingResult, final HttpServletRequest req,
+	public String removeRowEdit(@PathVariable Long idcert,
+			@ModelAttribute("cert") Certification cert, BindingResult bindingResult, HttpServletRequest req,
 			Model model) {
-		final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+		Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
 		cert.removeRequirement(rowId);
 		model.addAttribute("isNew", false);
 		model.addAttribute("activeMenu", "certification");
@@ -122,13 +96,13 @@ public class AdminCertificationController {
 	// Devuelve el certificado con id indicado en la URL
 	@RequestMapping(value = "/edit/id/{idcert}", method = RequestMethod.GET)
 	public String editCertificate(@PathVariable Long idcert, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
-		Certification cert = servicecertification.getCertificationById(idcert);
-		if (cert == null) {
-			redirectAttrs.addFlashAttribute("error", "certification.noexist");
-			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-					HttpStatus.NOT_FOUND);
-			return "redirect:/acme/certification/create";
+			RedirectAttributes redirectAttrs) {
+		Certification cert;
+		try {
+			cert = servicecertification.getCertificationById(idcert);
+		} catch (CertificationNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			return "redirect:/acme/certification/";
 		}
 		model.addAttribute("cert", cert);
 		model.addAttribute("isNew", false);
@@ -141,26 +115,20 @@ public class AdminCertificationController {
 	public String editCertificate(@PathVariable Integer idcert, Model model,
 			@ModelAttribute("cert") @Valid Certification cert,
 			BindingResult result) {
+		model.addAttribute("isNew", false);
+		model.addAttribute("cert", cert);
+		model.addAttribute("activeMenu", "certification");
 		// Comprueba si hay errores de validacion
 		if (result.hasErrors()) {
-			model.addAttribute("isNew", false);
-			model.addAttribute("cert", cert);
-			model.addAttribute("activeMenu", "certification");
 			return "/certification/oneCertification";
 		}
-		cert.setFamilyProfessional(servicecertification
-				.getFamilyProfessionalById(cert.getFamilyProfessional().getId()));
-		cert.setCompany(serviceuser.getUserById(cert.getCompany().getId()));
 		try {
 		cert=servicecertification.updateCertification(cert);
 		}
-		catch(Exception e) {
+		catch(StaleObjectStateException e) {
 			model.addAttribute("error", "certification.lockexception");
 			return "/certification/oneCertification";
 		}
-		model.addAttribute("activeMenu", "certification");
-		model.addAttribute("cert", cert);
-		model.addAttribute("isNew", false);
 		model.addAttribute("info", "certification.modify");
 		return "/certification/oneCertification";
 	}
@@ -168,15 +136,20 @@ public class AdminCertificationController {
 	// Borra el certificado indicado en la URL por id
 	@RequestMapping(value = "/delete/id/{idcert}", method = RequestMethod.GET)
 	public String deleteCertificate(@PathVariable Long idcert, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
-		Certification cert = servicecertification.getCertificationById(idcert);
-		if (cert == null) {
-			redirectAttrs.addFlashAttribute("error", "certification.noexist");
-			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-					HttpStatus.NOT_FOUND);
-			return "redirect:/acme/certification";
+			RedirectAttributes redirectAttrs) {
+		Certification cert;
+		try {
+			cert = servicecertification.getCertificationById(idcert);
+		} catch (CertificationNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			return "redirect:/acme/certification/";
+		} 
+		try {
+			servicecertification.removeCertificationById(cert.getId());
+		} catch (Exception e) {
+			redirectAttrs.addFlashAttribute("error", "exception.noborrar");
+			return "redirect:/acme/certification/";
 		}
-		servicecertification.removeCertificationById(idcert);
 		redirectAttrs.addFlashAttribute("info", "certification.delete");
 		return "redirect:/acme/certification/";
 	}
@@ -202,13 +175,10 @@ public class AdminCertificationController {
 			model.addAttribute("activeMenu", "certification");
 			return "/certification/oneCertification";
 		}
-		cert.setFamilyProfessional(servicecertification
-				.getFamilyProfessionalById(cert.getFamilyProfessional().getId()));
-		cert.setCompany(serviceuser.getUserById(cert.getCompany().getId()));
 		cert=servicecertification.createCertification(cert);
 		redirectAttrs.addAttribute("id", cert.getId()).addFlashAttribute(
 				"info", "certification.create");
-		return "redirect:/acme/certification/edit/id/{id}";
+		return "redirect:/acme/admin/certification/edit/id/{id}";
 	}
 
 	// Muestra el formulario de crear una nueva familia profesional y el listado
@@ -225,14 +195,13 @@ public class AdminCertificationController {
 	// Devuelve el certificado con id indicado en la URL
 	@RequestMapping(value = "/family/edit/id/{idfamiy}", method = RequestMethod.GET)
 	public String editFamily(@PathVariable Long idfamiy, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
-		FamilyProfessional family = servicecertification
-				.getFamilyProfessionalById(idfamiy);
-		if (family == null) {
-			redirectAttrs.addFlashAttribute("error", "certification.noexist");
-			response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-					HttpStatus.NOT_FOUND);
-			return "redirect:/acme/certification/family";
+			RedirectAttributes redirectAttrs) {
+		FamilyProfessional family;
+		try {
+			family = servicecertification.getFamilyProfessionalById(idfamiy);
+		} catch (FamilyProfessionalNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			return "redirect:/acme/admin/certification/family";
 		}
 		model.addAttribute("family", family);
 		model.addAttribute("isNew", false);
@@ -244,7 +213,7 @@ public class AdminCertificationController {
 	@RequestMapping(value = "/family/create", params = "create", method = RequestMethod.POST)
 	public String createCertificate(Model model,
 			@ModelAttribute("family") @Valid FamilyProfessional family,
-			BindingResult result, RedirectAttributes redirectAttrs) {
+			BindingResult result) {
 		// Comprueba si hay errores de validacion
 		if (result.hasErrors()) {
 			model.addAttribute("isNew", true);
@@ -252,28 +221,27 @@ public class AdminCertificationController {
 			return "/certification/familyprofessional";
 		}
 		servicecertification.createFamilyProfessional(family);
-		return "redirect:/acme/certification/family";
+		return "redirect:/acme/admin/certification/family";
 	}
 
 	// Borra la familia profesional indicado en la URL por id
+	@SuppressWarnings("finally")
 	@RequestMapping(value = "/family/delete/id/{idfamiy}", method = RequestMethod.GET)
 	public String deleteFamily(@PathVariable Long idfamiy, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response) {
+			RedirectAttributes redirectAttrs) {
 		try {
 			FamilyProfessional family = servicecertification.getFamilyProfessionalById(idfamiy);
-			if (family == null) {
-				redirectAttrs.addFlashAttribute("error", "familia.noexist");
-				response.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-						HttpStatus.NOT_FOUND);
-			}
 			servicecertification.removeFamilyProfessional(idfamiy);
-			redirectAttrs.addFlashAttribute("info", "familia.delete");
+			redirectAttrs.addFlashAttribute("info", "familia.delete"); 	
+		}
+		catch (FamilyProfessionalNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
 		}
 		catch (Exception e){
 			redirectAttrs.addFlashAttribute("error", "familia.asociado");
 		}
-		finally{
-			return "redirect:/acme/certification/family";
+		finally {
+			return "redirect:/acme/admin/certification/family";
 		}
 	}
 
@@ -282,17 +250,14 @@ public class AdminCertificationController {
 	public String editFamily(@PathVariable Integer idfamiy, Model model,
 			@ModelAttribute("family") @Valid FamilyProfessional family,
 			BindingResult result) {
+		model.addAttribute("isNew", false);
+		model.addAttribute("family", family);
+		model.addAttribute("activeMenu", "certification");
 		// Comprueba si hay errores de validacion
 		if (result.hasErrors()) {
-			model.addAttribute("isNew", false);
-			model.addAttribute("family", family);
-			model.addAttribute("activeMenu", "certification");
 			return "/certification/familyprofessional";
 		}
 		servicecertification.updateFamilyProfessional(family);
-		model.addAttribute("activeMenu", "certification");
-		model.addAttribute("family", family);
-		model.addAttribute("isNew", false);
 		model.addAttribute("info", "family.modify");
 		return "/certification/familyprofessional";
 	}

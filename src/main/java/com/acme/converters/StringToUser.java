@@ -4,25 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import com.acme.model.user.User;
+import java.util.Date;
+import org.apache.commons.lang.time.DateUtils;
 import com.acme.repository.UserRepository;
 
 
 
 @Component
-public class StringToUser implements Converter<String, User> {
+public class StringToUser implements Converter<String, Date> {
 
 	@Autowired
 	UserRepository repositoryUser;
 
 	@Override
-	public User convert(String text) {
-		User result;
-		Long id;
-
+	public Date convert(String text) {
+		Date result;
+		String[] formats = {"'T'HH:mm:ss", "yyyy-MM-dd"};
 		try {
-			id = Long.valueOf(text);
-			result = repositoryUser.findOne(id);
+			result = DateUtils.parseDate(text, formats);;
 		} catch (Throwable oops) {
 			throw new IllegalArgumentException(oops);
 		}

@@ -8,21 +8,20 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
-		<header class="jumbotron subhead" id="submenu">
+		<header th:if="!${isProfile}" class="jumbotron subhead" id="submenu">
 			<div class="subnav subnav-fixed">
 				<ul class="nav nav-pills">
-					<li class="active"><a th:text="#{menu.user.listar}"
-						href="/acme/user" th:href="@{/acme/user}">Listar Usuarios</a></li>
-					<li><a th:text="#{menu.user.crear}" href="/acme/user?id=4"
-						th:href="@{/acme/user/create}">Crear Usuario</a></li>
+					<li><a th:text="#{menu.user.listar}"
+						href="/acme/admin/user" th:href="@{/acme/admin/user}">Listar Usuarios</a></li>
+					<li class="active"><a th:text="#{menu.user.crear}" href="/acme/admin/user?id=4"
+						th:href="@{/acme/admin/user/create}">Crear Usuario</a></li>
 				</ul>
 			</div>
 			<h1 th:text="#{usuario.titulo.crear}">Crear Usuario</h1>
 		</header>
 		<form class="form-horizontal" method="post"
-			th:action="${isProfile}?@{/acme/profile}:(${isNew}?@{/acme/create}:@{/acme/user/edit/id/__${user.id}__})"
-			th:object="${user}"
-			val:validate="${user}">
+			th:action="${isProfile}?@{/acme/profile}:(${isNew}?(${isSignIn}?@{/acme/signin}:@{/acme/admin/user/create}):@{/acme/admin/user/edit/id/__${user.id}__})"
+			th:object="${user}" val:validate="${user}">
 			<div th:if="${#fields.hasErrors('*')}" id="error-div"
 				class="alert alert-error">
 				<button id="btcerrar" type="button" class="close"
@@ -53,7 +52,7 @@
 					});
 				});
 			</script>
-			<div class="control-group">
+			<div th:if="!${isSignIn}" class="control-group">
 				<label th:text="#{usuario.formulario.id}" class="control-label">Id</label>
 				<div class="controls">
 					<input th:field="*{id}" th:value="${user.id}" type="text" id="id"
@@ -65,65 +64,62 @@
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.nombre}" class="control-label">Name</label>
 				<div class="controls">
-					<input th:field="*{name}"
-						th:value="${user.name}" type="text" id="name"></input>
+					<input th:field="*{name}" th:value="${user.name}" type="text"
+						id="name"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.apellidos}"
 					class="control-label">Apellidos</label>
 				<div class="controls">
-					<input th:field="*{surname}"
-						th:value="${user.surname}" type="text" id="surname" size="16"
-						class="span2"></input>
+					<input th:field="*{surname}" th:value="${user.surname}" type="text"
+						id="surname" size="16" class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.email}" class="control-label">Email</label>
 				<div class="controls">
-					<input th:field="*{email}"
-						th:value="${user.email}" type="text" id="surname" size="16"
-						class="span2"></input>
+					<input th:field="*{email}" th:value="${user.email}" type="text"
+						id="surname" size="16" class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.username}"
 					class="control-label">Nombre de Usuario</label>
 				<div class="controls">
-					<input th:field="*{username}"
-						th:value="${user.username}" type="text" id="username"></input>
+					<input th:field="*{username}" th:value="${user.username}"
+						type="text" id="username"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.password}"
 					class="control-label">Contraseña</label>
 				<div class="controls">
-					<input th:required="${isNew}" th:field="*{password}" type="password"
-						id="password"></input>
+					<input th:required="${isNew}" th:field="*{password}"
+						type="password" id="password"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.phone}" class="control-label">Telefono</label>
 				<div class="controls">
-					<input th:field="*{phone}"
-						th:value="${user.phone}" type="text" id="phone"></input>
+					<input th:field="*{phone}" th:value="${user.phone}" type="text"
+						id="phone"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.mobilephone}"
 					class="control-label">Telefono movil</label>
 				<div class="controls">
-					<input  th:field="*{mobilephone}"
-						th:value="${user.mobilephone}" type="text" id="mobilephonec"
-						size="16" class="span2"></input>
+					<input th:field="*{mobilephone}" th:value="${user.mobilephone}"
+						type="text" id="mobilephonec" size="16" class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
 				<label th:text="#{usuario.formulario.direccion}"
 					class="control-label">Direccion</label>
 				<div class="controls">
-					<input th:field="*{address}"
-						th:value="${user.address}" type="text" id="direccion"></input>
+					<input th:field="*{address}" th:value="${user.address}" type="text"
+						id="direccion"></input>
 				</div>
 			</div>
 			<div class="control-group">
@@ -140,7 +136,7 @@
 				<div class="controls">
 					<select id="state" th:field="*{state}">
 						<option th:each="s : ${statesInCountry}" th:value="${s.id}"
-						th:text="${s.name}">Seleccione un Pais</option>
+							th:text="${s.name}">Seleccione un Pais</option>
 					</select>
 				</div>
 			</div>
@@ -149,47 +145,79 @@
 				<div class="controls">
 					<select id="city" th:field="*{city}">
 						<option th:each="ci : ${citiesByState}" th:value="${ci.id}"
-						th:text="${ci.name}">Selecciona una Provincia</option>
+							th:text="${ci.name}">Selecciona una Provincia</option>
 					</select>
 				</div>
 			</div>
-			<script>
-				require(
-						[ "dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/_base/array" ],
-						function(on, dom, domConstruct, array) {
-							on(dom.byId("pais"),"change",function(evt) {
-										index = evt.target.selectedIndex;
-										val = evt.target[index].value;
-										dojo.xhrGet({
-													url : "country/" + val+"/states",
-													handleAs:"json",
-													load : function(result) {
-														domConstruct.empty("state");
-														dojo.byId("state").add(dojo.create("option", { innerHTML:"Selecciona una provincia", value:-1, disabled:"True", selected:"True" }));
-														array.forEach(result, function(item){
-															dojo.byId("state").add(dojo.create("option", { innerHTML:item.name, value:item.id }));
-														});
-														domConstruct.empty("city");
-														dojo.byId("city").add(dojo.create("option", { innerHTML:"Selecciona una Provincia", value:-1, disabled:"True", selected:"True" }));
-														}});
-													});
-							on(dom.byId("state"),"change",function(evt) {
-								index = evt.target.selectedIndex;
-								val = evt.target[index].value;
-								dojo.xhrGet({
-											url : "state/" + val+"/cities",
-											handleAs:"json",
-											load : function(result) {
-												domConstruct.empty("city");
-												dojo.byId("city").add(dojo.create("option", { innerHTML:"Selecciona una Ciudad", value:-1, disabled:"True", selected:"True" }));
-												array.forEach(result, function(item){
-													dojo.byId("city").add(dojo.create("option", { innerHTML:item.name, value:item.id }));
-												});
-												}});
-											});
-												});
+			<script th:inline="javascript">
+				/*         */
+				require([ "dojo/on", "dojo/dom", "dojo/dom-construct",
+						"dojo/_base/array" ], function(on, dom, domConstruct,
+						array) {
+					on(dom.byId("country"), "change", function(evt) {
+						index = evt.target.selectedIndex;
+						val = evt.target[index].value;
+						dojo.xhrGet({
+							/*[+
+							url : [[@{/acme/ajax/country/}]] + val + "/states",
+							+]*/
+							handleAs : "json",
+							load : function(result) {
+								domConstruct.empty("state");
+								dojo.byId("state").add(dojo.create("option", {
+									innerHTML : "Selecciona una provincia",
+									value : -1,
+									disabled : "True",
+									selected : "True"
+								}));
+								array.forEach(result, function(item) {
+									dojo.byId("state").add(
+											dojo.create("option", {
+												innerHTML : item.name,
+												value : item.id
+											}));
+								});
+								domConstruct.empty("city");
+								dojo.byId("city").add(dojo.create("option", {
+									innerHTML : "Selecciona una Provincia",
+									value : -1,
+									disabled : "True",
+									selected : "True"
+								}));
+							}
+						});
+					});
+					on(dom.byId("state"), "change", function(evt) {
+						index = evt.target.selectedIndex;
+						val = evt.target[index].value;
+						dojo.xhrGet({
+							/*[+
+							url : [[@{/acme/ajax/state/}]] + val + "/cities",
+							+]*/
+							handleAs : "json",
+							load : function(result) {
+								domConstruct.empty("city");
+								dojo.byId("city").add(dojo.create("option", {
+									innerHTML : "Selecciona una Ciudad",
+									value : -1,
+									disabled : "True",
+									selected : "True"
+								}));
+								array.forEach(result, function(item) {
+									dojo.byId("city").add(
+											dojo.create("option", {
+												innerHTML : item.name,
+												value : item.id
+											}));
+								});
+							}
+						});
+					});
+				});
+				/*   */
 			</script>
-			<div class="control-group" th:unless="${isNew}" sec:authorize="hasRole(0)">
+			<div class="control-group" th:unless="${isNew} or ${isProfile}"
+				sec:authorize="hasRole(0)">
 				<table>
 					<thead>
 						<tr>
@@ -204,11 +232,11 @@
 							</th>
 							<th>
 								<button
-									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_USER)}"
+									th:if="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_CUSTOMER)}"
 									type="submit" name="createRoleCustomer">Crear Rol
 									Customer</button>
 								<button
-									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_USER)}"
+									th:unless="!${#maps.containsKey(user.roles,T(com.acme.model.user.UserType).ROLE_CUSTOMER)}"
 									type="submit" name="removeRoleCustomer">Borrar Rol
 									Customer</button>
 							</th>

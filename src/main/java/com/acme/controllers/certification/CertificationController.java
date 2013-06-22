@@ -1,52 +1,21 @@
 package com.acme.controllers.certification;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.xml.ws.http.HTTPException;
-
-import org.hibernate.OptimisticLockException;
-import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.transaction.annotation.Propagation;
-import org.thymeleaf.util.Validate;
 
+import com.acme.exception.PageNumberIncorrectException;
 import com.acme.model.certification.Certification;
-import com.acme.model.certification.FamilyProfessional;
-import com.acme.model.user.Company;
-import com.acme.model.user.User;
 import com.acme.services.CertificationService;
-import com.acme.services.UserService;
-import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping({ "/certification" })
 public class CertificationController {
-
-	@Autowired
-	private MessageSource messageSource;
 
 	@Autowired
 	private CertificationService servicecertification;
@@ -55,15 +24,76 @@ public class CertificationController {
 		super();
 	}
 
-	@ModelAttribute("allCertifications")
-	public List<Certification> allCertifications() {
-		return servicecertification.getAllCertification();
+	// Muestra un listado con todos los certificados, paginado
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/page/{p}", method = RequestMethod.GET)
+	public String showAllCertificate(Model model, @PathVariable("p") Integer p) {
+		Page<Certification> certifications = null;
+		try {
+			certifications = servicecertification.getAllCertification(p);
+		} catch (PageNumberIncorrectException e) {
+			model.addAttribute("error", e.getMessage());
+			certifications = servicecertification.getAllCertification(0);
+		} finally {
+			model.addAttribute("allCertifications", certifications);
+			model.addAttribute("activeMenu", "certification");
+			return "/certification/listCertification";
+		}
+	}
+	
+	// Muestra un listado de la busqueda realizada, paginado
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/search/", method = RequestMethod.GET, params = { "search" })
+	public String searchCertifications(
+			@RequestParam(value = "search") String text, Model model) {
+		Page<Certification> certifications = null;
+		try {
+			certifications = servicecertification.searchCertification(text, 0);
+		} catch (PageNumberIncorrectException e) {
+			model.addAttribute("error", e.getMessage());
+		} finally {
+			model.addAttribute("activeMenu", "certification");
+			model.addAttribute("search", text);
+			model.addAttribute("isSearch", true);
+			model.addAttribute("allCertifications", certifications);
+			return "/certification/listCertification";
+		}
 	}
 
-	// Muestra un listado con todos los certificados
-	@RequestMapping({ "/**", "/list" })
+	// Muestra un listado de la busqueda realizada, paginado, la pagina indicada
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/search/page/{page}", method = RequestMethod.GET)
+	public String searchCertifications(
+			@RequestParam(value = "search") String text,
+			@PathVariable Integer page, Model model) {
+		Page<Certification> certifications=null;
+		try {
+			certifications = servicecertification.searchCertification(text,
+					page);
+		} catch (PageNumberIncorrectException e) {
+			model.addAttribute("error", e.getMessage());
+		} finally {
+			model.addAttribute("activeMenu", "certification");
+			model.addAttribute("search", text);
+			model.addAttribute("isSearch", true);
+			model.addAttribute("allCertifications", certifications);
+			return "/certification/listCertification";
+		}
+	}
+
+	// Muestra un listado con todos los certificados, paginado
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/**")
 	public String showAllCertificate(Model model) {
-		model.addAttribute("activeMenu", "certification");
-		return "/certification/listCertification";
+		Page<Certification> certifications = null;
+		try {
+			certifications = servicecertification.getAllCertification(0);
+		} catch (PageNumberIncorrectException e) {
+			model.addAttribute("error", e.getMessage());
+		} finally {
+			model.addAttribute("activeMenu", "certification");
+			model.addAttribute("allCertifications", certifications);
+			return "/certification/listCertification";
+		}
 	}
 }

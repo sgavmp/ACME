@@ -1,7 +1,5 @@
 package com.acme.model.user;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

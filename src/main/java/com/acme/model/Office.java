@@ -1,18 +1,9 @@
 package com.acme.model;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import com.acme.model.AbstractPersistable;
 import com.acme.model.geography.City;
-import com.acme.model.geography.Country;
-import com.acme.model.geography.State;
 
 
 @Entity

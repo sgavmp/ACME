@@ -1,8 +1,6 @@
 package com.acme.model.examination;
 
 
-import com.acme.model.user.Customer;
-import com.acme.model.user.Role;
 import com.acme.model.user.User;
 import com.google.common.base.Function;
 

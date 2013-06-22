@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -15,16 +13,17 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.validator.constraints.NotBlank;
+
 import com.acme.model.AbstractPersistable;
 import com.acme.model.IntervalDate;
 import com.acme.model.Office;
@@ -34,12 +33,12 @@ import com.acme.model.examination.Examination;
 import com.acme.model.examination.PreRegister;
 import com.acme.model.geography.Language;
 import com.acme.model.user.Customer;
-import com.acme.model.user.Reviewer;
 import com.acme.model.user.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Entity
+@Indexed()
 public class Certification extends AbstractPersistable<Long> {
 
 
@@ -54,10 +53,12 @@ public class Certification extends AbstractPersistable<Long> {
 
 	@NotNull(message = "certification.name.null")
 	@NotBlank(message = "certification.name.null")
+	@Field()
 	private String name;
 
 	@NotNull(message = "certification.description.null")
 	@NotBlank(message = "certification.description.null")
+	@Field()
 	private String description;
 
 	@NotNull(message = "certification.cost.null")
@@ -76,6 +77,7 @@ public class Certification extends AbstractPersistable<Long> {
 
 	@NotNull(message = "certification.company.null")
 	@OneToOne
+	@IndexedEmbedded
 	private User company;
 
 	@NotNull(message = "certification.family.null")
@@ -246,11 +248,14 @@ public class Certification extends AbstractPersistable<Long> {
 		return temp;
 	}
 
-	@Transient
 	public Exam getRandomExam() {
-		int size = exams.size();
-		Random rand = new Random();
-		return (Exam) exams.toArray()[rand.nextInt(size)];
+		if (!this.exams.isEmpty()) {
+			int size = exams.size();
+			Random rand = new Random();
+			return (Exam) exams.toArray()[rand.nextInt(size)];
+		}
+		else
+			return null;
 	}
 
 	public Examination createNewExaminationForCertification(

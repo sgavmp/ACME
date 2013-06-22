@@ -1,11 +1,9 @@
 package com.acme.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.acme.model.examination.Examination;
-import com.acme.model.geography.Country;
 import com.acme.model.geography.State;
 
-public interface StateRepository  extends CrudRepository<State, Long>  {
+public interface StateRepository  extends PagingAndSortingRepository<State, Long>  {
 
 }

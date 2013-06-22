@@ -1,10 +1,9 @@
 package com.acme.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.acme.model.MethodPay;
-import com.acme.model.examination.Examination;
 
-public interface MethodPayRepository  extends CrudRepository<MethodPay, Long> {
+public interface MethodPayRepository  extends PagingAndSortingRepository<MethodPay, Long> {
 
 }

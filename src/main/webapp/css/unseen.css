@@ -1,0 +1,16 @@
+@media only screen and (max-width: 800px) {
+}
+
+@media only screen and (max-width: 640px) {
+	.optional {
+		display: none;
+	}
+	blockquote .optional {
+		display: block;
+	}
+	tr .optional-plus {
+	display:table-row;}
+	
+	tr .optional-plus {
+	display:table-cell;}
+}

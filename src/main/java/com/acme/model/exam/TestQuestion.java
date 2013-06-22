@@ -1,30 +1,25 @@
 package com.acme.model.exam;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Entity
 @DiscriminatorValue("T")
 public class TestQuestion extends Question {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 98126987889788209L;
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------

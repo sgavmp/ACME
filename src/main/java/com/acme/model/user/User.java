@@ -2,21 +2,13 @@ package com.acme.model.user;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
@@ -24,25 +16,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.acme.model.AbstractPersistable;
-
 import com.acme.model.geography.City;
 import com.acme.model.geography.Country;
 import com.acme.model.geography.State;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 
 @Entity (name="AcmeUser")
-public class User extends AbstractPersistable<Long>{
+@Indexed()
+public class User extends AbstractPersistable<Long> {
 	/**
 	 * 
 	 */
@@ -50,72 +39,74 @@ public class User extends AbstractPersistable<Long>{
 	// -------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------
-	@Column(nullable=false,unique=true)
+	@Column(nullable = false, unique = true)
 	@NotNull(message = "user.username.null")
 	@NotBlank(message = "user.username.null")
+	@Field()
 	private String username;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String password;
-	
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-    @JoinColumn(name="USER_ID")
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "USER_ID")
 	@MapKeyEnumerated(EnumType.ORDINAL)
-	@MapKeyColumn(name="ROLE_TYPE",nullable=true)
-	private Map<UserType,Role> roles=Maps.newHashMap();
-	
-	@Column(nullable=false)
+	@MapKeyColumn(name = "ROLE_TYPE", nullable = true)
+	private Map<UserType, Role> roles = Maps.newHashMap();
+
+	@Column(nullable = false)
 	@NotNull(message = "user.name.null")
 	@NotBlank(message = "user.name.null")
+	@Field()
 	private String name;
-	
+
 	@NotNull(message = "user.surname.null")
 	@NotBlank(message = "user.surname.null")
+	@Field()
 	private String surname;
-	
+
 	private String address;
-	
-	@Digits(integer=12, fraction = 0)
+
+	@Digits(integer = 12, fraction = 0)
 	@NotNull(message = "user.mobilphone.null")
 	@NotBlank(message = "user.mobilphone.null")
 	private String phone;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	@NotNull(message = "user.mobilphone.null")
 	@NotBlank(message = "user.mobilphone.null")
-	@Digits(integer=12, fraction = 0)
+	@Digits(integer = 12, fraction = 0)
 	private String mobilephone;
-	
-	@Column(nullable=false,unique=true)
+
+	@Column(nullable = false, unique = true)
 	@NotNull(message = "user.mobilphone.null")
 	@NotBlank(message = "user.mobilphone.null")
 	@Email
+	@Field()
 	private String email;
-	
+
 	@ManyToOne
 	@NotNull(message = "user.city.null")
 	private City city;
-	
+
 	@ManyToOne
 	@NotNull(message = "user.state.null")
 	private State state;
-	
+
 	@ManyToOne
 	@NotNull(message = "user.country.null")
 	private Country country;
-	
-	private boolean enabled=true;
+
+	@Transient
+	private boolean passChange = false;
+
+	private boolean enabled = true;
 
 	// -------------------------------------------------------------
 	// Constructors
 	// -------------------------------------------------------------
 	public User() {
 
-	}
-	
-	//Constructor usado solo para Thymeleaf
-	public User(String id) {
-		this.id=Long.decode(id);
 	}
 
 	public User(String username, String password, String name, String address,
@@ -152,7 +143,7 @@ public class User extends AbstractPersistable<Long>{
 	// -------------------------------------------------------------
 	// Getters & Setters
 	// -------------------------------------------------------------
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -161,16 +152,16 @@ public class User extends AbstractPersistable<Long>{
 		this.username = username;
 	}
 
-	
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
+		if (this.password==null & password!="")
+			this.passChange=true;
 		this.password = password;
 	}
 
-	
 	public String getName() {
 		return name;
 	}
@@ -187,7 +178,6 @@ public class User extends AbstractPersistable<Long>{
 		this.address = address;
 	}
 
-	
 	public String getPhone() {
 		return phone;
 	}
@@ -195,7 +185,7 @@ public class User extends AbstractPersistable<Long>{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public String getMobilephone() {
 		return mobilephone;
 	}
@@ -204,7 +194,6 @@ public class User extends AbstractPersistable<Long>{
 		this.mobilephone = mobilephone;
 	}
 
-	
 	public String getEmail() {
 		return email;
 	}
@@ -212,7 +201,6 @@ public class User extends AbstractPersistable<Long>{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public City getCity() {
 		return city;
@@ -222,7 +210,6 @@ public class User extends AbstractPersistable<Long>{
 		this.city = city;
 	}
 
-	
 	public Map<UserType, Role> getRoles() {
 		return roles;
 	}
@@ -242,7 +229,7 @@ public class User extends AbstractPersistable<Long>{
 	// -------------------------------------------------------------
 	// Methods
 	// -------------------------------------------------------------
-	public void setValuesFromUser(User u){
+	public void setValuesFromUser(User u) {
 		this.setAddress(u.getAddress());
 		this.setCity(u.getCity());
 		this.setState(u.getState());
@@ -250,25 +237,27 @@ public class User extends AbstractPersistable<Long>{
 		this.setEmail(u.getEmail());
 		this.setMobilephone(u.getMobilephone());
 		this.setName(u.getName());
-		if (!u.getPassword().isEmpty()) 
+		if (!u.getPassword().isEmpty()) {
 			this.setPassword(u.getPassword());
+			this.passChange = true;
+		}
 		this.setPhone(u.getPhone());
 		this.setSurname(u.getSurname());
 		this.setUsername(u.getUsername());
-		if (!u.getRoles().isEmpty()) 
+		if (!u.getRoles().isEmpty())
 			this.setRoles(u.getRoles());
 	}
 
-	public void addRoleToUser(Role rol,UserType type) {
+	public void addRoleToUser(Role rol, UserType type) {
 		this.roles.put(type, rol);
 	}
 
 	public Role removeRoleToUser(UserType type) {
-		Role rol=this.roles.remove(type);
+		Role rol = this.roles.remove(type);
 		return rol;
 	}
-	
-	public Role getRole(UserType type){
+
+	public Role getRole(UserType type) {
 		return this.roles.get(type);
 	}
 
@@ -295,4 +284,17 @@ public class User extends AbstractPersistable<Long>{
 	public void setCountry(Country country) {
 		this.country = country;
 	}
+	
+	public boolean isPassChange() {
+		return passChange;
+	}
+	
+	public List<String> getListRoles() {
+		List<String> roles = Lists.newArrayList();
+		for (UserType rol:this.getRoles().keySet()){
+			roles.add(String.valueOf(rol.getValue()));
+		}
+		return roles;
+	}
+
 }
