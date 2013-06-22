@@ -35,7 +35,6 @@
 </script>
 </head>
 <body>
-<<<<<<< HEAD
 	<header id="menu" th:fragment="header">
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
@@ -136,62 +135,5 @@
 		<script
 			src="http://twitter.github.io/bootstrap/assets/js/bootstrap-typeahead.js"></script>
 	</footer>
-=======
-<header id="menu" th:fragment="header">
-	<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="./index.html">ACME</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li th:class="((${activeMenu}=='index')?'active')">
-                <a th:text="#{menu.principal.indice}" href="/index.html" th:href="@{/acme/index}">Inicio</a>
-              </li>
-              <li th:class="((${activeMenu}=='certification')?'active')">
-                <a th:text="#{menu.principal.certificados}" th:href="@{/acme/certification}">Certificados</a>
-              </li>
-              <li th:class="((${activeMenu}=='examination')?'active')">
-                <a th:text="#{menu.principal.convocatorias}" th:href="@{/acme/examination}">Convocatorias</a>
-              </li>
-              <li th:class="((${activeMenu}=='user')?'active')" sec:authorize="hasRole(0)">
-                <a th:text="#{menu.principal.usuarios}" th:href="@{/acme/user}">Usuarios</a>
-              </li>
-              <li th:if="${#authentication}" th:class="((${activeMenu}=='register')?'active')">
-                <a th:text="#{menu.principal.registros}" th:href="@{/acme/register}">Registros</a>
-              </li>
-              <li class="divider-vertical">
-              </li>
-              <li th:class="((${activeMenu}=='profile')?'active')">
-                <a th:if="!${#authentication}" th:text="#{menu.principal.login}" th:href="@{/acme/login}">Login</a>
-                <a th:if="${#authentication}" th:href="@{/acme/profile}" sec:authentication="name">Bob</a> 
-              </li>
-              <li>
-                <a th:if="${#authentication}" th:text="#{menu.principal.salir}" th:href="@{/acme/logout}">Salir</a>
-              </li>
-              <li th:class="((${activeMenu}=='profile')?'active')">
-                <a th:if="!${#authentication}" th:text="#{menu.principal.signin}" th:href="@{/acme/signin}">Registrarse</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-</header>
-<section class="container">
-	<article class="well"><h1>ACME</h1>
-	<h2 th:text="#{main.title}">Sistema web de Gesti&oacute;n</h2>
-	<p th:utext="#{main.text}">Bienvenido,
-	<br></br>
-	 en esta web podras gestionar todo lo referente al sistema de gestion de la empresa ACME. Actualmente no esta completado al 100% pero poco a poco iras disponiendo de todas las opciones y herramientas necesarias para su administracion.
-		<br></br>
-		Un saludo.</p></article>
-</section>
-<footer th:fragment="footer">
-	<div th:text="#{main.footer}" class="credits">&#169; 2013 ACME Diseñado por: Rafa Vázquez Sánchez | Sergio Garcia Alonso</div>
-	<div class="footer">
-		
-	</div>
-</footer>
->>>>>>> branch 'customlogin' of https://github.com/Sloy/ACME.git
 </body>
 </html>

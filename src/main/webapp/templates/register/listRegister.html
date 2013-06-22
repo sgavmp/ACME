@@ -81,7 +81,6 @@
 						href="/acme/customer/register/delete/id/4"
 						th:href="${isAdmin}?@{'/acme/admin/register/delete/id/' + ${reg.id}}:@{'/acme/customer/register/delete/id/' + ${reg.id}}">Delete</a></td>
 				</tr>
-<<<<<<< HEAD
 				<tr th:id="'row_'+${reg.id}" style="display: none">
 					<td class="optional-plus" colspan="5">
 						<blockquote>
@@ -104,10 +103,6 @@
 			<tbody th:unless="${!#lists.isEmpty(allRegisters)}">
 				<tr>
 					<td th:text="#{registro.tabla.vacia}" colspan="9"><h2>No
-=======
-				<tr th:unless="${!#lists.isEmpty(allRegisters)}">
-					<td th:text="#{registro.tabla.vacia}" colspan="6"><h2>No
->>>>>>> branch 'customlogin' of https://github.com/Sloy/ACME.git
 							hay registros en el sistema</h2></td>
 				</tr>
 			</tbody>

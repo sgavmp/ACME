@@ -120,18 +120,12 @@
 						Info</th>
 					<th class="optional" th:text="#{exam.tabla.id}">ID</th>
 					<th th:text="#{exam.tabla.nombre}">Certifcado</th>
-<<<<<<< HEAD
 					<th class="optional" th:text="#{exam.tabla.feclimite}">Fecha
 						Limite Registro</th>
 					<th class="optional" th:text="#{exam.tabla.fecrealizacion}">Fecha
 						Realizacion</th>
 					<th class="optional" th:text="#{exam.tabla.timerealizacion}">Hora
 						Realizacion</th>
-=======
-					<th th:text="#{exam.tabla.feclimite}">Fecha Limite Registro</th>
-					<th th:text="#{exam.tabla.fecrealizacion}">Fecha Realizacion</th>
-					<th th:text="#{exam.tabla.timerealizacion}">Hora Realizacion</th>
->>>>>>> branch 'customlogin' of https://github.com/Sloy/ACME.git
 					<th th:text="#{exam.tabla.editar}" sec:authorize="hasRole(0)">Editar</th>
 					<th th:text="#{exam.tabla.borrar}" sec:authorize="hasRole(0)">Borrar</th>
 					<th th:text="#{exam.tabla.registrar}" sec:authorize="hasRole(4)">Registrarse</th>
@@ -150,7 +144,6 @@
 						th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
 					<td class="optional" th:with="df=#{time.format}"
 						th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
-<<<<<<< HEAD
 					<td sec:authorize="hasRole(0)"><a
 						th:text="#{exam.tabla.editar}"
 						href="/acme/admin/examination/edit/id/4"
@@ -164,17 +157,6 @@
 						href="/acme/customer/register/examination/"
 						th:href="@{'/acme/customer/register/examination/id/' + ${exam.id}}">Registrarse</a><span
 						th:text="#{examination.close}" th:if="!${exam.isOpen()}"></span></td>
-=======
-					<td sec:authorize="hasRole(0)"><a th:text="#{exam.tabla.editar}"
-						href="/acme/admin/examination/edit/id/4"
-						th:href="@{'/acme/admin/examination/edit/id/' + ${exam.id}}">Edit</a></td>
-					<td sec:authorize="hasRole(0)"><a th:text="#{exam.tabla.borrar}"
-						href="/acme/admin/examination/delete/id/4"
-						th:href="@{'/acme/admin/examination/delete/id/' + ${exam.id}}">Delete</a></td>
-					<td sec:authorize="hasRole(4)"><a th:text="#{exam.tabla.registrar}"
-						href="/acme/customer/register/examination/"
-						th:href="@{'/acme/customer/register/examination/id/' + ${exam.id}}">Registrarse</a></td>
->>>>>>> branch 'customlogin' of https://github.com/Sloy/ACME.git
 				</tr>
 				<tr th:id="'row_'+${exam.id}"
 					style="display: none">
