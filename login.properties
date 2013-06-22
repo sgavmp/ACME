@@ -1,0 +1,20 @@
+#Sat Jun 22 14:36:52 CEST 2013
+javax.persistence.jdbc.url=jdbc\:postgresql\:postgres
+eclipselink.logging.session=false
+eclipselink.logging.level=FINE
+eclipselink.ddl-generation=drop-and-create-tables
+eclipselink.logging.timestamp=false
+eclipselink.application-location=C\:/Users/Sergio/git/ACME
+javax.persistence.jdbc.password=root
+eclipselink.orm.throw.exceptions=true
+eclipselink.weaving=false
+eclipselink.create-ddl-jdbc-file-name=createDDL.sql
+eclipselink.drop-ddl-jdbc-file-name=dropDDL.sql
+eclipselink.jdbc.read-connections.shared=true
+eclipselink.jdbc.bind-parameters=false
+eclipselink.logging.thread=false
+javax.persistence.jdbc.user=postgres
+javax.persistence.validation.mode=NONE
+javax.persistence.jdbc.driver=org.postgresql.Driver
+eclipselink.ddl-generation.output-mode=database
+eclipselink.logging.exceptions=true

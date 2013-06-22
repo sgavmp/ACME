@@ -31,12 +31,13 @@
 		<class>com.acme.model.IntervalDate</class>
 		<class>com.acme.model.AbstractPersistable</class>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres" />
-			<property name="javax.persistence.jdbc.user" value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="root" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL" />
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.connection.username" value="posgres" />
+			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.connection.url" value="jdbc://localhost/postgres" />
+			<property name="hibernate.max_fetch_depth" value="3" />
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="CREATE" />
 			<!-- Auto-detect entity classes -->
