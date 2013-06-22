@@ -1,6 +1,7 @@
 package com.acme.model.certification;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import com.acme.model.AbstractPersistable;
 

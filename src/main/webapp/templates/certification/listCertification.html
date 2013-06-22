@@ -65,17 +65,12 @@
 				<tr>
 					<th th:text="#{certificado.tabla.mas}">Mas Info</th>
 					<th class="optional" th:text="#{certificado.tabla.id}">ID</th>
-					<th th:text="#{certificado.tabla.nombre}">Nombre</th> <<<<<<< HEAD
+					<th th:text="#{certificado.tabla.nombre}">Nombre</th>
 					<th class="optional" th:text="#{certificado.tabla.company}">Empresa</th>
 					<th class="optional" th:text="#{certificado.tabla.familia}">Familia
 						Profesional</th>
 					<th th:text="#{certificado.tabla.acciones}"
-						sec:authorize="hasRole(0)">Acciones</th> =======
-					<th th:text="#{certificado.tabla.company}">Empresa</th>
-					<th th:text="#{certificado.tabla.familia}">Familia Profesional</th>
-					<th th:text="#{certificado.tabla.acciones}"
-						sec:authorize="hasRole(0)">Acciones</th> >>>>>>> branch
-					'customlogin' of https://github.com/Sloy/ACME.git
+						sec:authorize="hasRole(0)">Acciones</th>
 				</tr>
 			</thead>
 			<tbody th:unless="${#lists.isEmpty(allCertifications.content)}"
@@ -84,22 +79,14 @@
 					<th><img th:id="${cert.id}" class="fila"
 						th:src="@{/img/plus.png}"></img></th>
 					<td class="optional" th:text="${cert.id}">1</td>
-					<td th:text="${cert.name}">Ingles B1</td> <<<<<<< HEAD
+					<td th:text="${cert.name}">Ingles B1</td>
 					<td class="optional" th:text="${cert.company.name}">Cambridge</td>
 					<td class="optional" th:text="${cert.familyProfessional.name}">Idiomas</td>
 					<td sec:authorize="hasRole(0)"><a
 						th:text="#{certificado.tabla.editar}"
 						href="/acme/admin/certification/edit/id/4"
 						th:href="@{'/acme/admin/certification/edit/id/' + ${cert.id}}">Edit</a>/
-						=======
-					<td th:text="${cert.company.name}">Cambridge</td>
-					<td th:text="${cert.familyProfessional.name}">Idiomas</td>
-					<td sec:authorize="hasRole(0)"><a
-						th:text="#{certificado.tabla.editar}"
-						href="/acme/certification/edit/id/4"
-						th:href="@{'/acme/certification/edit/id/' + ${cert.id}}">Edit</a>/
-						>>>>>>> branch 'customlogin' of https://github.com/Sloy/ACME.git <a
-						th:text="#{certificado.tabla.borrar}"
+						<a th:text="#{certificado.tabla.borrar}"
 						href="/acme/admin/certification/delete/id/4"
 						th:href="@{'/acme/admin/certification/delete/id/' + ${cert.id}}">Delete</a></td>
 				</tr>
