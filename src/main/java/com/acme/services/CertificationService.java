@@ -115,6 +115,10 @@ public class CertificationService {
 		return repositoryfamily.save(family);
 	}
 	
+	public long countCertifications() {
+		return repositorycert.count();
+	}
+	
 	@Transactional
 	public Page<Certification> searchCertification(String s,Integer page) throws PageNumberIncorrectException {
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);

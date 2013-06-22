@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
 
 import sun.misc.FpUtils;
 
+import com.acme.exception.CertificationNoExistException;
 import com.acme.exception.UserNoExistException;
 import com.acme.model.certification.Certification;
 import com.acme.model.certification.FamilyProfessional;
@@ -41,6 +42,8 @@ import com.acme.repository.CertificationRepository;
 import com.acme.repository.CountryRepository;
 import com.acme.repository.ExaminationRepository;
 import com.acme.repository.FamilyProfessionalRepository;
+import com.acme.services.CertificationService;
+import com.acme.services.GeographyService;
 import com.acme.services.UserService;
 import com.google.common.collect.Lists;
 
@@ -49,7 +52,7 @@ import com.google.common.collect.Lists;
 public class CertificationTest {
 
 	@Autowired
-	private CertificationRepository certrep;
+	private CertificationService certrep;
 	@Autowired
 	private FamilyProfessionalRepository famrep;
 	@Autowired
@@ -71,7 +74,7 @@ public class CertificationTest {
 		Certification cert = new Certification(null, null, null, null, null,
 				null, null, null, null);
 		try {
-			cert=certrep.save(cert);
+			cert=certrep.createCertification(cert);
 			fail("El certificado con valores nulos no se debe poder guardar");
 		} catch (Exception e) {
 			//No hacer nada
@@ -94,7 +97,7 @@ public class CertificationTest {
 					-15.0, -30.0, "No caduca", userService.getUserById(mCompany.getId()), famrep
 							.findOne(mProfessionalFamily.getId()), Lists
 							.newArrayList("Requisito de prueba"), 5.0);
-			cert = certrep.save(cert);
+			cert = certrep.createCertification(cert);
 		} catch (Exception e1) {
 			//No hacer nada
 			Assert.isTrue(true);
@@ -110,7 +113,7 @@ public class CertificationTest {
 	public void testCrearCertificado() {
 		// Creamos un certificado
 		
-		long numCert=certrep.count();
+		long numCert=certrep.countCertifications();
 
 		List<String> requisitos = Lists
 				.newArrayList("El aspirante debera de superar cada apartado del examen");
@@ -125,9 +128,9 @@ public class CertificationTest {
 		} catch (UserNoExistException e) {
 			e.printStackTrace();
 		}
-		certrep.save(cert1);
+		certrep.createCertification(cert1);
 
-		assertEquals("Se ha creado 1 certificado", numCert+1, certrep.count());
+		assertEquals("Se ha creado 1 certificado", numCert+1, certrep.countCertifications());
 
 		// Comprobamos la creación de otro certificado
 		Certification cert2 = null;
@@ -141,9 +144,9 @@ public class CertificationTest {
 		} catch (UserNoExistException e) {
 			e.printStackTrace();
 		}
-		certrep.save(cert2);
+		certrep.createCertification(cert2);
 		assertEquals("El numero de certificados en la base de datos es 2", numCert+2,
-				certrep.count());
+				certrep.countCertifications());
 	}
 
 	@Test
@@ -159,17 +162,26 @@ public class CertificationTest {
 		} catch (UserNoExistException e) {
 			e.printStackTrace();
 		}
-		certrep.save(cert);
+		certrep.createCertification(cert);
 
 		// Comprobamos la modificación
-		Certification certMod = certrep.findOne(cert.getId());
+		Certification certMod = null;
+		try {
+			certMod = certrep.getCertificationById(cert.getId());
+		} catch (CertificationNoExistException e) {
+			e.printStackTrace();
+		}
 		assertNotNull("Se ha encotnrado el certificado buscado", certMod);
 		assertEquals("El nombre antes de la modificación es \"Ingles B1\"",
 				"Inglés B1", certMod.getName());
 		certMod.setName("Francés B1");
-		certrep.save(certMod);
+		certrep.updateCertification(certMod);
 
-		certMod = certrep.findOne(cert.getId());
+		try {
+			certMod = certrep.getCertificationById(cert.getId());
+		} catch (CertificationNoExistException e) {
+			e.printStackTrace();
+		}
 		assertEquals("El nombre después de la modificación es \"Frandés B1\"",
 				"Francés B1", certMod.getName());
 	}
@@ -178,7 +190,7 @@ public class CertificationTest {
 	public void testEliminarCertificado() {
 		// Creamos un certificado
 		
-		long numCert=certrep.count();
+		long numCert=certrep.countCertifications();
 
 		Certification cert = null;
 		try {
@@ -191,14 +203,18 @@ public class CertificationTest {
 		} catch (UserNoExistException e) {
 			e.printStackTrace();
 		}
-		certrep.save(cert);
+		certrep.createCertification(cert);
 
-		assertEquals("Se ha creado 1 certificado", numCert+1, certrep.count());
+		assertEquals("Se ha creado 1 certificado", numCert+1, certrep.countCertifications());
 
 		// Comprobamos la eliminación
-		certrep.delete(cert);
+		try {
+			certrep.removeCertificationById(cert.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		assertEquals("El numero de certificados en la base de datos es 3", numCert,
-				certrep.count());
+				certrep.countCertifications());
 	}
 
 	@Before
