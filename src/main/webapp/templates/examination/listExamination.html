@@ -46,11 +46,10 @@
 							});
 				</script>
 				<div class="control-group">
-					<label th:text="#{exam.id}" class="control-label">Id</label>
+					<label th:text="#{id}" class="control-label">Id</label>
 					<div class="controls">
-						<input th:field="*{id}" th:value="${exam.id}" type="text" id="id"
-							readonly="readonly"></input>
-						<p th:text="#{certificado.formulario.id.informacion}"
+						<input th:field="*{id}" th:value="${exam.id}" type="text" id="id"></input>
+						<p th:text="#{id.informacion}"
 							class="help-inline">Only information</p>
 					</div>
 				</div>
@@ -68,153 +67,161 @@
 					<label th:text="#{exam.feclimit}" class="control-label">Fecha
 						limite registro</label>
 					<div class="controls">
-						<input th:field="*{dateLimitRegister}" th:with="df=#{date.format}"
-							th:value="${#dates.format(exam.dateLimitRegister,df)}"
-							type="text" id="dateLimitRegister" name="date1"
-							data-dojo-type="dijit/form/DateTextBox"></input>
+						<input
+							th:value="${#dates.format(exam.dateLimitRegister,'yyyy-MM-dd')}"
+							data-dojo-id="dateLimitRegister"
+							data-dojo-type="dijit/form/DateTextBox"
+							type="text" id="dateLimitRegister" name="dateLimitRegister"
+							onChange="dateRealization.constraints.min = arguments[0];"
+							></input>
 					</div>
 				</div>
 				<div class="control-group">
 					<label th:text="#{exam.fecrealizacion}" class="control-label">Fecha
 						de Realizacion</label>
 					<div class="controls">
-						<input th:field="*{dateRealization}" th:with="df=#{date.format}"
-							th:value="${#dates.format(exam.dateRealization,df)}" type="text"
-							id="dateRealization" name="date2"
-							data-dojo-type="dijit/form/DateTextBox"></input>
+						<input
+							th:value="${#dates.format(exam.dateRealization,'yyyy-MM-dd')}" type="text"
+							id="dateRealization" name="dateRealization"
+							data-dojo-id="dateRealization"
+							data-dojo-type="dijit/form/DateTextBox"
+							onChange="dateLimitRegister.constraints.max = arguments[0];"></input>
 					</div>
 				</div>
 				<div class="control-group">
 					<label th:text="#{exam.timeRealization}" class="control-label">Hora
 						de Realizacion</label>
 					<div class="controls">
-						<input th:field="*{timeRealization}" th:with="df=#{time.format}"
-							th:value="${#dates.format(exam.timeRealization,df)}" type="text"
-							id="timeRealization" name="time"
+						<input
+							th:value="${#dates.format(exam.timeRealization,'''T''HH:mm:ss')}" type="text"
+							id="timeRealization" name="timeRealization"
 							data-dojo-type="dijit/form/TimeTextBox"></input>
 					</div>
 				</div>
 				<div class="form-actions">
-					<input th:value="#{certificado.formulario.guardar}" type="submit"
+					<input th:value="#{guardar}" type="submit"
 						class="btn btn-primary" value="Guardar" name="create"></input><a
-						th:text="#{certificado.formulario.cancelar}"
+						th:text="#{cancelar}"
 						href="/acme/admin/examination/"
 						th:href="@{/acme/admin/examination/}" class="btn">Cancel</a>
 				</div>
 			</form>
 		</div>
-		<h1
-			th:text="${isSearch}?#{examination.tabla.titulo.busqueda}:#{examination.tabla.titulo}">Lista
-			de Convocatorias</h1>
-		<form class="form-search search-right"
-			action="/acme/examination/search"
-			th:action="@{/acme/examination/search/}" method="get">
-			<input th:value="${search}" name="search" type="text"
-				class="input-medium search-query"></input>
-			<button type="submit" class="btn">Search</button>
-		</form>
-		<table id="tabla_examination" class="table table-border">
-			<thead>
-				<tr>
-					<th class="optional-plus" th:text="#{certificado.tabla.mas}">Mas
-						Info</th>
-					<th class="optional" th:text="#{exam.tabla.id}">ID</th>
-					<th th:text="#{exam.tabla.nombre}">Certifcado</th>
-					<th class="optional" th:text="#{exam.tabla.feclimite}">Fecha
-						Limite Registro</th>
-					<th class="optional" th:text="#{exam.tabla.fecrealizacion}">Fecha
-						Realizacion</th>
-					<th class="optional" th:text="#{exam.tabla.timerealizacion}">Hora
-						Realizacion</th>
-					<th th:text="#{exam.tabla.editar}" sec:authorize="hasRole(0)">Editar</th>
-					<th th:text="#{exam.tabla.borrar}" sec:authorize="hasRole(0)">Borrar</th>
-					<th th:text="#{exam.tabla.registrar}" sec:authorize="hasRole(4)">Registrarse</th>
-				</tr>
-			</thead>
-			<tbody th:unless="${#lists.isEmpty(allExamination.content)}"
-				th:each="exam,rowStat  : ${allExamination}">
-				<tr>
-					<td class="optional-plus"><img th:id="${exam.id}" class="fila"
-						th:src="@{/img/plus.png}"></img></td>
-					<td class="optional" th:text="${exam.id}">1</td>
-					<td th:text="${exam.certification.name}">Ingles</td>
-					<td class="optional" th:with="df=#{date.format}"
-						th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</td>
-					<td class="optional" th:with="df=#{date.format}"
-						th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
-					<td class="optional" th:with="df=#{time.format}"
-						th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
-					<td sec:authorize="hasRole(0)"><a
-						th:text="#{exam.tabla.editar}"
-						href="/acme/admin/examination/edit/id/4"
-						th:href="@{'/acme/admin/examination/edit/id/' + ${exam.id}}">Edit</a></td>
-					<td sec:authorize="hasRole(0)"><a
-						th:text="#{exam.tabla.borrar}"
-						href="/acme/admin/examination/delete/id/4"
-						th:href="@{'/acme/admin/examination/delete/id/' + ${exam.id}}">Delete</a></td>
-					<td sec:authorize="hasRole(4)"><a th:if="${exam.isOpen()}"
-						th:text="#{exam.tabla.registrar}"
-						href="/acme/customer/register/examination/"
-						th:href="@{'/acme/customer/register/examination/id/' + ${exam.id}}">Registrarse</a><span
-						th:text="#{examination.close}" th:if="!${exam.isOpen()}"></span></td>
-				</tr>
-				<tr th:id="'row_'+${exam.id}"
-					style="display: none">
-					<td class="optional-plus" colspan="2">
-						<blockquote>
-							<dl>
-								<dt class="optional" th:text="#{exam.tabla.id}">ID</dt>
-								<dd class="optional" th:text="${exam.id}">1</dd>
-								<dt class="optional" th:text="#{exam.tabla.feclimite}">Fecha
-									Limite Registro</dt>
-								<dd class="optional" th:with="df=#{date.format}"
-									th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</dd>
-								<dt class="optional" th:text="#{exam.tabla.fecrealizacion}">Fecha
-									Realizacion</dt>
-								<dd class="optional" th:with="df=#{date.format}"
-									th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</dd>
-								<dt class="optional" th:text="#{exam.tabla.timerealizacion}">Hora
-									Realizacion</dt>
-								<dd class="optional" th:with="df=#{time.format}"
-									th:text="${#dates.format(exam.timeRealization,df)}">13:30</dd>
-							</dl>
-						</blockquote>
-					</td>
-				</tr>
-			</tbody>
-			<tbody th:if="${#lists.isEmpty(allExamination.content)}">
-				<tr>
-					<td
-						th:text="${isSearch}?#{examination.tabla.busqueda.vacia}:#{examination.tabla.vacia}"
-						colspan="8"><h2>No hay familias convocatorias en el
-							sistema</h2></td>
-				</tr>
-			</tbody>
-		</table>
-		<ul class="pager">
-			<li class="previous"
-				th:class="${allExamination.firstPage?'previous disabled':'previous'}"><a
-				href="#" th:disabled="${allExamination.firstPage}"
-				th:href="!${allExamination.firstPage}?(${isSearch}?(@{/acme/examination/search/page/}+${allExamination.number-1}+'?search='+${search}):(@{/acme/examination/page/}+${allExamination.number-1})):'#'">&larr;
-					Anterior</a></li>
-			<li class="next"
-				th:class="${allExamination.lastPage?'next disabled':'next'}"><a
-				href="#" th:disabled="${allExamination.lastPage}"
-				th:href="!${allExamination.lastPage}?(${isSearch}?(@{/acme/examination/search/page/}+${allExamination.number+1}+'?search='+${search}):(@{/acme/examination/page/}+${allExamination.number+1})):'#'">Siguiente
-					&rarr;</a></li>
-		</ul>
-		<script>
-			require([ "dojo/on", "dojo/dom", "dojo/dom-style" ], function(on,
-					dom, domStyle) {
-				dojo.query(".fila").onclick(function(evt) {
-					var node = "row_" + evt.target.id;
-					if (domStyle.get(node, "display") != "none")
-						domStyle.set(node, "display", "none");
-					else
-						domStyle.set(node, "display", "");
+		<section th:if="!${noList}" class="container">
+			<h1
+				th:text="${isSearch}?#{menu.busqueda}:#{examination.tabla.titulo}">Resultado Busqueda</h1>
+			<form class="form-search search-right"
+				action="/acme/examination/search"
+				th:action="@{/acme/examination/search/}" method="get">
+				<input th:value="${search}" name="search" type="text"
+					class="input-medium search-query"></input>
+				<button type="submit" class="btn">Search</button>
+			</form>
+			<table id="tabla_examination" class="table table-border">
+				<thead>
+					<tr>
+						<th class="optional-plus" th:text="#{masinfo}">Mas
+							Info</th>
+						<th class="optional" th:text="#{id}">ID</th>
+						<th th:text="#{examination.tabla.nombre}">Certifcado</th>
+						<th class="optional" th:text="#{examination.tabla.feclimite}">Fecha
+							Limite Registro</th>
+						<th class="optional" th:text="#{examination.tabla.fecrealizacion}">Fecha
+							Realizacion</th>
+						<th class="optional" th:text="#{examination.tabla.timerealizacion}">Hora
+							Realizacion</th>
+						<th th:text="#{editar}" sec:authorize="hasRole(0)">Editar</th>
+						<th th:text="#{borrar}" sec:authorize="hasRole(0)">Borrar</th>
+						<th th:text="#{examination.tabla.registrar}" sec:authorize="hasRole(4)">Registrarse</th>
+					</tr>
+				</thead>
+				<tbody th:unless="${#lists.isEmpty(allExamination.content)}"
+					th:each="exam,rowStat  : ${allExamination}">
+					<tr>
+						<td class="optional-plus"><img th:id="${exam.id}"
+							class="fila" th:src="@{/img/plus.png}"></img></td>
+						<td class="optional" th:text="${exam.id}">1</td>
+						<td th:text="${exam.certification.name}">Ingles</td>
+						<td class="optional" th:with="df=#{date.format}"
+							th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</td>
+						<td class="optional" th:with="df=#{date.format}"
+							th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
+						<td class="optional" th:with="df=#{time.format}"
+							th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
+						<td sec:authorize="hasRole(0)"><a
+							th:text="#{editar}"
+							href="/acme/admin/examination/edit/id/4"
+							th:href="@{'/acme/admin/examination/edit/id/' + ${exam.id}}">Edit</a></td>
+						<td sec:authorize="hasRole(0)"><a
+							th:text="#{borrar}"
+							href="/acme/admin/examination/delete/id/4"
+							th:href="@{'/acme/admin/examination/delete/id/' + ${exam.id}}">Delete</a></td>
+						<td sec:authorize="hasRole(4)"><a
+							th:if="${exam.isOpen() and !#lists.contains(registers, exam)}"
+							th:text="#{examination.tabla.registrar}"
+							href="/acme/customer/register/examination/"
+							th:href="@{'/acme/customer/register/examination/id/' + ${exam.id}}">Registrarse</a><span
+							th:text="#{examination.close}" th:if="!${exam.isOpen()}"></span>
+							<span th:if="${#lists.contains(registers, exam)}"
+							th:text="#{registro.registrado}">Registrado</span></td>
+					</tr>
+					<tr th:id="'row_'+${exam.id}" style="display: none">
+						<td class="optional-plus" colspan="2">
+							<blockquote>
+								<dl>
+									<dt class="optional" th:text="#{id}">ID</dt>
+									<dd class="optional" th:text="${exam.id}">1</dd>
+									<dt class="optional" th:text="#{examination.tabla.feclimite}">Fecha
+										Limite Registro</dt>
+									<dd class="optional" th:with="df=#{date.format}"
+										th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</dd>
+									<dt class="optional" th:text="#{examination.tabla.fecrealizacion}">Fecha
+										Realizacion</dt>
+									<dd class="optional" th:with="df=#{date.format}"
+										th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</dd>
+									<dt class="optional" th:text="#{examination.tabla.timerealizacion}">Hora
+										Realizacion</dt>
+									<dd class="optional" th:with="df=#{time.format}"
+										th:text="${#dates.format(exam.timeRealization,df)}">13:30</dd>
+								</dl>
+							</blockquote>
+						</td>
+					</tr>
+				</tbody>
+				<tbody th:if="${#lists.isEmpty(allExamination.content)}">
+					<tr>
+						<td
+							th:text="${isSearch}?#{examination.tabla.busqueda.vacia}:#{examination.tabla.vacia}"
+							colspan="8"><h2>No hay familias convocatorias en el
+								sistema</h2></td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="pager">
+				<li class="previous"
+					th:class="${allExamination.firstPage?'previous disabled':'previous'}"><a
+					href="#" th:disabled="${allExamination.firstPage}"
+					th:href="!${allExamination.firstPage}?(${isSearch}?(@{/acme/examination/search/page/}+${allExamination.number-1}+'?search='+${search}):(@{/acme/examination/page/}+${allExamination.number-1})):'#'">&larr;
+						Anterior</a></li>
+				<li class="next"
+					th:class="${allExamination.lastPage?'next disabled':'next'}"><a
+					href="#" th:disabled="${allExamination.lastPage}"
+					th:href="!${allExamination.lastPage}?(${isSearch}?(@{/acme/examination/search/page/}+${allExamination.number+1}+'?search='+${search}):(@{/acme/examination/page/}+${allExamination.number+1})):'#'">Siguiente
+						&rarr;</a></li>
+			</ul>
+			<script>
+				require([ "dojo/on", "dojo/dom", "dojo/dom-style" ], function(
+						on, dom, domStyle) {
+					dojo.query(".fila").onclick(function(evt) {
+						var node = "row_" + evt.target.id;
+						if (domStyle.get(node, "display") != "none")
+							domStyle.set(node, "display", "none");
+						else
+							domStyle.set(node, "display", "");
+					});
 				});
-			});
-		</script>
+			</script>
+		</section>
 	</section>
 	<footer th:include="common :: footer">
 		<!-- Aquí se incluye el footer del archivo common.html-->

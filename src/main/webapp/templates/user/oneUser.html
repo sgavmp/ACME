@@ -8,7 +8,7 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
-		<header th:if="!${isProfile}" class="jumbotron subhead" id="submenu">
+		<header th:if="!${isProfile} and !${isSignIn}" class="jumbotron subhead" id="submenu">
 			<div class="subnav subnav-fixed">
 				<ul class="nav nav-pills">
 					<li><a th:text="#{menu.user.listar}"
@@ -62,14 +62,14 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{usuario.formulario.nombre}" class="control-label">Name</label>
+				<label th:text="#{nombre}" class="control-label">Name</label>
 				<div class="controls">
 					<input th:field="*{name}" th:value="${user.name}" type="text"
 						id="name"></input>
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{usuario.formulario.apellidos}"
+				<label th:text="#{apellidos}"
 					class="control-label">Apellidos</label>
 				<div class="controls">
 					<input th:field="*{surname}" th:value="${user.surname}" type="text"
@@ -77,14 +77,14 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{usuario.formulario.email}" class="control-label">Email</label>
+				<label th:text="#{email}" class="control-label">Email</label>
 				<div class="controls">
 					<input th:field="*{email}" th:value="${user.email}" type="text"
 						id="surname" size="16" class="span2"></input>
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{usuario.formulario.username}"
+				<label th:text="#{username}"
 					class="control-label">Nombre de Usuario</label>
 				<div class="controls">
 					<input th:field="*{username}" th:value="${user.username}"
@@ -92,7 +92,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{usuario.formulario.password}"
+				<label th:text="#{password}"
 					class="control-label">Contraseña</label>
 				<div class="controls">
 					<input th:required="${isNew}" th:field="*{password}"
@@ -276,9 +276,9 @@
 				</table>
 			</div>
 			<div class="form-actions">
-				<input th:value="#{usuario.formulario.guardar}" type="submit"
+				<input th:value="#{guardar}" type="submit"
 					class="btn btn-primary" value="Guardar" name="create"></input> <a
-					th:text="#{usuario.formulario.cancelar}" href="/acme/user"
+					th:text="#{cancelar}" href="/acme/user"
 					th:href="${isProfile}?@{/acme/}:@{acme/user}" class="btn">Cancel</a>
 			</div>
 		</form>

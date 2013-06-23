@@ -48,18 +48,18 @@
 			dt:table="true" dt:theme="bootstrap2">
 			<thead>
 				<tr>
-					<th class="optional-plus" th:text="#{certificado.tabla.mas}">Mas Info</th>
-					<th class="optional" th:text="#{registro.tabla.id}">ID</th>
+					<th class="optional-plus" th:text="#{masinfo}">Mas Info</th>
+					<th class="optional" th:text="#{id}">ID</th>
 					<th th:text="#{registro.tabla.certificado}">Convocatoria</th>
 					<th th:text="#{registro.tabla.fecrealizacion}">Fecha de
 						realizacion</th>
 					<th class="optional" th:text="#{registro.tabla.timerealizacion}">Hora
 						de realizacion</th>
 					<th th:text="#{registro.tabla.usuario}">Usuario</th>
-					<th class="optional" th:text="#{registro.tabla.nombre}">Nombre</th>
-					<th class="optional" th:text="#{registro.tabla.apellidos}">Apellidos</th>
+					<th class="optional" th:text="#{nombre}">Nombre</th>
+					<th class="optional" th:text="#{apellidos}">Apellidos</th>
 					<th class="optional" th:text="#{registro.tabla.calificacion}">Calificacion</th>
-					<th th:text="#{registro.tabla.borrar}">Borrar Registro</th>
+					<th th:text="#{borrar}">Borrar Registro</th>
 				</tr>
 			</thead>
 			<tbody th:unless="${#lists.isEmpty(allRegisters)}"
@@ -77,7 +77,7 @@
 					<td th:text="${reg.customer.name}">Pepe</td>
 					<td class="optional" th:text="${reg.customer.surname}">alonso</td>
 					<td class="optional" th:text="${reg.calification}">6</td>
-					<td><a th:text="#{registro.tabla.borrar}"
+					<td><a th:text="#{borrar}"
 						href="/acme/customer/register/delete/id/4"
 						th:href="${isAdmin}?@{'/acme/admin/register/delete/id/' + ${reg.id}}:@{'/acme/customer/register/delete/id/' + ${reg.id}}">Delete</a></td>
 				</tr>
@@ -91,7 +91,7 @@
 									th:text="${#dates.format(reg.examination.timeRealization,df)}">13:30</dd>
 								<dt class="optional" th:text="#{registro.tabla.usuario}">Usuario</dt>
 								<dd class="optional" th:text="${reg.customer.username}">paco</dd>
-								<dt class="optional" th:text="#{registro.tabla.apellidos}">Apellidos</dt>
+								<dt class="optional" th:text="#{apellidos}">Apellidos</dt>
 								<dd class="optional" th:text="${reg.customer.surname}">alonso</dd>
 								<dt class="optional" th:text="#{registro.tabla.calificacion}">Calificacion</dt>
 								<dd class="optional" th:text="${reg.calification}">6</dd>

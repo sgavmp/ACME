@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.acme.exception.CertificationNoExistException;
 import com.acme.exception.PageNumberIncorrectException;
 import com.acme.exception.UserNoExistException;
 import com.acme.model.geography.City;
@@ -112,7 +114,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.admin.crete");
+		model.addAttribute("info", "usuario.rol.create");
 		return "/user/oneUser";
 	}
 
@@ -134,7 +136,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.customer.crete");
+		model.addAttribute("info", "usuario.rol.create");
 		return "/user/oneUser";
 	}
 
@@ -156,7 +158,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.company.crete");
+		model.addAttribute("info", "usuario.rol.create");
 		return "/user/oneUser";
 	}
 
@@ -178,7 +180,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.reviewer.crete");
+		model.addAttribute("info", "usuario.rol.create");
 		return "/user/oneUser";
 	}
 
@@ -200,7 +202,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.worker.crete");
+		model.addAttribute("info", "usuario.rol.create");
 		return "/user/oneUser";
 	}
 
@@ -222,7 +224,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.admin.remove");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 
@@ -244,7 +246,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.customer.remove");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 
@@ -266,7 +268,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.company.remove");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 
@@ -288,7 +290,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.reviewer.remove");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 
@@ -310,7 +312,7 @@ public class AdminUserController {
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
 		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "user.worker.remove");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 
@@ -325,6 +327,8 @@ public class AdminUserController {
 			model.addAttribute("isNew", false);
 			model.addAttribute("user", u);
 			model.addAttribute("activeMenu", "user");
+			model.addAttribute("statesInCountry", u.getCountry().getStates());
+			model.addAttribute("citiesByState", u.getState().getCities());
 			return "/user/oneUser";
 		}
 		User user;
@@ -335,14 +339,28 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.setValuesFromUser(u);
-		user.setCity(servicegeography.getCityById(user.getCity().getId()));
-		user.setState(servicegeography.getStateById(user.getState().getId()));
-		user.setCountry(servicegeography.getCountryById(user.getCountry()
-				.getId()));
-		User uMod = serviceuser.updateUser(user);
-		model.addAttribute("user", uMod);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (StaleObjectStateException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
+		model.addAttribute("user", user);
 		model.addAttribute("isNew", false);
 		model.addAttribute("activeMenu", "user");
+		model.addAttribute("statesInCountry", user.getCountry().getStates());
+		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("info", "user.modify");
 		return "/user/oneUser";
 	}
@@ -358,11 +376,14 @@ public class AdminUserController {
 			model.addAttribute("activeMenu", "user");
 			return "/user/oneUser";
 		}
-		user.setCity(servicegeography.getCityById(user.getCity().getId()));
-		user.setState(servicegeography.getStateById(user.getState().getId()));
-		user.setCountry(servicegeography.getCountryById(user.getCountry()
-				.getId()));
-		serviceuser.createUser(user);
+		try {
+			serviceuser.createUser(user);
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("isNew", true);
+			model.addAttribute("user", user);
+			return "/user/oneUser";
+		}
 		redirectAttrs.addAttribute("id", user.getId()).addFlashAttribute(
 				"info", "user.create");
 		return "redirect:/acme/admin/user/edit/id/{id}";
@@ -385,7 +406,7 @@ public class AdminUserController {
 			redirectAttrs.addFlashAttribute("error", "exception.noborrar");
 			return "redirect:/acme/admin/user/";
 		}
-		redirectAttrs.addFlashAttribute("info", "user.delete");
+		redirectAttrs.addFlashAttribute("info", "usuario.delete");
 		return "redirect:/acme/admin/user/";
 	}
 
@@ -433,11 +454,11 @@ public class AdminUserController {
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/page/{p}", method = RequestMethod.GET)
 	public String showAllUsers(Model model, @PathVariable("p") Integer p) {
-		Page<User> users=null;
+		Page<User> users = null;
 		try {
 			users = serviceuser.getAllUsers(p);
 		} catch (PageNumberIncorrectException e) {
-			model.addAttribute("error", "pagination.sobrepasado");
+			model.addAttribute("error", e.getMessage());
 			users = serviceuser.getAllUsers(0);
 		} finally {
 			model.addAttribute("allUsers", users);

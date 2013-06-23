@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.acme.exception.ExaminationNoExistException;
 import com.acme.exception.PageNumberIncorrectException;
+import com.acme.exception.RegisterFromExaminationExist;
 import com.acme.model.examination.Examination;
+import com.acme.model.examination.Register;
+import com.acme.model.user.User;
 import com.acme.repository.ExaminationRepository;
 
 @Service
@@ -24,6 +27,9 @@ public class ExaminationService {
 
 	@Autowired
 	private ExaminationRepository repositoryExamination;
+	
+	@Autowired
+	private RegisterService serviceregister;
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -49,6 +55,10 @@ public class ExaminationService {
 	
 	public void removeExamination(Long id) {
 		repositoryExamination.delete(id);
+	}
+	
+	public List<Examination> findExaminationsByUserId(User user) {
+		return repositoryExamination.findExaminationsByUserId(user);
 	}
 
 	public Page<Examination> getAllExamination(int page) throws PageNumberIncorrectException{
@@ -81,5 +91,15 @@ public class ExaminationService {
 			throw new NumberFormatException("exception.page.lower");
 		else
 			return result;
+	}
+	
+	@Transactional
+	public Register createRegisterFromExamination(Long examid,User user) throws Exception {
+		Examination exam=this.getExaminationById(examid);
+		List<Examination> examinationRegisters = this.findExaminationsByUserId(user);
+		if (examinationRegisters.contains(exam))
+			throw new RegisterFromExaminationExist("exception.register.exist");
+		Register reg=exam.createRegisterWithoutPay(user);
+		return serviceregister.saveRegister(reg);
 	}
 }

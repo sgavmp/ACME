@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.exception.DateIncorrectException;
 import com.acme.exception.ExaminationNoExistException;
+import com.acme.exception.RegisterFromExaminationExist;
 import com.acme.exception.RegisterNoExistException;
 import com.acme.model.examination.Examination;
 import com.acme.model.examination.Register;
@@ -53,16 +54,17 @@ public class CustomerRegisterController {
 	public String createRegister(@PathVariable Long idExam, Model model,
 			RedirectAttributes redirectAttrs, HttpServletRequest request) {
 		try {
-			Examination exam=serviceexamination.getExaminationById(idExam);
 			User u = serviceuser.getUserByUsername(request.getUserPrincipal().getName());
-			Register reg=exam.createRegisterWithoutPay(u);
-			serviceregister.saveRegister(reg);
+			Register reg = serviceexamination.createRegisterFromExamination(idExam, u);
 			redirectAttrs.addFlashAttribute("info", "registro.creado");
 		}
 		catch (DateIncorrectException e){
 			redirectAttrs.addFlashAttribute("error", e.getMessage());
 		}
 		catch (ExaminationNoExistException e){
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+		}
+		catch (RegisterFromExaminationExist e){
 			redirectAttrs.addFlashAttribute("error", e.getMessage());
 		}
 		finally

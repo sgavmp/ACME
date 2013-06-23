@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.thymeleaf.expression.Dates;
 
@@ -35,19 +36,16 @@ public class Examination extends AbstractPersistable<Long> {
 	// Attributes
 	// -------------------------------------------------------------
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MMMM/yyyy")
 	@NotNull(message = "examination.daterealization.notnull")
 	@Future(message = "examination.daterealization.futuro")
 	private Date dateRealization;
 
 	@Temporal(value = TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MMMM/yyyy")
 	@NotNull(message = "examination.datelimitregister.notnull")
 	@Future(message = "examination.datelimitregister.futuro")
 	private Date dateLimitRegister;
 
 	@Temporal(TemporalType.TIME)
-	@DateTimeFormat(pattern = "HH:mm")
 	@NotNull(message = "examination.timerealization.nontull")
 	private Date timeRealization;
 

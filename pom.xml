@@ -365,6 +365,26 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.11.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${spring-social.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-web</artifactId>
+			<version>${spring-social.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-twitter</artifactId>
+			<version>${spring-social-twitter.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>${springsecurity}</version>
+		</dependency>
 	</dependencies>
 	<packaging>war</packaging>
 	<properties>
@@ -377,5 +397,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<springsecurity>3.1.4.RELEASE</springsecurity>
 		<jackson.version>1.9.12</jackson.version>
+		<spring-social.version>1.0.2.RELEASE</spring-social.version>
+		<spring-social-twitter.version>1.0.5.RELEASE</spring-social-twitter.version>
 	</properties>
 </project>

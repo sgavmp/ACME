@@ -8,22 +8,46 @@
 		<!-- Aquí se incluye el menu superior del archivo common.html-->
 	</header>
 	<section class="container">
+		<div th:if="${!#strings.isEmpty(info)}" id="alerta-div"
+			class="alert alert-success">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${info}__')}">Accion realizada con
+				exito</p>
+		</div>
+		<div th:if="${!#strings.isEmpty(error)}" id="alerta-div"
+			class="alert alert-error">
+			<button id="btcerrar" type="button" class="close"
+				data-dismiss="alert">×</button>
+			<p th:text="${#messages.msg('__${error}__')}">Error</p>
+		</div>
+		<script>
+			require([ "dojo/on", "dojo/dom", "dojo/dom-construct" ], function(
+					on, dom, domConstruct) {
+				dojo.query(".close").onclick(function(evt) {
+					domConstruct.destroy(this.parentNode);
+				});
+			});
+		</script>
 		<form class="form-signin" th:action="@{/j_spring_security_check}"
 			method="post">
-			  <div th:if="${param.error != null}" class="alert alert-error">
+			<div th:if="${param.error != null}" class="alert alert-error">
 				<p th:text="#{login.error}">Wrong user or password</p>
-			</div>  
-			
+			</div>
+
 			<h3 class="form-signin-heading" th:text="#{login.titulo}">Identifícate</h3>
 			<input id="j_username" name="j_username" type="text"
-				class="input-block-level" th:placeholder="#{login.username}" placeholder="Usuario" required="required" />
-			 <input id="j_password" name="j_password" type="password"
-				class="input-block-level" th:placeholder="#{login.password}" placeholder="Contrasenna"
-				required="required"/>
-			<button class="btn btn-large btn-primary" type="submit" th:text="#{login.button}">Entrar</button>
+				class="input-block-level" th:placeholder="#{username}"
+				placeholder="Usuario" required="required" /> <input id="j_password"
+				name="j_password" type="password" class="input-block-level"
+				th:placeholder="#{login.password}" placeholder="Contrasenna"
+				required="required" />
+			<button class="btn btn-large btn-primary" type="submit"
+				th:text="#{login.button}">Entrar</button>
 		</form>
 	</section>
-	<footer th:include="common :: footer">
+	<footer th:include="
+				common ::footer">
 		<!-- Aquí se incluye el footer del archivo common.html-->
 	</footer>
 </body>

@@ -19,7 +19,7 @@
 						href="/acme/admin/user?id=4" th:href="@{/acme/admin/user/create}">Crear
 							Usuario</a></li>
 					<li th:if="${isSearch}" class="active"><a
-						th:text="#{menu.user.busqueda}" href="">Crear Usuario</a></li>
+						th:text="#{menu.busqueda}" href="">Buscar</a></li>
 				</ul>
 			</div>
 		</header>
@@ -58,14 +58,14 @@
 			dt:theme="bootstrap2">
 			<thead>
 				<tr>
-					<th th:text="#{certificado.tabla.mas}">Mas Info</th>
-					<th class="optional" th:text="#{usuario.tabla.id}">ID</th>
-					<th th:text="#{usuario.tabla.nombre}">Nombre</th>
-					<th th:text="#{usuario.tabla.apellidos}">Apellidos</th>
-					<th th:text="#{usuario.tabla.username}">Usuario</th>
-					<th class="optional" th:text="#{usuario.tabla.email}">Email</th>
+					<th th:text="#{masinfo}">Mas Info</th>
+					<th class="optional" th:text="#{id}">ID</th>
+					<th th:text="#{nombre}">Nombre</th>
+					<th th:text="#{apellidos}">Apellidos</th>
+					<th th:text="#{username}">Usuario</th>
+					<th class="optional" th:text="#{email}">Email</th>
 					<th class="optional" th:text="#{usuario.tabla.roles}">Roles</th>
-					<th th:text="#{usuario.tabla.acciones}">Acciones</th>
+					<th th:text="#{acciones}">Acciones</th>
 				</tr>
 			</thead>
 			<tbody th:unless="${#lists.isEmpty(allUsers.content)}"
@@ -82,10 +82,10 @@
 						<p th:each="rol : ${user.roles.keySet()}"
 							th:text="${#messages.msg('__${rol}__')}"></p>
 					</td>
-					<td><a th:text="#{usuario.tabla.editar}"
+					<td><a th:text="#{editar}"
 						href="/acme/admin/user/edit/id/4"
 						th:href="@{'/acme/admin/user/edit/id/' + ${user.id}}">Edit</a>/ <a
-						th:text="#{usuario.tabla.borrar}"
+						th:text="#{borrar}"
 						href="/acme/admin/user/delete/id/4"
 						th:href="@{'/acme/admin/user/delete/id/' + ${user.id}}">Delete</a></td>
 				</tr>
@@ -93,7 +93,7 @@
 					<td colspan="8">
 						<blockquote>
 							<dl>
-								<dt class="optional" th:text="#{usuario.tabla.id}">ID</dt>
+								<dt class="optional" th:text="#{id}">ID</dt>
 								<dt>Direccion:</dt>
 								<dd th:text="${user.address}">C/Falsa 123</dd>
 								<dt>Localidad:</dt>
@@ -103,7 +103,7 @@
 								<dt>Telefonos:</dt>
 								<dd th:text="${user.phone}+' / '+${user.mobilephone}">65478556
 									/ 3453345</dd>
-								<dt class="optional" th:text="#{usuario.tabla.email}">Email</dt>
+								<dt class="optional" th:text="#{email}">Email</dt>
 								<dd class="optional" th:text="${user.email}">prubea@correo.es</dd>
 								<dt class="optional" th:text="#{usuario.tabla.roles}">Roles</dt>
 								<dd class="optional">

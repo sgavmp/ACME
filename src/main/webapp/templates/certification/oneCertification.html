@@ -53,15 +53,15 @@
 						});
 			</script>
 			<div class="control-group">
-				<label th:text="#{certificado.formulario.id}" class="control-label">Id</label>
+				<label th:text="#{id}" class="control-label">Id</label>
 				<div class="controls">
 					<input th:field="*{id}" th:value="${cert.id}" type="text" id="id"></input>
-					<p th:text="#{certificado.formulario.id.informacion}"
+					<p th:text="#{id.informacion}"
 						class="help-inline">Only information</p>
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{certificado.formulario.nombre}"
+				<label th:text="#{nombre}"
 					class="control-label">Name</label>
 				<div class="controls">
 					<input th:field="*{name}" th:value="${cert.name}" type="text"
@@ -79,7 +79,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{certificado.formulario.descripcion}"
+				<label th:text="#{certificado.descripcion}"
 					class="control-label">Description</label>
 				<div class="controls">
 					<input th:field="*{description}" th:value="${cert.description}"
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label th:text="#{certificado.formulario.familia}"
+				<label th:text="#{certificado.familia}"
 					class="control-label">FamilyProfessional</label>
 				<div class="controls">
 					<select  th:field="*{familyProfessional}" id="familyprofessional">
@@ -147,7 +147,7 @@
 				</table>
 			</div>
 			<div class="control-group">
-				<label th:text="#{certificado.formulario.company}"
+				<label th:text="#{certificado.company}"
 					class="control-label">Company</label>
 				<div class="controls">
 					<select th:field="*{company}" id="company">
@@ -157,9 +157,9 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				<input th:value="#{certificado.formulario.guardar}" type="submit"
+				<input th:value="#{guardar}" type="submit"
 					class="btn btn-primary" value="Guardar" name="create"></input> 
-					<a th:text="#{certificado.formulario.cancelar}" href="/acme/certification" th:href="@{/acme/certification}"
+					<a th:text="#{cancelar}" href="/acme/certification" th:href="@{/acme/certification}"
 					class="btn" >Cancel</a>
 			</div>
 		</form>

@@ -114,7 +114,7 @@ public class AdminCertificationController {
 	@RequestMapping(value = "/edit/id/{idcert}", method = RequestMethod.POST)
 	public String editCertificate(@PathVariable Integer idcert, Model model,
 			@ModelAttribute("cert") @Valid Certification cert,
-			BindingResult result) {
+			BindingResult result, RedirectAttributes redirectAttrs) {
 		model.addAttribute("isNew", false);
 		model.addAttribute("cert", cert);
 		model.addAttribute("activeMenu", "certification");
@@ -126,7 +126,14 @@ public class AdminCertificationController {
 		cert=servicecertification.updateCertification(cert);
 		}
 		catch(StaleObjectStateException e) {
-			model.addAttribute("error", "certification.lockexception");
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				cert=servicecertification.getCertificationById(cert.getId());
+			} catch (CertificationNoExistException e1) {
+				redirectAttrs.addFlashAttribute("error", e.getMessage());
+				return "redirect:/acme/certification/";
+			}
+			model.addAttribute("cert", cert);
 			return "/certification/oneCertification";
 		}
 		model.addAttribute("info", "certification.modify");

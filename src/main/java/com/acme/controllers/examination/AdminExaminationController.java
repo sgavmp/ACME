@@ -55,6 +55,7 @@ public class AdminExaminationController {
 		}
 		model.addAttribute("exam", exam);
 		model.addAttribute("isNew", false);
+		model.addAttribute("noList", true);
 		model.addAttribute("activeMenu", "examination");
 		return "/examination/listExamination";
 	}
@@ -67,7 +68,8 @@ public class AdminExaminationController {
 		if (result.hasErrors()) {
 			model.addAttribute("isNew", true);
 			model.addAttribute("activeMenu", "examination");
-			return "/examination/listExamination";
+			model.addAttribute("noList", true);
+			return "examination/listExamination";
 		}
 		try {
 			exam.setCertification(servicecertification.getCertificationById(exam.getCertification().getId()));
@@ -111,12 +113,14 @@ public class AdminExaminationController {
 			model.addAttribute("isNew", false);
 			model.addAttribute("exam", exam);
 			model.addAttribute("activeMenu", "examination");
+			model.addAttribute("noList", true);
 			return "/examination/listExamination";
 		}
 		serviceexamination.saveExamination(exam);
 		model.addAttribute("activeMenu", "examination");
 		model.addAttribute("isNew", true);
 		model.addAttribute("info", "exam.modify");
+		model.addAttribute("noList", true);
 		return "/examination/listExamination";
 	}
 }

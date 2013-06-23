@@ -61,16 +61,23 @@ public class SigninController {
 		if (result.hasErrors()) {
 			model.addAttribute("isNew", true);
 			model.addAttribute("activeMenu", "user");
+			model.addAttribute("isNew", true);
+			model.addAttribute("isSignIn", true);
+			model.addAttribute("activeMenu", "users");
 			return "/user/oneUser";
 		}
-		user.setCity(servicegeography.getCityById(user.getCity().getId()));
-		user.setState(servicegeography.getStateById(user.getState().getId()));
-		user.setCountry(servicegeography.getCountryById(user.getCountry()
-				.getId()));
 		user.addRoleToUser(new Customer(), UserType.ROLE_CUSTOMER);
-		serviceuser.createUser(user);
-		redirectAttrs.addAttribute("id", user.getId()).addFlashAttribute(
-				"info", "user.create");
-		return "redirect:/acme/profile";
+		try {
+			serviceuser.createUser(user);
+		} catch (Exception e) {
+			model.addAttribute("error",	e.getMessage());
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", true);
+			model.addAttribute("isSignIn", true);
+			model.addAttribute("activeMenu", "users");
+			return "/user/oneUser";
+		}
+		redirectAttrs.addAttribute("id", user.getId()).addFlashAttribute("info", "user.create");
+		return "redirect:/acme/login";
 	}
 }

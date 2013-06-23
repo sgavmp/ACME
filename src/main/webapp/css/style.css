@@ -52,6 +52,11 @@ blockquote .optional {
 	padding: 10px 15px 10px;
 	color: #999999;
 }
+
+.claro .dijitComboBox .dijitArrowButtonInner {
+  cursor: pointer;
+  border: 1px solid #ffffff;
+}
 /* Jumbotrons
  -------------------------------------------------- */
 .jumbotron {
