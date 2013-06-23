@@ -76,9 +76,6 @@ public class Examination extends AbstractPersistable<Long> {
 	// -------------------------------------------------------------
 	public Examination() {
 		super();
-		this.dateLimitRegister = Dates.createToday();
-		this.dateRealization = Dates.createToday();
-		this.timeRealization = Dates.createToday();
 	}
 
 	public Examination(Date dateRealization, Date dateLimitRegister,
@@ -119,7 +116,7 @@ public class Examination extends AbstractPersistable<Long> {
 	public void setDateLimitRegister(Date dateLimitRegister)
 			throws DateIncorrectException {
 		if (this.dateRealization != null)
-			if (this.dateRealization.after(dateLimitRegister))
+			if (this.dateRealization.before(dateLimitRegister))
 				throw new DateIncorrectException("exception.date");
 		this.dateLimitRegister = dateLimitRegister;
 	}
@@ -178,7 +175,7 @@ public class Examination extends AbstractPersistable<Long> {
 	public Register createRegisterWithPay(Pay pay, User customer)
 			throws DateIncorrectException {
 		if (this.dateLimitRegister != null
-				& this.dateLimitRegister.after(Dates.createNow()))
+				&& this.dateLimitRegister.after(Dates.createNow()))
 			throw new DateIncorrectException("exception.date");
 		Register temp = new Register(pay, this, customer);
 		return temp;
@@ -186,7 +183,7 @@ public class Examination extends AbstractPersistable<Long> {
 
 	public Register createRegisterWithoutPay(User customer) throws DateIncorrectException {
 		Date today = new Date();
-		if (this.dateLimitRegister != null & this.dateLimitRegister.before(today)) {
+		if (this.dateLimitRegister != null && this.dateLimitRegister.before(today)) {
 			throw new DateIncorrectException("exception.date");
 		}
 		Register temp = new Register(this, customer);
