@@ -170,6 +170,7 @@ public class CertificationTest {
 			certMod = certrep.getCertificationById(cert.getId());
 		} catch (CertificationNoExistException e) {
 			e.printStackTrace();
+            fail();
 		}
 		assertNotNull("Se ha encotnrado el certificado buscado", certMod);
 		assertEquals("El nombre antes de la modificación es \"Ingles B1\"",

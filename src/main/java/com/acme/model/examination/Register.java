@@ -125,7 +125,7 @@ public class Register extends AbstractPersistable<Long>{
 		return answerExam;
 	}
 
-	private void setAnswerExam(List<AnswerExam> answerExam) {
+	public void setAnswerExam(List<AnswerExam> answerExam) {
 		this.answerExam = answerExam;
 	}
 
