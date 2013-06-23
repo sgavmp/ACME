@@ -29,7 +29,7 @@ public abstract class AnswerExam extends AbstractPersistable<Long>{
 	@JoinColumn(name="QUESTION_ID",referencedColumnName="id")
 	protected Question question;
 	private String text;
-	@OneToOne
+	@ManyToOne
 	private Register register;
 
 	// -------------------------------------------------------------

@@ -34,6 +34,10 @@ public class RegisterService {
 	public void removeRegister(Register reg) {
 		repositoryregister.delete(reg);
 	}
+
+    public void removeRegister(Long id) {
+        repositoryregister.delete(id);
+    }
 	
 	public Register saveRegister(Register reg) {
 		return repositoryregister.save(reg);

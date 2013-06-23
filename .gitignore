@@ -64,3 +64,10 @@ local.properties
 # PDT-specific
 .buildpath
 /pom.xml
+
+
+### IntelliJ ###
+*.iml
+*.ipr
+*.iws
+.idea/
