@@ -85,7 +85,7 @@ public class ExaminationTest {
             //No hacer nada
         }
         Set<ConstraintViolation<Examination>> constraintViolations2 = validator.validate(examination);
-        assertEquals("Hay 4 errores de validacion", 4, constraintViolations2.size());
+        assertEquals("Hay 3 errores de validacion", 3, constraintViolations2.size());
     }
 
     @Test
@@ -266,8 +266,8 @@ public class ExaminationTest {
             Customer cust = new Customer();
             Admin admin = new Admin();
             mCompany = new User();
-            mCompany.setUsername("Appol");
-            mCompany.setEmail("jobs@manzanilla.es");
+            mCompany.setUsername("Appolo");
+            mCompany.setEmail("jobs2@manzanilla.es");
             mCompany.setMobilephone("66666666");
             mCompany.setName("Estiv");
             mCompany.setSurname("Jos");
