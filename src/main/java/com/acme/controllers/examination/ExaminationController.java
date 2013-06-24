@@ -1,5 +1,6 @@
 package com.acme.controllers.examination;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.acme.exception.DateIncorrectException;
 import com.acme.exception.PageNumberIncorrectException;
 import com.acme.model.certification.Certification;
 import com.acme.model.examination.Examination;
@@ -45,9 +47,9 @@ public class ExaminationController {
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/page/{p}", method = RequestMethod.GET)
 	public String showAllExamination(Model model, @PathVariable("p") Integer p,
-			HttpServletRequest request) {
-		List<Examination> exams= Lists.newArrayList();
-		if (request.getUserPrincipal() != null) {	
+			HttpServletRequest request) throws DateIncorrectException {
+		List<Examination> exams = Lists.newArrayList();
+		if (request.getUserPrincipal() != null) {
 			User u = userService.getUserByUsername(request.getUserPrincipal()
 					.getName());
 			if (u != null)
@@ -64,7 +66,10 @@ public class ExaminationController {
 			model.addAttribute("allExamination", examinations);
 			model.addAttribute("activeMenu", "examination");
 			model.addAttribute("isNew", true);
-			model.addAttribute("exam", new Examination());
+			Examination exam = new Examination();
+			exam.setDateLimitRegister(new Date());
+			exam.setDateRealization(new Date());
+			model.addAttribute("exam", exam);
 			return "/examination/listExamination";
 		}
 	}
@@ -74,8 +79,8 @@ public class ExaminationController {
 	public String searchExaminations(
 			@RequestParam(value = "search") String text, Model model,
 			HttpServletRequest request) {
-		List<Examination> exams= Lists.newArrayList();
-		if (request.getUserPrincipal() != null) {	
+		List<Examination> exams = Lists.newArrayList();
+		if (request.getUserPrincipal() != null) {
 			User u = userService.getUserByUsername(request.getUserPrincipal()
 					.getName());
 			if (u != null)
@@ -101,8 +106,8 @@ public class ExaminationController {
 	public String searchExaminations(
 			@RequestParam(value = "search") String text,
 			@PathVariable Integer page, Model model, HttpServletRequest request) {
-		List<Examination> exams= Lists.newArrayList();
-		if (request.getUserPrincipal() != null) {	
+		List<Examination> exams = Lists.newArrayList();
+		if (request.getUserPrincipal() != null) {
 			User u = userService.getUserByUsername(request.getUserPrincipal()
 					.getName());
 			if (u != null)
@@ -127,9 +132,9 @@ public class ExaminationController {
 	// una nueva
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/**")
-	public String showAllExamination(Model model, HttpServletRequest request) {
-		List<Examination> exams= Lists.newArrayList();
-		if (request.getUserPrincipal() != null) {	
+	public String showAllExamination(Model model, HttpServletRequest request) throws DateIncorrectException {
+		List<Examination> exams = Lists.newArrayList();
+		if (request.getUserPrincipal() != null) {
 			User u = userService.getUserByUsername(request.getUserPrincipal()
 					.getName());
 			if (u != null)
@@ -145,8 +150,12 @@ public class ExaminationController {
 			model.addAttribute("allExamination", examinations);
 			model.addAttribute("activeMenu", "examination");
 			model.addAttribute("isNew", true);
-			if (!model.containsAttribute("exam"))
-				model.addAttribute("exam", new Examination());
+			if (!model.containsAttribute("exam")) {
+				Examination exam = new Examination();
+				exam.setDateLimitRegister(new Date());
+				exam.setDateRealization(new Date());
+				model.addAttribute("exam", exam);
+			}
 			return "/examination/listExamination";
 		}
 	}

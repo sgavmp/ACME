@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/acme-servlet.xml")
@@ -58,8 +57,6 @@ public class ExaminationTest {
     private ExaminationService examinationrep;
     @Autowired
     private OfficeRepository officerep;
-    @Autowired
-    private LanguageRepository langrep;
 
 
     private static boolean first = true;
@@ -69,7 +66,6 @@ public class ExaminationTest {
     private static FamilyProfessional mProfessionalFamily;
     private static Certification mCertification;
     private static Office mOffice;
-    private static Exam mExam;
 
     @Test
     public void testValidacionNull() {
@@ -80,7 +76,6 @@ public class ExaminationTest {
         examination.setMaxCustomer(666);
         examination.setCertification(null);
         examination.setRealizationPlace(mOffice);
-        examination.setExam(mExam);
         examination.setReviewer(mCompany);
 
         try {
@@ -108,7 +103,6 @@ public class ExaminationTest {
         examination.setMaxCustomer(17);
         examination.setCertification(mCertification);
         examination.setRealizationPlace(mOffice);
-        examination.setExam(mExam);
         examination.setReviewer(mCompany);
         try{
             examinationrep.saveExamination(examination);
@@ -134,7 +128,6 @@ public class ExaminationTest {
         examination.setMaxCustomer(100);
         examination.setCertification(mCertification);
         examination.setRealizationPlace(mOffice);
-        examination.setExam(mExam);
         examination.setReviewer(mCompany);
         examinationrep.saveExamination(examination);
 
@@ -153,7 +146,6 @@ public class ExaminationTest {
         examination2.setMaxCustomer(100);
         examination2.setCertification(mCertification);
         examination2.setRealizationPlace(mOffice);
-        examination2.setExam(mExam);
         examination2.setReviewer(mCompany);
         examinationrep.saveExamination(examination2);
 
@@ -175,7 +167,6 @@ public class ExaminationTest {
         examination.setMaxCustomer(100);
         examination.setCertification(mCertification);
         examination.setRealizationPlace(mOffice);
-        examination.setExam(mExam);
         examination.setReviewer(mCompany);
         examinationrep.saveExamination(examination);
 
@@ -202,7 +193,8 @@ public class ExaminationTest {
         } catch (ExaminationNoExistException e) {
             fail();
         }
-        assertNotEquals("La fecha de realización se ha actualizado", oldDate.getTime(), examinationMod.getDateRealization().getTime());
+        
+        assertFalse("La fecha de realización se ha actualizado", oldDate.equals(examinationMod.getDateRealization()));
 
     }
 
@@ -221,7 +213,6 @@ public class ExaminationTest {
         examination.setMaxCustomer(100);
         examination.setCertification(mCertification);
         examination.setRealizationPlace(mOffice);
-        examination.setExam(mExam);
         examination.setReviewer(mCompany);
         examinationrep.saveExamination(examination);
 
@@ -233,7 +224,7 @@ public class ExaminationTest {
     }
 
     @Before
-    public void prepareScenario() {
+    public void prepareScenario() throws Exception {
         if (first) {
             first = false;
             validator = Validation.buildDefaultValidatorFactory()
@@ -302,14 +293,6 @@ public class ExaminationTest {
                 fail(e.getMessage());
             }
             mCertification = certrep.createCertification(mCertification);
-
-            Language lang = new Language("Spanish");
-            langrep.save(lang);
-            mExam = new Exam(ExamType.OPEN_ANSWER, lang);
-            mExam.createQuestion("Pregunta A", 5.5);
-            mExam.createQuestion("Pregunta B", 4.5);
-            mExam.setCertification(mCertification);
-            mExam = examrep.save(mExam);
 
         }
     }

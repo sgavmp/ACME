@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/acme-servlet.xml")
@@ -74,7 +72,6 @@ public class RegisterTest {
     private static FamilyProfessional mProfessionalFamily;
     private static Certification mCertification;
     private static Office mOffice;
-    private static Exam mExam;
     private static Examination mExamination;
 
     @Test
@@ -92,7 +89,7 @@ public class RegisterTest {
 
 
     @Test
-    public void testModificarCertificado() {
+    public void testModificarExaminacion() {
         Register register = new Register(mExamination, mCustomer);
         register.setComment("comentario1");
         registerService.saveRegister(register);
@@ -121,21 +118,20 @@ public class RegisterTest {
     }
 
     @Test
-    public void testEliminarExaminacion() {
+    public void testEliminarExaminacion() throws DateIncorrectException {
         // Creamos un certificado
-        Register register = new Register(mExamination, mCustomer);
+    	Register register = mExamination.createRegisterWithoutPay(mCustomer);
         register.setComment("a eliminar");
         registerService.saveRegister(register);
 
         // Comprobamos la eliminación
         int numReg = registerService.getAllRegisters().size();
-        registerService.removeRegister(register.getId());
+        registerService.removeRegister(register);
         assertEquals("Hay 1 registro menos en la base de datos", numReg-1, registerService.getAllRegisters().size());
-
     }
 
     @Before
-    public void prepareScenario() {
+    public void prepareScenario() throws Exception {
         if (first) {
             first = false;
 
@@ -199,13 +195,6 @@ public class RegisterTest {
             }
             mCertification = certrep.createCertification(mCertification);
 
-            Language lang = new Language("Spanish");
-            langrep.save(lang);
-            mExam = new Exam(ExamType.OPEN_ANSWER, lang);
-            mExam.createQuestion("Pregunta A", 5.5);
-            mExam.createQuestion("Pregunta B", 4.5);
-            mExam.setCertification(mCertification);
-            mExam = examrep.save(mExam);
 
             mExamination = new Examination();
             try {
@@ -219,7 +208,6 @@ public class RegisterTest {
             mExamination.setMaxCustomer(100);
             mExamination.setCertification(mCertification);
             mExamination.setRealizationPlace(mOffice);
-            mExamination.setExam(mExam);
             mExamination.setReviewer(mCustomer);
             examinationrep.saveExamination(mExamination);
         }

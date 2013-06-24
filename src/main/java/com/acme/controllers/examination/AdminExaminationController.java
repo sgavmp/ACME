@@ -119,7 +119,7 @@ public class AdminExaminationController {
 		serviceexamination.saveExamination(exam);
 		model.addAttribute("activeMenu", "examination");
 		model.addAttribute("isNew", true);
-		model.addAttribute("info", "exam.modify");
+		model.addAttribute("info", "examination.modify");
 		model.addAttribute("noList", true);
 		return "/examination/listExamination";
 	}

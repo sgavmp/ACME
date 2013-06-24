@@ -219,7 +219,7 @@ public class CertificationTest {
 	}
 
 	@Before
-	public void prepareScenario() {
+	public void prepareScenario() throws Exception {
 		if (first) {
 			first = false;
 			validator = Validation.buildDefaultValidatorFactory()

@@ -41,7 +41,7 @@ public class UserTest {
 
 
     @Test
-    public void testCrearUsuario() {
+    public void testCrearUsuario() throws Exception {
 
         int numUser = userService.getAllUsers().size();
 
@@ -122,7 +122,7 @@ public class UserTest {
 
 
     @Test
-    public void testModificarUsuario() {
+    public void testModificarUsuario() throws Exception {
         // Creamos un certificado
         Customer customer = new Customer();
         User user = new User();
@@ -149,7 +149,7 @@ public class UserTest {
         }
         String newName = "Pedro";
         userMod.setName(newName);
-        userService.createUser(userMod);
+        userService.updateUser(userMod);
 
         try {
             userMod = userService.getUserById(user.getId());
@@ -162,7 +162,7 @@ public class UserTest {
     }
 
     @Test
-    public void testEliminarCertificado() {
+    public void testEliminarCertificado() throws Exception {
         // Creamos un certificado
         Customer customer = new Customer();
         User user = new User();

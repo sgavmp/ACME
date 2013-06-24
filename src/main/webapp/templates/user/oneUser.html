@@ -53,11 +53,11 @@
 				});
 			</script>
 			<div th:if="!${isSignIn}" class="control-group">
-				<label th:text="#{usuario.formulario.id}" class="control-label">Id</label>
+				<label th:text="#{id}" class="control-label">Id</label>
 				<div class="controls">
 					<input th:field="*{id}" th:value="${user.id}" type="text" id="id"
 						readonly="readonly"></input>
-					<p th:text="#{usuario.formulario.id.informacion}"
+					<p th:text="#{id.informacion}"
 						class="help-inline">Only information</p>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 				<label th:text="#{username}"
 					class="control-label">Nombre de Usuario</label>
 				<div class="controls">
-					<input th:field="*{username}" th:value="${user.username}"
+					<input th:disabled="!${isNew}" th:field="*{username}" th:value="${user.username}"
 						type="text" id="username"></input>
 				</div>
 			</div>

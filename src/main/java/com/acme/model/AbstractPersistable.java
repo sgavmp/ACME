@@ -21,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
 import org.springframework.data.domain.Persistable;
@@ -38,7 +39,8 @@ public abstract class AbstractPersistable<PK extends Serializable> implements Pe
 	private static final long serialVersionUID = -5554308939380869754L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
+	@SequenceGenerator(name = "id_key_gen", sequenceName = "id_key_seq",allocationSize=1)
 	protected PK id;
 	@Version
 	private Integer version;

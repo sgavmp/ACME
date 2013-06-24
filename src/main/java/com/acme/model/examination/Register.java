@@ -29,8 +29,6 @@ public class Register extends AbstractPersistable<Long>{
 	private boolean passed;
 	private String comment;
 	private Double calification;
-	@OneToMany(mappedBy="register",targetEntity=AnswerExam.class,cascade=CascadeType.ALL)
-	private List<AnswerExam> answerExam;
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Examination examination;
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -120,79 +118,10 @@ public class Register extends AbstractPersistable<Long>{
 		this.calification = calification;
 	}
 
-	
-	public List<AnswerExam> getAnswerExam() {
-		return answerExam;
-	}
-
-	public void setAnswerExam(List<AnswerExam> answerExam) {
-		this.answerExam = answerExam;
-	}
-
 	//-------------------------------------------------------------
 	// Methods
 	//-------------------------------------------------------------
-	public void saveAnswers(List<AnswerExam> answers) {
-		setAnswerExam(answers);
-	}
 
-	public String printAnswers() {
-//		String text = "";
-//		text += "Nombre del Aspirante: " + this.customer.getUser().getName()
-//				+ " " + this.customer.getUser().getSurname() + "\n";
-//		text += "Tipo de examen: " + this.examination.getExam().getTypeExam().toString()
-//				+ "        Idioma: " + this.examination.getExam().getLanguage().toString()
-//				+ "\n";
-//		for (AnswerExam q : this.getAnswerExam()) {
-//			text += "1. " + q.getQuestion().getQuestionText() + "\n";
-//			if (this.examination.getExam().getTypeExam() == ExamType.MULTITEST
-//					|| this.examination.getExam().getTypeExam() == ExamType.TEST) {
-//				TestAnswerExam tq = (TestAnswerExam) q;
-//				char letra = 'a';
-//				for (Option o : tq.getOptions()) {
-//					text += letra + ")" + o.getTextOption() + "\n";
-//					letra++;
-//				}
-//				text += "\n";
-//			}
-//			text += "\n\n";
-//		}
-//		return text;
-		return "";
-	}
-
-	public void correctTestExam() {
-		Double points = 0.0;
-		for (AnswerExam a : this.answerExam) {
-			TestAnswerExam ta = (TestAnswerExam) a;
-			points += ta.correctTestAnswer();
-		}
-		this.setCalification(points);
-		if (this.getExamination().getCertification().getRequirementCalification()<=this.getCalification()){
-			this.setPassed(true);
-		}
-		else
-		{
-			this.setPassed(false);
-		}
-	}
-	
-	public String passedToString(){
-		if (this.passed){
-			return "APROBADO";
-		}
-		else{
-			return "SUSPENDIDO";
-		}
-	}
-
-	public String printResult() {
-//		return "El aspirante " + this.customer.getUser().getName() + " "
-//				+ this.customer.getUser().getSurname()
-//				+ " ha obtenido una calificacion de "
-//				+ this.calification.toString() + ", segun los requisitos del certificado el aspirante ha "+ this.passedToString();
-		return "";
-	}
 	
 	public boolean payRegister(Pay pay){
 		if (this.pay == null)

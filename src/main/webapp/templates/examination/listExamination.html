@@ -49,12 +49,12 @@
 					<label th:text="#{id}" class="control-label">Id</label>
 					<div class="controls">
 						<input th:field="*{id}" th:value="${exam.id}" type="text" id="id"></input>
-						<p th:text="#{id.informacion}"
-							class="help-inline">Only information</p>
+						<p th:text="#{id.informacion}" class="help-inline">Only
+							information</p>
 					</div>
 				</div>
 				<div class="control-group">
-					<label th:text="#{exam.certification}" class="control-label">Certificado</label>
+					<label th:text="#{examination.certification}" class="control-label">Certificado</label>
 					<div class="controls">
 						<select th:field="*{certification}"
 							th:value="${exam.certification}" id="name">
@@ -64,52 +64,51 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label th:text="#{exam.feclimit}" class="control-label">Fecha
+					<label th:text="#{examination.feclimit}" class="control-label">Fecha
 						limite registro</label>
 					<div class="controls">
 						<input
 							th:value="${#dates.format(exam.dateLimitRegister,'yyyy-MM-dd')}"
+							type="text" id="dateLimitRegister" name="dateLimitRegister"
 							data-dojo-id="dateLimitRegister"
 							data-dojo-type="dijit/form/DateTextBox"
-							type="text" id="dateLimitRegister" name="dateLimitRegister"
-							onChange="dateRealization.constraints.min = arguments[0];"
-							></input>
+							onChange="dateRealization.constraints.min = arguments[0];"></input>
 					</div>
 				</div>
 				<div class="control-group">
-					<label th:text="#{exam.fecrealizacion}" class="control-label">Fecha
-						de Realizacion</label>
+					<label th:text="#{examination.fecrealizacion}"
+						class="control-label">Fecha de Realizacion</label>
 					<div class="controls">
 						<input
-							th:value="${#dates.format(exam.dateRealization,'yyyy-MM-dd')}" type="text"
-							id="dateRealization" name="dateRealization"
+							th:value="${#dates.format(exam.dateRealization,'yyyy-MM-dd')}"
+							type="text" id="dateRealization" name="dateRealization"
 							data-dojo-id="dateRealization"
 							data-dojo-type="dijit/form/DateTextBox"
 							onChange="dateLimitRegister.constraints.max = arguments[0];"></input>
 					</div>
 				</div>
 				<div class="control-group">
-					<label th:text="#{exam.timeRealization}" class="control-label">Hora
-						de Realizacion</label>
+					<label th:text="#{examination.timeRealization}"
+						class="control-label">Hora de Realizacion</label>
 					<div class="controls">
 						<input
-							th:value="${#dates.format(exam.timeRealization,'''T''HH:mm:ss')}" type="text"
-							id="timeRealization" name="timeRealization"
+							th:value="${#dates.format(exam.timeRealization,'''T''HH:mm:ss')}"
+							type="text" id="timeRealization" name="timeRealization"
 							data-dojo-type="dijit/form/TimeTextBox"></input>
 					</div>
 				</div>
 				<div class="form-actions">
-					<input th:value="#{guardar}" type="submit"
-						class="btn btn-primary" value="Guardar" name="create"></input><a
-						th:text="#{cancelar}"
-						href="/acme/admin/examination/"
-						th:href="@{/acme/admin/examination/}" class="btn">Cancel</a>
+					<input th:value="#{guardar}" type="submit" class="btn btn-primary"
+						value="Guardar" name="create"></input><a th:text="#{cancelar}"
+						href="/acme/examination/" th:href="@{/acme/examination/}"
+						class="btn">Cancel</a>
 				</div>
 			</form>
 		</div>
 		<section th:if="!${noList}" class="container">
 			<h1
-				th:text="${isSearch}?#{menu.busqueda}:#{examination.tabla.titulo}">Resultado Busqueda</h1>
+				th:text="${isSearch}?#{menu.busqueda}:#{examination.tabla.titulo}">Resultado
+				Busqueda</h1>
 			<form class="form-search search-right"
 				action="/acme/examination/search"
 				th:action="@{/acme/examination/search/}" method="get">
@@ -120,19 +119,20 @@
 			<table id="tabla_examination" class="table table-border">
 				<thead>
 					<tr>
-						<th class="optional-plus" th:text="#{masinfo}">Mas
-							Info</th>
+						<th class="optional-plus" th:text="#{masinfo}">Mas Info</th>
 						<th class="optional" th:text="#{id}">ID</th>
 						<th th:text="#{examination.tabla.nombre}">Certifcado</th>
 						<th class="optional" th:text="#{examination.tabla.feclimite}">Fecha
 							Limite Registro</th>
 						<th class="optional" th:text="#{examination.tabla.fecrealizacion}">Fecha
 							Realizacion</th>
-						<th class="optional" th:text="#{examination.tabla.timerealizacion}">Hora
+						<th class="optional"
+							th:text="#{examination.tabla.timerealizacion}">Hora
 							Realizacion</th>
 						<th th:text="#{editar}" sec:authorize="hasRole(0)">Editar</th>
 						<th th:text="#{borrar}" sec:authorize="hasRole(0)">Borrar</th>
-						<th th:text="#{examination.tabla.registrar}" sec:authorize="hasRole(4)">Registrarse</th>
+						<th th:text="#{examination.tabla.registrar}"
+							sec:authorize="hasRole(4)">Registrarse</th>
 					</tr>
 				</thead>
 				<tbody th:unless="${#lists.isEmpty(allExamination.content)}"
@@ -148,12 +148,10 @@
 							th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</td>
 						<td class="optional" th:with="df=#{time.format}"
 							th:text="${#dates.format(exam.timeRealization,df)}">13:30</td>
-						<td sec:authorize="hasRole(0)"><a
-							th:text="#{editar}"
+						<td sec:authorize="hasRole(0)"><a th:text="#{editar}"
 							href="/acme/admin/examination/edit/id/4"
 							th:href="@{'/acme/admin/examination/edit/id/' + ${exam.id}}">Edit</a></td>
-						<td sec:authorize="hasRole(0)"><a
-							th:text="#{borrar}"
+						<td sec:authorize="hasRole(0)"><a th:text="#{borrar}"
 							href="/acme/admin/examination/delete/id/4"
 							th:href="@{'/acme/admin/examination/delete/id/' + ${exam.id}}">Delete</a></td>
 						<td sec:authorize="hasRole(4)"><a
@@ -175,11 +173,13 @@
 										Limite Registro</dt>
 									<dd class="optional" th:with="df=#{date.format}"
 										th:text="${#dates.format(exam.dateLimitRegister,df)}">12/05/2013</dd>
-									<dt class="optional" th:text="#{examination.tabla.fecrealizacion}">Fecha
+									<dt class="optional"
+										th:text="#{examination.tabla.fecrealizacion}">Fecha
 										Realizacion</dt>
 									<dd class="optional" th:with="df=#{date.format}"
 										th:text="${#dates.format(exam.dateRealization,df)}">25/05/2013</dd>
-									<dt class="optional" th:text="#{examination.tabla.timerealizacion}">Hora
+									<dt class="optional"
+										th:text="#{examination.tabla.timerealizacion}">Hora
 										Realizacion</dt>
 									<dd class="optional" th:with="df=#{time.format}"
 										th:text="${#dates.format(exam.timeRealization,df)}">13:30</dd>

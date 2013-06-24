@@ -47,7 +47,7 @@ public class Examination extends AbstractPersistable<Long> {
 
 	@Temporal(TemporalType.TIME)
 	@NotNull(message = "examination.timerealization.nontull")
-	private Date timeRealization;
+	private Date timeRealization = new Date();
 
 	private Integer maxCustomer;
 
@@ -76,7 +76,7 @@ public class Examination extends AbstractPersistable<Long> {
 		super();
 	}
 
-	public Examination(Date dateRealization, Date dateLimitRegister,
+	public Examination(Date dateLimitRegister, Date dateRealization,
 			Integer maxCustomer, Integer minCustomer,
 			Certification certification, Office realizationPlace, User reviewer) {
 		super();
@@ -101,10 +101,15 @@ public class Examination extends AbstractPersistable<Long> {
 
 	public void setDateRealization(Date dateRealization)
 			throws DateIncorrectException {
-		if (this.dateLimitRegister != null)
-			if (this.dateLimitRegister.after(dateRealization))
+		if (this.dateLimitRegister != null) {
+			if (this.dateLimitRegister.getTime()>dateRealization.getTime()) {
 				throw new DateIncorrectException("exception.date");
-		this.dateRealization = dateRealization;
+			}
+			this.dateRealization = dateRealization;
+		}
+		else {
+			this.dateRealization = dateRealization;
+		}
 	}
 
 	public Date getDateLimitRegister() {
@@ -113,10 +118,15 @@ public class Examination extends AbstractPersistable<Long> {
 
 	public void setDateLimitRegister(Date dateLimitRegister)
 			throws DateIncorrectException {
-		if (this.dateRealization != null)
-			if (this.dateRealization.before(dateLimitRegister))
+		if (this.dateRealization != null) {
+			if (dateLimitRegister.getTime()>this.dateRealization.getTime()) {
 				throw new DateIncorrectException("exception.date");
-		this.dateLimitRegister = dateLimitRegister;
+			}
+			this.dateLimitRegister = dateLimitRegister;
+		}
+		else {
+			this.dateLimitRegister = dateLimitRegister;
+		}
 	}
 
 	public Integer getMaxCustomer() {
@@ -179,9 +189,11 @@ public class Examination extends AbstractPersistable<Long> {
 		return temp;
 	}
 
-	public Register createRegisterWithoutPay(User customer) throws DateIncorrectException {
+	public Register createRegisterWithoutPay(User customer)
+			throws DateIncorrectException {
 		Date today = new Date();
-		if (this.dateLimitRegister != null && this.dateLimitRegister.before(today)) {
+		if (this.dateLimitRegister != null
+				&& this.dateLimitRegister.before(today)) {
 			throw new DateIncorrectException("exception.date");
 		}
 		Register temp = new Register(this, customer);

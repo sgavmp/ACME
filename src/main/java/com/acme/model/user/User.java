@@ -246,7 +246,6 @@ public class User extends AbstractPersistable<Long> {
 		this.setCountry(u.getCountry());
 		this.setPhone(u.getPhone());
 		this.setSurname(u.getSurname());
-		this.setUsername(u.getUsername());
 		if (!u.getRoles().isEmpty())
 			this.setRoles(u.getRoles());
 	}
