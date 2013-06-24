@@ -42,7 +42,6 @@ public class MongoLuceneDirectoryProvider implements DirectoryProvider<Directory
 		indexName = directoryProviderName;
 		this.properties = properties;
 		String text = System.getenv("MONGOLAB_URI");
-//		String text = "mongodb://localhost/test";
 		Mongo mongo;
 
 		try {
