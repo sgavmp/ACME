@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,14 +46,17 @@ public class ExaminationService {
 		return repositoryExamination.findOne(id);
 	}
 	
-	public Examination saveExamination(Examination e) {
+	@Transactional
+	public Examination saveExamination(Examination e) throws JpaOptimisticLockingFailureException {
 		return repositoryExamination.save(e);
 	}
 	
+	@Transactional
 	public void removeExamination(Examination e) {
 		repositoryExamination.delete(e);
 	}
 	
+	@Transactional
 	public void removeExamination(Long id) {
 		repositoryExamination.delete(id);
 	}

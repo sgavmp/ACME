@@ -15,6 +15,7 @@
 			<form class="form-horizontal" method="post"
 				th:action="${isNew}?@{/acme/admin/examination/create}:@{/acme/admin/examination/edit/id/__${exam.id}__}"
 				th:object="${exam}" val:validate="${exam}">
+				<input type="hidden" th:field="*{version}" th:value="${exam.version}" id="version" ></input>
 				<div th:if="${#fields.hasErrors('*')}" id="error-div"
 					class="alert alert-error">
 					<button id="btcerrar" type="button" class="close"

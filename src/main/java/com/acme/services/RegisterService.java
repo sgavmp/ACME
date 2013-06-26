@@ -3,7 +3,9 @@ package com.acme.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.acme.exception.RegisterNoExistException;
 import com.acme.model.examination.Register;
@@ -31,15 +33,18 @@ public class RegisterService {
 		return repositoryregister.findOne(idReg);
 	}
 
+	@Transactional
 	public void removeRegister(Register reg) {
 		repositoryregister.delete(reg);
 	}
 
+	@Transactional
     public void removeRegister(Long id) {
         repositoryregister.delete(id);
     }
 	
-	public Register saveRegister(Register reg) {
+	@Transactional
+	public Register saveRegister(Register reg) throws JpaOptimisticLockingFailureException {
 		return repositoryregister.save(reg);
 	}
 	

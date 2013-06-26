@@ -22,6 +22,7 @@
 		<form class="form-horizontal" method="post"
 			th:action="${isProfile}?@{/acme/profile}:(${isNew}?(${isSignIn}?@{/acme/signin}:@{/acme/admin/user/create}):@{/acme/admin/user/edit/id/__${user.id}__})"
 			th:object="${user}" val:validate="${user}">
+			<input type="hidden" th:field="*{version}" th:value="${user.version}" id="version" ></input>
 			<div th:if="${#fields.hasErrors('*')}" id="error-div"
 				class="alert alert-error">
 				<button id="btcerrar" type="button" class="close"
@@ -87,7 +88,7 @@
 				<label th:text="#{username}"
 					class="control-label">Nombre de Usuario</label>
 				<div class="controls">
-					<input th:disabled="!${isNew}" th:field="*{username}" th:value="${user.username}"
+					<input th:readonly="!${isNew}" th:field="*{username}" th:value="${user.username}"
 						type="text" id="username"></input>
 				</div>
 			</div>

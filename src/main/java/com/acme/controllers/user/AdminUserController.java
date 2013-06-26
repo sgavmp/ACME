@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -96,6 +97,58 @@ public class AdminUserController {
 		return "/user/oneUser";
 	}
 
+	// Modifica el usuario con el id dado
+	@RequestMapping(value = "/edit/id/{iduser}", params = "create" ,method = RequestMethod.POST)
+	public String editUser(@PathVariable Long iduser,
+			@ModelAttribute("user") @Valid User u, Model model,
+			RedirectAttributes redirectAttrs, BindingResult result) {
+		// Comprueba si hay errores de validacion
+		if (result.hasErrors()) {
+			model.addAttribute("isNew", false);
+			model.addAttribute("user", u);
+			model.addAttribute("activeMenu", "user");
+			model.addAttribute("statesInCountry", u.getCountry().getStates());
+			model.addAttribute("citiesByState", u.getState().getCities());
+			return "/user/oneUser";
+		}
+		User user;
+		try {
+			user = serviceuser.getUserById(u.getId());
+		} catch (UserNoExistException e) {
+			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			return "redirect:/acme/admin/user/create";
+		}
+		user.setValuesFromUser(u);
+		if (user.getVersion()!=u.getVersion()) {
+			redirectAttrs.addFlashAttribute("error", "exception.lockexception");
+			return "redirect:/acme/admin/user/edit/id/"+iduser;
+		}
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
+		model.addAttribute("user", user);
+		model.addAttribute("isNew", false);
+		model.addAttribute("activeMenu", "user");
+		model.addAttribute("statesInCountry", user.getCountry().getStates());
+		model.addAttribute("citiesByState", user.getState().getCities());
+		model.addAttribute("info", "user.modify");
+		return "/user/oneUser";
+	}
+
 	// Crea el rol de Admin
 	@RequestMapping(value = "/edit/id/{iduser}", params = "createRoleAdmin", method = RequestMethod.POST)
 	public String createRoleAdmin(@PathVariable Long iduser,
@@ -109,7 +162,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.addRoleToUser(new Admin(), UserType.ROLE_ADMIN);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -131,7 +200,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.addRoleToUser(new Customer(), UserType.ROLE_CUSTOMER);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -153,7 +238,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.addRoleToUser(new Company(), UserType.ROLE_COMPANY);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -175,7 +276,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.addRoleToUser(new Reviewer(), UserType.ROLE_REVIEWER);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -197,7 +314,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.addRoleToUser(new Worker(), UserType.ROLE_WORKER);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -219,7 +352,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.removeRoleToUser(UserType.ROLE_ADMIN);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -241,7 +390,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.removeRoleToUser(UserType.ROLE_CUSTOMER);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -263,7 +428,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.removeRoleToUser(UserType.ROLE_COMPANY);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -285,7 +466,23 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.removeRoleToUser(UserType.ROLE_REVIEWER);
-		user = serviceuser.updateUser(user);
+		try {
+			user = serviceuser.updateUser(user);
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				user = serviceuser.getUserById(user.getId());
+			} catch (UserNoExistException ex) {
+				redirectAttrs.addFlashAttribute("error", ex.getMessage());
+				return "redirect:/acme/admin/user/";
+			}
+			model.addAttribute("user", user);
+			model.addAttribute("isNew", false);
+			model.addAttribute("statesInCountry", user.getCountry().getStates());
+			model.addAttribute("citiesByState", user.getState().getCities());
+			model.addAttribute("activeMenu", "user");
+			return "/user/oneUser";
+		}
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
 		model.addAttribute("user", user);
@@ -307,41 +504,9 @@ public class AdminUserController {
 			return "redirect:/acme/admin/user/create";
 		}
 		user.removeRoleToUser(UserType.ROLE_WORKER);
-		user = serviceuser.updateUser(user);
-		model.addAttribute("statesInCountry", user.getCountry().getStates());
-		model.addAttribute("citiesByState", user.getState().getCities());
-		model.addAttribute("user", user);
-		model.addAttribute("activeMenu", "user");
-		model.addAttribute("info", "usuario.rol.remove");
-		return "/user/oneUser";
-	}
-
-	// Modifica el usuario con el id dado
-	@RequestMapping(value = "/edit/id/{iduser}", method = RequestMethod.POST)
-	public String editUser(@PathVariable Long iduser,
-			@ModelAttribute("user") @Valid User u, Model model,
-			RedirectAttributes redirectAttrs, HttpServletRequest response,
-			BindingResult result) {
-		// Comprueba si hay errores de validacion
-		if (result.hasErrors()) {
-			model.addAttribute("isNew", false);
-			model.addAttribute("user", u);
-			model.addAttribute("activeMenu", "user");
-			model.addAttribute("statesInCountry", u.getCountry().getStates());
-			model.addAttribute("citiesByState", u.getState().getCities());
-			return "/user/oneUser";
-		}
-		User user;
-		try {
-			user = serviceuser.getUserById(u.getId());
-		} catch (UserNoExistException e) {
-			redirectAttrs.addFlashAttribute("error", e.getMessage());
-			return "redirect:/acme/admin/user/create";
-		}
-		user.setValuesFromUser(u);
 		try {
 			user = serviceuser.updateUser(user);
-		} catch (StaleObjectStateException e) {
+		} catch (JpaOptimisticLockingFailureException e) {
 			model.addAttribute("error", "exception.lockexception");
 			try {
 				user = serviceuser.getUserById(user.getId());
@@ -356,12 +521,11 @@ public class AdminUserController {
 			model.addAttribute("activeMenu", "user");
 			return "/user/oneUser";
 		}
-		model.addAttribute("user", user);
-		model.addAttribute("isNew", false);
-		model.addAttribute("activeMenu", "user");
 		model.addAttribute("statesInCountry", user.getCountry().getStates());
 		model.addAttribute("citiesByState", user.getState().getCities());
-		model.addAttribute("info", "user.modify");
+		model.addAttribute("user", user);
+		model.addAttribute("activeMenu", "user");
+		model.addAttribute("info", "usuario.rol.remove");
 		return "/user/oneUser";
 	}
 

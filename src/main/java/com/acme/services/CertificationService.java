@@ -3,6 +3,7 @@ package com.acme.services;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +74,7 @@ public class CertificationService {
 
 	@Transactional
 	@Caching(evict={@CacheEvict(value="certifications",allEntries = true, beforeInvocation = false)}, put={@CachePut(value="certification", key="#cert.id")})
-	public Certification updateCertification(Certification cert) {
+	public Certification updateCertification(Certification cert) throws JpaOptimisticLockingFailureException{
 		return repositorycert.save(cert);
 
 	}
@@ -112,7 +114,7 @@ public class CertificationService {
 
 	@Transactional
 	@CacheEvict(value="familyprofessional",allEntries = true)
-	public FamilyProfessional updateFamilyProfessional(FamilyProfessional family) {
+	public FamilyProfessional updateFamilyProfessional(FamilyProfessional family) throws JpaOptimisticLockingFailureException {
 		return repositoryfamily.save(family);
 	}
 	

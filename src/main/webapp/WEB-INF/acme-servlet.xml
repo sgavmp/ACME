@@ -126,15 +126,7 @@
 		<property name="templateEngine" ref="templateEngine" />
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<!-- view name resolved using bean of type InternalResourceViewResolver 
-			(declared in mvc-view-config.xml) -->
-		<property name="defaultErrorView" value="error" />
-		<!-- results into 'WEB-INF/jsp/exception.jsp' -->
-		<property name="warnLogCategory" value="warn" />
-		<!-- needed otherwise exceptions won't be logged anywhere -->
-	</bean>
+
 
 	<!-- Security -->
 

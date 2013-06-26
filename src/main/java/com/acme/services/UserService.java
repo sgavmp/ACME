@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,8 @@ public class UserService {
 		return (List<User>) repositoryuser.findAll();
 	}
 
-	public User updateUser(User u) {
+	@Transactional
+	public User updateUser(User u) throws JpaOptimisticLockingFailureException {
 		if (!u.isPassChange())
 			return repositoryuser.save(u);
 		else {
@@ -60,6 +62,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public User createUser(User u) throws Exception {
 		if (!u.isPassChange())
 			if (repositoryuser.findUserByUsername(u.getUsername()) != null)
@@ -79,10 +82,12 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public void removeUser(User u) {
 		repositoryuser.delete(u);
 	}
 
+	@Transactional
 	public void removeUser(Long id) throws Exception {
 		repositoryuser.delete(id);
 	}

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.orm.jpa.JpaOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.exception.CertificationNoExistException;
+import com.acme.exception.DateIncorrectException;
 import com.acme.exception.ExaminationNoExistException;
+import com.acme.exception.FamilyProfessionalNoExistException;
 import com.acme.exception.PageNumberIncorrectException;
 import com.acme.model.certification.Certification;
 import com.acme.model.examination.Examination;
@@ -29,20 +32,21 @@ public class AdminExaminationController {
 
 	@Autowired
 	private ExaminationService serviceexamination;
-	
+
 	@Autowired
 	private CertificationService servicecertification;
 
 	@ModelAttribute("allExamination")
-	public Page<Examination> gettAllExamination() throws PageNumberIncorrectException{
+	public Page<Examination> gettAllExamination()
+			throws PageNumberIncorrectException {
 		return serviceexamination.getAllExamination(0);
 	}
-	
+
 	@ModelAttribute("allCertifications")
 	public List<Certification> getAllCertifications() {
 		return servicecertification.getAllCertification();
 	}
-	
+
 	@RequestMapping(value = "/edit/id/{idExam}", method = RequestMethod.GET)
 	public String editExamination(@PathVariable Long idExam, Model model,
 			RedirectAttributes redirectAttrs) {
@@ -59,7 +63,7 @@ public class AdminExaminationController {
 		model.addAttribute("activeMenu", "examination");
 		return "/examination/listExamination";
 	}
-	
+
 	@RequestMapping(value = "/create", params = "create", method = RequestMethod.POST)
 	public String createExamination(Model model,
 			@ModelAttribute("exam") @Valid Examination exam,
@@ -72,42 +76,39 @@ public class AdminExaminationController {
 			return "examination/listExamination";
 		}
 		try {
-			exam.setCertification(servicecertification.getCertificationById(exam.getCertification().getId()));
+			exam.setCertification(servicecertification
+					.getCertificationById(exam.getCertification().getId()));
 		} catch (CertificationNoExistException e) {
-			redirectAttrs.addFlashAttribute("error", e.getMessage());
+			redirectAttrs.addFlashAttribute("error", e.getCause().getMessage());
 			return "redirect:/acme/examination/";
 		}
 		serviceexamination.saveExamination(exam);
 		redirectAttrs.addFlashAttribute("info", "examination.create");
 		return "redirect:/acme/examination/";
 	}
-	
+
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/delete/id/{idExam}", method = RequestMethod.GET)
 	public String deleteExamination(@PathVariable Long idExam, Model model,
 			RedirectAttributes redirectAttrs) {
 		try {
-			Examination exam=serviceexamination.getExaminationById(idExam);
+			Examination exam = serviceexamination.getExaminationById(idExam);
 			serviceexamination.removeExamination(idExam);
 			redirectAttrs.addFlashAttribute("info", "examination.delete");
-		}
-		catch (ExaminationNoExistException e) {
+		} catch (ExaminationNoExistException e) {
 			redirectAttrs.addFlashAttribute("error", "familia.noexist");
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			redirectAttrs.addFlashAttribute("error", "examination.asociado");
-		}
-		finally
-		{
+		} finally {
 			return "redirect:/acme/examination/";
 		}
 	}
 
 	// Modifica los datos de la familia profesional pasado por POST
 	@RequestMapping(value = "/edit/id/{idExam}", method = RequestMethod.POST)
-	public String editExamination(@PathVariable Integer idExam, Model model,
+	public String editExamination(@PathVariable Long idExam, Model model,
 			@ModelAttribute("exam") @Valid Examination exam,
-			BindingResult result) {
+			BindingResult result, RedirectAttributes redirectAttrs) {
 		// Comprueba si hay errores de validacion
 		if (result.hasErrors()) {
 			model.addAttribute("isNew", false);
@@ -116,7 +117,34 @@ public class AdminExaminationController {
 			model.addAttribute("noList", true);
 			return "/examination/listExamination";
 		}
-		serviceexamination.saveExamination(exam);
+		Examination temp = null;
+		try {
+			temp = serviceexamination.getExaminationById(idExam);
+			temp.setDateLimitRegister(exam.getDateLimitRegister());
+			temp.setDateRealization(exam.getDateRealization());
+			temp.setTimeRealization(exam.getTimeRealization());
+			temp.setCertification(exam.getCertification());
+			temp.setVersion(exam.getVersion());
+			exam = serviceexamination.saveExamination(temp);
+		} catch (ExaminationNoExistException e2) {
+			redirectAttrs.addAttribute("error", e2.getMessage());
+			return "redirect:/acme/examination/";
+
+		} catch (DateIncorrectException e2) {
+			redirectAttrs.addAttribute("error", e2.getCause().getMessage());
+			return "redirect:/acme/examination/";
+		} catch (JpaOptimisticLockingFailureException e) {
+			model.addAttribute("error", "exception.lockexception");
+			try {
+				exam = serviceexamination.getExaminationById(temp.getId());
+			} catch (ExaminationNoExistException e1) {
+				redirectAttrs.addAttribute("error", e.getMessage());
+				return "redirect:/acme/examination/";
+			}
+			model.addAttribute("exam", exam);
+			model.addAttribute("noList", true);
+			return "/examination/listExamination";
+		}
 		model.addAttribute("activeMenu", "examination");
 		model.addAttribute("isNew", true);
 		model.addAttribute("info", "examination.modify");

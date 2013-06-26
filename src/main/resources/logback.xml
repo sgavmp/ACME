@@ -8,7 +8,7 @@
 
 <!-- <logger name="org.springframework">
 		<level value="DEBUG" />
-	</logger> -->
+	</logger>  -->
 
 <!--	<logger name="org.hibernate">
 		<level value="DEBUG" />

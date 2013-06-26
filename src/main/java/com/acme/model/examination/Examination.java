@@ -101,14 +101,11 @@ public class Examination extends AbstractPersistable<Long> {
 
 	public void setDateRealization(Date dateRealization)
 			throws DateIncorrectException {
+		this.dateRealization = dateRealization;
 		if (this.dateLimitRegister != null) {
 			if (this.dateLimitRegister.getTime()>dateRealization.getTime()) {
 				throw new DateIncorrectException("exception.date");
 			}
-			this.dateRealization = dateRealization;
-		}
-		else {
-			this.dateRealization = dateRealization;
 		}
 	}
 
@@ -118,14 +115,11 @@ public class Examination extends AbstractPersistable<Long> {
 
 	public void setDateLimitRegister(Date dateLimitRegister)
 			throws DateIncorrectException {
+		this.dateLimitRegister = dateLimitRegister;
 		if (this.dateRealization != null) {
 			if (dateLimitRegister.getTime()>this.dateRealization.getTime()) {
 				throw new DateIncorrectException("exception.date");
-			}
-			this.dateLimitRegister = dateLimitRegister;
-		}
-		else {
-			this.dateLimitRegister = dateLimitRegister;
+			}			
 		}
 	}
 
